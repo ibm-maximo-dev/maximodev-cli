@@ -1,0 +1,32 @@
+{
+  "name": "maximo-cli",
+  "version": "1.0.0",
+  "description": "Maximo command line tools",
+  "main": "src/maximo-cli.js",
+  "scripts": {
+    "clean": "rm -rf build",
+    "pretest": "rm -rf build/test && mkdir -p build/test/ && cp test/addon.properties build/test/",
+    "test": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties mocha test/",
+    "posttest": "npm run testcmds",
+    "pretestcmds": "rm -rf build/testcmds && mkdir -p build/testcmds/ && cp test/addon.properties build/testcmds/",
+    "testcmds": "MAXIMO_ADDON_PROPERTIES=build/testcmds/addon.properties MAXIMO_CLI_NO_PROMPT=Y mocha testcmds/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.14.1",
+    "dateformat": "^3.0.3",
+    "fs-extra": "^5.0.0",
+    "mustache": "^2.3.0",
+    "prompt": "^1.0.0",
+    "properties-parser": "^0.3.1",
+    "shelljs": "^0.8.1",
+    "xml2js": "^0.4.19",
+    "xmldom": "^0.1.27"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-files": "^1.4.0",
+    "mocha": "^5.0.1"
+  }
+}

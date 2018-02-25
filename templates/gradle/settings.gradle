@@ -1,0 +1,18 @@
+// You can change the project name here
+rootProject.name = 'maximo-addon-dev'
+
+include 'businessobjects'
+project(':businessobjects').projectDir = file('applications/maximo/businessobjects')
+
+include 'maximouiweb'
+project(':maximouiweb').projectDir = file('applications/maximo/maximouiweb')
+
+include 'tools'
+project(':tools').projectDir = file('tools/maximo')
+
+include 'properties'
+project(':properties').projectDir = file('applications/maximo/properties')
+
+include 'resources'
+project(':resources').projectDir = file('resources/presentations')
+

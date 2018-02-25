@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+  <name>My Test Addon</name>
+  <version>
+    <major>7</major>
+    <minor>6</minor>
+    <modlevel>0</modlevel>
+    <patch>5</patch>
+    <build>{{build_number}}</build>
+  </version>
+  <dbmaxvarname>test123</dbmaxvarname>
+  <dbscripts>test123</dbscripts>
+  <dbversion>{{dbversion}}</dbversion>
+  <checklicense></checklicense>
+  <lastdbversion>V7605-00</lastdbversion>
+  <extensions>
+    <!-- place object extensions here -->
+  </extensions>
+</product>

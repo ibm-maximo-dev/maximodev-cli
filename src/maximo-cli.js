@@ -1,0 +1,15 @@
+// https://www.npmjs.com/package/commander
+var program = require('commander');
+
+program
+  .version('0.0.1')
+  .description('Maximo command line tools')
+  .command('init [options]', 'init maximo cli in this directory').alias('c')
+  .command('create [options]', 'create a maximo artifact').alias('c')
+  .command('export [options]', 'export a maximo configuration').alias('x')
+  .command('clone [options]', 'clone a maximo application')
+  .command('import [options]', 'import a maximo configuration').alias('i')
+  .command('build', 'build maximo .zip for current addon').alias('b')
+  .command('deploy', 'deploy local maximo artifacts to dev server').alias('d')
+  .parse(process.argv);
+

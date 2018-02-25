@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+
+<script author="{{author}}" scriptname="{{name}}">
+    <description>{{description}}</description>
+    <statements>
+        <add_property name="{{prop.name}}" value="{{prop.value}}"/>
+    </statements>
+</script>

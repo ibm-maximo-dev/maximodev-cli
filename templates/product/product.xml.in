@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+  <name>{{addon_description}}</name>
+  <version>
+    <major>{{version_major}}</major>
+    <minor>{{version_minor}}</minor>
+    <modlevel>{{version_modlevel}}</modlevel>
+    <patch>{{version_patch}}</patch>
+    <build>{{version_buildnumber}}</build>
+  </version>
+  <dbmaxvarname>{{maxvar_name}}</dbmaxvarname>
+  <dbscripts>{{dbscripts}}</dbscripts>
+  <dbversion>{{dbversion}}</dbversion>
+  <checklicense></checklicense>
+  <lastdbversion>{{last_dbversion}}</lastdbversion>
+  <extensions>
+    <!-- place object extensions here -->
+  </extensions>
+</product>

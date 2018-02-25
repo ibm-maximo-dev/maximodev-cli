@@ -1,0 +1,141 @@
+allprojects {
+  apply from: new File(rootProject.rootDir, 'addon.gradle')
+
+  project.ext {
+    maximoExternalDir = new File(project.ext.maximoInstallDir, (projectDir.canonicalPath - rootDir.canonicalPath))
+    println "Maximo External Dir for${project.name} is ${maximoExternalDir}"
+  }
+
+  group = "${project.ext.addOnPackage}"
+  version = "${project.ext.addOnVersion}"
+}
+
+subprojects {
+  apply plugin: 'eclipse'
+
+  plugins.withType(JavaPlugin) {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+    compileJava.options.debugOptions.debugLevel = 'source,lines,vars'
+    jar.enabled = false
+    def classes = new File(maximoExternalDir, 'classes')
+    def webClasses = new File(maximoExternalDir, 'webmodule/WEB-INF/classes')
+    sourceSets {
+      main.java.srcDir 'src'
+      main.resources.srcDir 'src'
+      if (classes.exists()) {
+        main.output.classesDir 'classes'
+        main.output.resourcesDir 'classes'
+      }
+      if (webClasses.exists()) {
+        main.output.classesDir 'webmodule/WEB-INF/classes/'
+        main.output.resourcesDir 'webmodule/WEB-INF/classes/'
+      }
+
+    }
+
+    dependencies {
+      // ensure that we can pick up the Maxmio core classes during compile
+      if (classes.exists())
+        compile files(classes)
+      if (webClasses.exists())
+        compile files(webClasses)
+    }
+
+    task javadocZip(type: Zip, dependsOn: javadoc) {
+      baseName = "${rootProject.name}_${project.name}"
+      classifier = 'javadoc'
+      from javadoc.destinationDir
+    }
+
+    clean.doLast {
+      println "deleting ${sourceSets.main.output.classesDir}"
+      project.delete(sourceSets.main.output.classesDir)
+      project.delete('bin')
+      project.delete('.settings')
+    }
+  }
+}
+
+project(':businessobjects') {
+  apply plugin: 'java'
+
+  dependencies {
+    compile fileTree(dir: new File(maximoInstallDir, "applications/maximo/lib/").path, includes: ['*.jar'])
+  }
+}
+
+project(':maximouiweb') {
+  apply plugin: 'java'
+
+  dependencies {
+    compile project(':businessobjects')
+  }
+}
+
+project(':tools') {
+  apply plugin: 'java'
+
+  dependencies {
+    compile project(":businessobjects")
+  }
+}
+
+project(':properties') {
+  task devPublish(type: Copy) {
+    File destDir = maximoExternalDir
+    if (!destDir.exists()) {
+      println "Maximo Install Dir does not exist, aborting"
+      return
+    }
+
+    from(projectDir) {
+      exclude '.project', '.classpath', 'bin/**', '.settings/**', 'src/**', '**/*.in'
+    }
+    into maximoExternalDir
+    includeEmptyDirs = false
+    eachFile { println "Copied: ${it} to ${maximoExternalDir}" }
+  }
+}
+
+project(':resources') {
+}
+
+task distZip(type: Zip) {
+  baseName = "${project.name}"
+  classifier = 'addon'
+  destinationDir(file("build/dist/"))
+
+  from ("applications") {
+    exclude '**/*.in'
+    exclude '**/.project'
+    exclude '**/.classpath'
+    exclude '**/.settings'
+    exclude '**/build/'
+    exclude '**/src/'
+    exclude '**/bin/'
+    into "applications"
+  }
+
+  from ("tools") {
+    exclude '**/*.in'
+    exclude '**/.project'
+    exclude '**/.classpath'
+    exclude '**/.settings'
+    exclude '**/build/'
+    exclude '**/src/'
+    exclude '**/bin/'
+    into "tools"
+  }
+
+  from ("resources") {
+    exclude '**/*.in'
+    exclude '**/.project'
+    exclude '**/.classpath'
+    exclude '**/.settings'
+    exclude '**/build/'
+    exclude '**/src/'
+    exclude '**/bin/'
+    into "resources"
+  }
+}
