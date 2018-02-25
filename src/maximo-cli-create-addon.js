@@ -1,5 +1,5 @@
 var productxml = require('./lib/productxml');
-var templates = require('./lib/templates');
+var installers = require('./lib/template_installers');
 var log = require('./lib/logger');
 var mbos = require('./lib/mbos');
 var env = require('./lib/env');
@@ -80,7 +80,7 @@ var schema = {
       _cli: 'java_package',
       _depends: 'add_java_support',
     },
-    maximo_root: {
+    maximo_home: {
       description: "Maximo Home",
       required: true,
       _cli: 'maximo_home',
@@ -150,8 +150,7 @@ function create_addon(result) {
     env.ensureAddonDir('applications/maximo/maximouiweb/src/');
     env.ensureAddonDir('applications/maximo/maximouiweb/webmodule/WEB-INF/classes');
 
-    log.info("Copying gradle build files for java...");
-    shell.cp('-r', templates.resolveName('gradle/*'), env.addonDir());
+    installers.installJavaSupport(env.addonDir());
 
     if (result.add_sample_java_validator==='y') {
       result.java_class_name = result.addon_prefix+"FLDSampleFieldValidator";

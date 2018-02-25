@@ -7,7 +7,9 @@ var env = require('./env');
 
 var templates = module.exports = Object.create({});
 
-templates.dir = path.resolve(path.join(env.TOOLS_DIR, "templates"));
+templates.dir = function() {
+  return path.resolve(path.join(env.TOOLS_DIR, "templates"));
+}
 
 /**
  * Render template string using args and return the rendered template
@@ -34,7 +36,7 @@ templates.resolveContents = function(tplPath) {
  * @returns {*|string}
  */
 templates.resolveName = function(tplPath) {
-  return (path.join(templates.dir, tplPath));
+  return (path.join(templates.dir(), tplPath));
 };
 
 /**

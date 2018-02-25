@@ -39,4 +39,21 @@ describe('test_command_lines', function() {
     expect(file('build/newdbcscript/tools/maximo/en/test123/V1000_02.dbc')).to.exist;
   });
 
+  it('init java should not fail', function() {
+    shelljs.exec('node src/maximo-cli.js init java --dir "build/java"');
+    if (shelljs.error()) {
+      assert.fail(0,1, "init java failed")
+    }
+    expect(file('build/java/build.gradle')).to.exist;
+  });
+
+  it('init addon should not fail', function() {
+    shelljs.exec('node src/maximo-cli.js init addon --addon_prefix "BPAAA"  --addon_name "bpaaa_prod1"  --author "bpaaa"  --desc ""  --ver "1.0.0.0"  --maximo_home "."  --create_productxml --dir "build/initaddon"');
+    if (shelljs.error()) {
+      assert.fail(0,1, "init addon failed")
+    }
+    expect(file('build/initaddon/addon.properties')).to.exist;
+    expect(file('build/initaddon/applications/maximo/properties/product/bpaaa_prod1.xml.in')).to.exist;
+  });
+
 });

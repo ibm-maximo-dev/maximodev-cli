@@ -4,8 +4,8 @@ var program = require('commander');
 program
   .version('0.0.1')
   .description('Maximo command line tools')
-  .command('init [options]', 'init maximo cli in this directory').alias('c')
-  .command('create [options]', 'create a maximo artifact').alias('c')
+  .command('init [options]', 'initialize maximo build tools and configuration such as java')
+  .command('create [options]', 'create a maximo artifact, such as mbo, add-on, etc').alias('c')
   .command('export [options]', 'export a maximo configuration').alias('x')
   .command('clone [options]', 'clone a maximo application')
   .command('import [options]', 'import a maximo configuration').alias('i')
