@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<presentation id="asset" mboname="ASSET" resultstableid="results_showlist"
+              beanclass="psdi.webclient.beans.asset.AssetAppBean" version="7.1.0.0"
+              apphelp="com.ibm.mbs.doc,asset/c_assets_app.html">
+  <page id="mainrec">
+    <include id="pageHeader"/>
+
+    <clientarea id="clientarea">
+      <tab id="main" label="Asset" type="insert">
+        <section id="main_grid8" border="true">
+          <sectionrow id="main_grid8_11">
+            <sectioncol id="main_grid8_11_1">
+              <section id="main_grid8_11_1_1">
+                <multiparttextbox id="main_grid8_1" dataattribute="assetnum" descdataattribute="description"/>
+                <textbox id="main_grid8_4" dataattribute="status"/>
+                <checkbox id="islinear" dataattribute="islinear" licensekey="LINEAR"/>
+              </section>
+            </sectioncol>
+
+            <sectioncol id="main_grid8_11_2">
+              <section id="main_grid8_11_2_1">
+                <textbox id="main_grid8_5" dataattribute="siteid"/>
+                <textbox id="main_grid8_3" dataattribute="assettype" lookup="valuelist"/>
+                <textbox id="main_grid8_4a" dataattribute="templateid" inputmode="readonly" menutype="hyperlink"
+                         applink="PLUSCTMPLT"/>
+              </section>
+            </sectioncol>
+          </sectionrow>
+        </section>
+      </tab>
+    </clientarea>
+
+    <include id="pageFooter"/>
+  </page>
+</presentation>

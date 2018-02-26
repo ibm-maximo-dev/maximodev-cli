@@ -154,7 +154,7 @@ function create_addon(result) {
 
     installers.installJavaSupport(env.addonDir());
 
-    if (result.add_sample_java_validator==='y') {
+    if (env.bool(result.add_sample_java_validator)) {
       result.java_class_name = result.addon_prefix+"FLDSampleFieldValidator";
       mbos.addFieldValidationSample(env.addonBusinessObjectsDir('src'), result);
       productxml.addFieldExtension('ASSET','ASSETNUM','psdi.app.asset.FldAssetnum',result.java_package + "." + result.java_class_name);

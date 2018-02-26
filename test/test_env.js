@@ -28,4 +28,10 @@ describe('env', function() {
     var adir = env.productXml();
     expect(dir(path.dirname(adir))).to.exist;
   });
+
+  it('should resolve a full maximo path', function() {
+    env.props.maximo_home='/maximo';
+    expect(env.resolveMaximoPath('applications/maximo/testfile.ext')).to.equal('/maximo/applications/maximo/testfile.ext');
+  });
+
 });

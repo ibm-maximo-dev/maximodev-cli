@@ -7,13 +7,26 @@ var path = require('path');
 var dbcscripts = module.exports = Object.create({});
 
 /**
- * Find the Next Script name in the directory
+ * Find the Next Script name in the directory and return the script name
+ * use nextScriptFile to return the full path of the script.
  *
  * @param dir
  */
-dbcscripts.nextScript = function(dir) {
-  return dbcscripts.nextScriptName(dbcscripts.lastScript(dir))
+dbcscripts.nextScript = function(dir, ext) {
+  var script = dbcscripts.nextScriptName(dbcscripts.lastScript(dir));
+  if (script && ext) {
+    var els = dbcscripts.script(script);
+    if (ext.startsWith('.')) ext=ext.substring(1);
+    els.ext = ext;
+    script=dbcscripts.format(els);
+  }
+  return script;
 };
+
+dbcscripts.nextScriptFile = function(dir, ext) {
+  return path.resolve(dir, dbcscripts.nextScript(dir, ext));
+};
+
 
 /**
  * Given current name, return the next script name

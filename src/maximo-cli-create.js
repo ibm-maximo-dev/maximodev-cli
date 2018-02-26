@@ -7,6 +7,7 @@ program
   .description('Maximo create artifact')
   .command('dbc-script', 'create an empty dbc in the product directory').alias('dbc')
   .command('productxml', 'create product xml file in products directory').alias('prod')
+  .command('presentation-diff', 'create a presentation xml diff database script').alias('pd')
   .command('app', 'create a maximo application').alias('a')
   .command('addon', 'create a maximo add-on').alias('product')
   .command('java-field-validator', 'create Java field validation class').alias('jfv')

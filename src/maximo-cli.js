@@ -3,10 +3,6 @@
 // https://www.npmjs.com/package/commander
 var program = require('commander');
 
-console.log('CWD:' + process.cwd());
-console.log('dirname:' + __dirname);
-console.log('filename:' + __filename);
-
 program
   .version('0.0.1')
   .description('Maximo command line tools')

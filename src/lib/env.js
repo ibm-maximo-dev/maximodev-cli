@@ -194,5 +194,41 @@ env.bool = function(val) {
   return val.startsWith('y');
 };
 
+/**
+ * Returns the maximo home directory, or throws an error if it is not set.
+ *
+ * @returns {string} Maximo Home directory
+ */
+env.maximoHome = function() {
+  var home = env.get('maximo_home', null);
+  if (!home) throw Error('maximo_home is not set in the environment or addon.properties');
+  return path.resolve(home);
+};
+
+/**
+ * transforms the given path(s) into paths that exist in the Maximo deployment area.
+ * @param {string|array} path(s)
+ */
+env.resolveMaximoPath =  function(pathArr) {
+  var home = env.maximoHome();
+
+  if (Array.isArray(pathArr)) {
+    var arr = [];
+    pathArr.forEach(function(e){
+      arr.push(env.resolveMaximoPath(e));
+    });
+    return arr;
+  } else {
+    return path.resolve(path.join(home), pathArr);
+  }
+};
+
+/**
+ * Returns the maximo Tools home directory.
+ */
+env.maximoToolsHome = function() {
+  return path.resolve(path.join(env.maximoHome(), 'tools/maximo/'));
+};
+
 // reload an initialize the env
 env.reload();
