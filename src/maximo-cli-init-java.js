@@ -1,5 +1,5 @@
-var log = require('./lib/logger');
-var env = require('./lib/env');
+#! /usr/bin/env node
+
 var cli = require('./lib/cli');
 var templates = require('./lib/template_installers');
 

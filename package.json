@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Maximo command line tools",
   "main": "src/maximo-cli.js",
+  "bin": {
+    "maximo-cli": "src/maximo-cli.js"
+  },
   "scripts": {
     "clean": "rm -rf build",
     "pretest": "rm -rf build/test && mkdir -p build/test/ && cp test/addon.properties build/test/",

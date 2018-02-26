@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 var dbcscripts = require('./lib/dbcscripts');
 var log = require('./lib/logger');
 var env = require('./lib/env');

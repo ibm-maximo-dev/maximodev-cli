@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 var productxml = require('./lib/productxml');
 var log = require('./lib/logger');
 var env = require('./lib/env');

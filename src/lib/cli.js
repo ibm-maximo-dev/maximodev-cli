@@ -152,6 +152,8 @@ function yes_no(props, def) {
 
 
 function printCommandLine(schema, program, result) {
+  if (!process.env.DEBUG_ARGS) return;
+
   var cmd = "";
 
   Object.keys(schema.properties).forEach(function(e) {
