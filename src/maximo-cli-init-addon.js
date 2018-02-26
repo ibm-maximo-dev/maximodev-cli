@@ -20,6 +20,7 @@ var schema = {
       required: true,
       _cli: 'addon_prefix',
       _cli_arg_value: '<PREFIX>',
+      _prop: 'addon_prefix',
       default: 'BPAAA',
       conform: function(v) {
         if (v.length>5) return false;
@@ -34,28 +35,33 @@ var schema = {
       pattern: /^[a-zA-Z_0-9]+$/,
       message: 'Must only contain letters, numbers, and underscores',
       required: true,
-      _cli: 'addon_name'
+      _cli: 'addon_name',
+      _prop: 'addon_id'
     },
     author: {
       description: "Addon Author",
       required: false,
       _cli: 'author',
+      _prop: 'author',
     },
     addon_description: {
       description: "Addon Description",
       required: false,
-      _cli: 'desc'
+      _cli: 'desc',
+      _prop: 'addon_description'
     },
     addon_version: {
       description: "Addon Version",
       required: true,
       _cli: 'ver',
+      _prop: 'addon_version',
       default: '1.0.0.0'
     },
     maximo_home: {
       description: "Maximo Home",
       required: true,
       _cli: 'maximo_home',
+      _prop: 'maximo_home'
     },
     create_productxml: {
       description: "Create product xml file",
@@ -83,13 +89,15 @@ function init_addon(result) {
   // reload env so that we rooted against our new addon directory
   env.reload(path.join(baseDir, 'addon.properties'));
 
-  log.info("Addon Working Diretory is %s", env.addonDir());
+  if (env.bool(result.create_productxml)) {
+    log.info("Addon Working Diretory is %s", env.addonDir());
 
-  // set our current working directory to be the new addon dir, now.
-  shell.cd(env.addonDir());
+    // set our current working directory to be the new addon dir, now.
+    shell.cd(env.addonDir());
 
-  log.info("Creating product xml");
-  productxml.newProductXml(result, env.productXml());
+    log.info("Creating product xml");
+    productxml.newProductXml(result, env.productXml());
+  }
 
   log.info("Addon initialized");
 }

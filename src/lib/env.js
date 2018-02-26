@@ -134,7 +134,7 @@ env.buildNumber = function() {
 };
 
 /**
- * Template loation for the CLI tools
+ * Template location for the CLI tools
  * @type {string}
  */
 env.TOOLS_DIR=path.resolve(__dirname + "/../../");
@@ -145,11 +145,31 @@ env.initProperties = function(file, src) {
   props += util.format("%s=%s\n", 'addon_prefix', src.addon_prefix);
   props += util.format("%s=%s\n", 'addon_id', src.addon_id);
   props += util.format("%s=%s\n", 'addon_description', src.addon_description);
+  props += util.format("%s=%s\n", 'addon_version', src.addon_version);
   if (src.maximo_home) {
-    props += util.format("%s=%s\n", 'maximo_home', src.maximo_home);
+    if (!env.isValidMaximoHome(src.maximo_home)) {
+      log.error("Not a valid maximo home: %s", src.maximo_home);
+    } else {
+      props += util.format("%s=%s\n", 'maximo_home', path.resolve(src.maximo_home));
+    }
   }
   fs.writeFileSync(file, props);
-  log.info("created default addon.properties");
+  log.info("saved addon.properties");
+};
+
+
+env.saveProperties = function(possibleValues, toGlobal) {
+  var props = {};
+  var keys = ['author','addon_prefix', 'addon_id', 'addon_description', 'addon_version', 'maximo_home'];
+  keys.forEach(function(k) {
+    props[k] = possibleValues[k] || env.get(k);
+  });
+
+  if (toGlobal) {
+    log.error('saving to global is not implemented, yet');
+  } else {
+    env.initProperties(env.propfile, props);
+  }
 };
 
 
@@ -228,6 +248,16 @@ env.resolveMaximoPath =  function(pathArr) {
  */
 env.maximoToolsHome = function() {
   return path.resolve(path.join(env.maximoHome(), 'tools/maximo/'));
+};
+
+/**
+ * returns true if the given directory is a valid maximo home directory
+ *
+ * @param dir
+ * @returns {*}
+ */
+env.isValidMaximoHome = function(dir) {
+  return fs.existsSync(dir) && fs.existsSync(path.join(dir, 'tools/maximo/en/script/'));
 };
 
 // reload an initialize the env
