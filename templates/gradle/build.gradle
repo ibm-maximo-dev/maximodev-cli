@@ -1,7 +1,16 @@
 allprojects {
-  apply from: new File(rootProject.rootDir, 'addon.gradle')
+  java.util.Properties props = new Properties()
+  File propFile = new File(rootProject.rootDir, 'addon.properties')
+  if (propFile.exists()) {
+    props.load(propFile.newInputStream())
+  }
 
   project.ext {
+    maximoInstallDir = props.getProperty("maximo_home", "/temp")
+    addOnId = props.getProperty("addon_id", 'notset')
+    addOnPackage = props.getProperty("addon_package", 'notset')
+    addOnVersion = props.getProperty("addon_version", '1.0.0.0')
+    addOnBuildNumber = props.getProperty("addon_build", '1')
     maximoExternalDir = new File(project.ext.maximoInstallDir, (projectDir.canonicalPath - rootDir.canonicalPath))
     println "Maximo External Dir for${project.name} is ${maximoExternalDir}"
   }

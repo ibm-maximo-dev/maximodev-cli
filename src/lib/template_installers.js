@@ -21,6 +21,8 @@ template_installers.installJavaSupport = function(dir) {
   if (!fs.existsSync(path.join(dir, 'addon.properties'))) {
     log.warn("addon.properties is missing and Java will require it.  You should run 'maximo-cli init addon' to initialize it.");
   }
+  // update our project name in the settings file
+  templates.renderToFile(templates.resolveName('gradle/settings.gradle'), env.props, path.join(dir, 'settings.gradle'))
 };
 
 

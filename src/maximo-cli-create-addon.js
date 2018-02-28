@@ -145,7 +145,7 @@ function create_addon(result) {
   log.info("Creating product xml");
   productxml.newProductXml(result, env.productXml());
 
-  if (result.add_java_support === 'y') {
+  if (env.bool(result.add_java_support)) {
     env.ensureAddonDir('applications/maximo/businessobjects/src/');
     env.ensureAddonDir('applications/maximo/businessobjects/classes/');
 
@@ -166,5 +166,10 @@ function create_addon(result) {
   log.info("Creating script dir");
   env.ensureDir(env.scriptDir());
 
-  log.info("Addon created");
+  log.info("Addon created in %s", env.addonDir());
+
+  if (env.bool(result.add_java_support)) {
+    log.log("");
+    log.log("");
+  }
 }

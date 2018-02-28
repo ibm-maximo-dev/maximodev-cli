@@ -1,5 +1,5 @@
 // You can change the project name here
-rootProject.name = 'maximo-addon-dev'
+rootProject.name = '{{addon_id}}'
 
 include 'businessobjects'
 project(':businessobjects').projectDir = file('applications/maximo/businessobjects')
