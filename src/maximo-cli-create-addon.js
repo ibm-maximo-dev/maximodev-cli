@@ -82,6 +82,12 @@ var schema = {
       _cli: 'java_package',
       _depends: 'add_java_support',
     },
+    eclipse: {
+      description: "Initialize Eclipse projects?",
+      required: true,
+      _cli: 'eclipse',
+      _depends: 'add_java_support',
+    },
     maximo_home: {
       description: "Maximo Home",
       required: true,
@@ -168,8 +174,14 @@ function create_addon(result) {
 
   log.info("Addon created in %s", env.addonDir());
 
-  if (env.bool(result.add_java_support)) {
-    log.log("");
+  if (env.bool(result.add_java_support) && env.bool(result.eclipse)) {
+    log.log("Configuring Eclipse Projects...");
+    var isWin = process.platform === "win32";
+    if (isWin) {
+      shell.exec('gradlew.bat cleanEclipse eclipse');
+    } else {
+      shell.exec('./gradlew cleanEclipse eclipse');
+    }
     log.log("");
   }
 }
