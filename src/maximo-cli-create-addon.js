@@ -40,7 +40,7 @@ var schema = {
       required: true,
       _cli: 'addon_name',
       conform: function(v) {
-        schema.properties.java_package.default = v.toLowerCase();
+        schema.properties.java_package.default = v.toLowerCase().replace('_','.');
         return true;
       }
     },
@@ -76,8 +76,8 @@ var schema = {
     },
     java_package: {
       description: "Default Java Package",
-      pattern: /^[a-zA-Z_0-9]+$/,
-      message: 'Must only contain letters, numbers, and underscores',
+      pattern: /^[a-zA-Z_0-9.]+$/,
+      message: 'Must only contain letters, numbers, underscores, or dots',
       required: true,
       _cli: 'java_package',
       _depends: 'add_java_support',
@@ -86,6 +86,7 @@ var schema = {
       description: "Initialize Eclipse projects?",
       required: true,
       _cli: 'eclipse',
+      _yesno: 'y',
       _depends: 'add_java_support',
     },
     maximo_home: {
