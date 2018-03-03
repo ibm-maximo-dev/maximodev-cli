@@ -7,7 +7,26 @@ var log = require('./logger');
 
 var env = module.exports = Object.create({});
 
+/**
+ * Currently loaded state for Addon Properties
+ * @type {{}}
+ */
 env.props = {};
+
+/**
+ * List of known property keys for addon.properties
+ * @type {Array}
+ */
+env.PROP_KEYS = [
+  'author',
+  'addon_prefix',
+  'addon_id',
+  'addon_description',
+  'addon_version',
+  'maximo_home',
+  'java_package'
+];
+
 
 /**
  * Returns env value of 'key' first from the OS environment, and if not there,
@@ -141,18 +160,33 @@ env.TOOLS_DIR=path.resolve(__dirname + "/../../");
 
 env.initProperties = function(file, src) {
   var props = "";
-  props += util.format("%s=%s\n", 'author', src.author);
-  props += util.format("%s=%s\n", 'addon_prefix', src.addon_prefix);
-  props += util.format("%s=%s\n", 'addon_id', src.addon_id);
-  props += util.format("%s=%s\n", 'addon_description', src.addon_description);
-  props += util.format("%s=%s\n", 'addon_version', src.addon_version);
-  if (src.maximo_home) {
-    if (!env.isValidMaximoHome(src.maximo_home)) {
-      log.error("Not a valid maximo home: %s", src.maximo_home);
-    } else {
-      props += util.format("%s=%s\n", 'maximo_home', path.resolve(src.maximo_home));
-    }
+
+  // get any currently known properties
+  var o = {...env.props};
+
+  // store known properties
+  env.PROP_KEYS.forEach(function(k) {
+    props += util.format("%s=%s\n", k, src[k]);
+    delete o[k];
+  });
+
+  // store unknown/unsupported properites that users may add
+  var unknown_props = "";
+  var new_keys = Object.keys(o);
+  if (new_keys && new_keys.length) {
+    new_keys.forEach(function(k) {
+      if (src[k])
+        unknown_props += util.format("%s=%s\n", k, src[k]);
+    });
   }
+
+  if (unknown_props.length>0) {
+    props += "\n# Unsupported properties\n";
+    props += unknown_props;
+  }
+
+
+  // write to filesystem
   fs.writeFileSync(file, props);
   log.info("saved addon.properties");
 };
@@ -160,7 +194,7 @@ env.initProperties = function(file, src) {
 
 env.saveProperties = function(possibleValues, toGlobal) {
   var props = {};
-  var keys = ['author','addon_prefix', 'addon_id', 'addon_description', 'addon_version', 'maximo_home'];
+  var keys = env.PROP_KEYS;
   keys.forEach(function(k) {
     props[k] = possibleValues[k] || env.get(k);
   });

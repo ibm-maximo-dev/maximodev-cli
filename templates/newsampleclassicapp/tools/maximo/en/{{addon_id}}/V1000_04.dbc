@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="QUINTEIRO" scriptname="TR_V7500_02">
+	<description>Music Application</description>
+	<statements>
+		
+		<!-- Auto Keys -->
+		<freeform description="Create Autokey used by Music table">
+			<sql target="all">
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, 'TRMUSICSEQ', null, 'EN', autokeyseq.nextval)
+				;
+			</sql>
+		</freeform>
+		
+		<!-- Music Type ALN Domain -->
+		<specify_aln_domain domainid="TRMUSICTYPE" description="Music Types" maxtype="UPPER" length="12">
+			<alnvalueinfo value="CLASSIC" description="Classic" />
+			<alnvalueinfo value="ROCK" description="Rock" />
+			<alnvalueinfo value="JAZZ" description="Jazz" />
+			<alnvalueinfo value="POP" description="Pop" />
+		</specify_aln_domain>
+		
+		<!-- Music Table -->
+		<define_table persistent="true" type="system" object="TRMUSIC" description="Music Table" service="ASSET" classname="psdi.tr.app.musart.TRMusicSet" primarykey="MUSICNUM" mainobject="true" internal="false">
+			<attrdef attribute="MUSICNUM" canautonum="true" autokey="TRMUSICSEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Music" remarks="Music Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+			<attrdef attribute="TITLE" title="Title" remarks="Music Title" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="DESCRIPTION" title="Description" remarks="Music's Description" maxtype="ALN" length="256" persistent="true" haslongdesc="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="MUSICTYPE" domain="TRMUSICTYPE" title="Music Type" remarks="Music's Type" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="ARTISTNUM" classname="psdi.tr.app.musart.TRFldMusicArtistNum" title="Artist" remarks="Artist Number" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="ARTISTNAME" classname="psdi.tr.app.musart.virtual.TRFldMusicArtistName" persistent="false" title="Artist Name" remarks="Artist Name" sameasobject="TRARTIST" sameasattribute="NAME" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+		</define_table>
+		
+		<!-- Music Application -->
+		<create_app app="TRMUSIC" description="Music (TR)" maintbname="TRMUSIC" />
+		
+		<!-- Music Main Sigoptions -->
+		<add_sigoption visible="true" app="TRMUSIC" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="INSERT" description="New Music" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SAVE" description="Save Music" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="CLEAR" description="Clear Changes" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="PREVIOUS" description="Previous Music" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="NEXT" description="Next Music" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="DELETE" description="Delete Music" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Music - Search Sigoptions -->
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHATTR" description="Attribute Search" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHBOOK" description="Bookmarks" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHMORE" description="More Search Fields" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHSQRY" description="Save Current Query" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHTIPS" description="View Search Tips" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHVMQR" description="View/Manage Queries" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="TRMUSIC" optionname="SEARCHWHER" description="Where Clause" grantapp="TRMUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Music - Tools Menu -->
+		<create_app_menu app="TRMUSIC" type="tool" >
+			<app_menu_option option="INSERT" tabdisplay="ALL" image="nav_icon_insertkey.gif" accesskey="CTRL+ALT+I" />
+			<app_menu_option option="SAVE" tabdisplay="MAIN" image="nav_icon_save.gif" accesskey="CTRL+ALT+S"/>
+			<app_menu_option option="CLEAR" tabdisplay="MAIN" image="nav_icon_clear.gif" accesskey="CTRL+ALT+C"/>
+			<menu_separator tabdisplay="MAIN" />
+			<app_menu_option option="PREVIOUS" tabdisplay="ALL" image="nav_icon_previous.gif" accesskey="CTRL+ALT+P"/>
+			<app_menu_option option="NEXT" tabdisplay="ALL" image="nav_icon_next.gif" accesskey="CTRL+ALT+N"/>
+		</create_app_menu>
+		
+		<!-- Music - Application Menu -->
+		<create_app_menu app="TRMUSIC" type="action" >
+			<app_menu_option option="DELETE" tabdisplay="MAIN" />
+		</create_app_menu>
+		
+		<!-- Music - Search Menu -->
+		<create_app_menu app="TRMUSIC" type="search" >
+			<app_menu_header headerdescription="Advanced Search" image="atb_search.gif" >
+				<app_menu_option option="SEARCHMORE" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHWHER" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHATTR" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHTIPS" tabdisplay="ALL" />
+			</app_menu_header>
+			<app_menu_header headerdescription="Save Query" image="atb_save.gif" >
+				<app_menu_option option="SEARCHSQRY" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHVMQR" tabdisplay="ALL" />
+			</app_menu_header>
+			<app_menu_option option="SEARCHBOOK" tabdisplay="ALL" image="atb_bookmark.gif" />
+		</create_app_menu>
+
+		<!-- Music and Artist Module -->
+		<create_module module="TRMUSART" description="Music and Artist (TR)" >
+			<module_menu_app app="TRMUSIC" />
+			<module_menu_app app="TRARTIST" />
+		</create_module>
+		
+		<!-- Relationships -->
+		<create_relationship parent="TRMUSIC" child="TRARTIST" name="TRARTIST" whereclause="artistnum=:artistnum" remarks="Returns artist reference from a music." />
+		
+	</statements>
+</script>
