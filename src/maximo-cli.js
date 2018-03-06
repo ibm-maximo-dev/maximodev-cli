@@ -7,7 +7,7 @@ program
   .version('0.0.1')
   .description('Maximo command line tools')
   .command('create [options]', 'create a maximo artifact, such as mbo, add-on, etc').alias('cr')
-  // .command('build', 'build the current addon').alias('b')
+  .command('build', 'build the current addon').alias('b')
   // .command('deploy', 'deploy local maximo artifacts to a dev server').alias('d')
   // .command('package', 'package an add-on for distribution').alias('d')
   .command('init [options]', 'initialize maximo add-on environment and java').alias('i')
