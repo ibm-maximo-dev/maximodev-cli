@@ -42,16 +42,17 @@ function build(result) {
   log.log();
   log.log('Created files:');
   shell.find(['applications']).filter((file) => {
-    return file.match(/\.class$/) || file.match(/\.jar$/);
+    return file.match(/\.class$/) || file.match(/\.jar$/) || file.match(/\.dbc$/);
   }).forEach((classFile) => {
     let classFileInfo = path.parse(classFile);
     let folder = path.join(BUILD_FOLDER_NAME, classFileInfo.dir);
     shell.mkdir('-p',folder);
-    log.log(path.join(folder,classFileInfo.base))
-    shell.cp(classFile, folder)
+    log.log(`- ${path.join(folder,classFileInfo.base)}`);
+    shell.cp(classFile, folder);
   });
 
   // Update product.xml when necessary.
+
 
 }
 
