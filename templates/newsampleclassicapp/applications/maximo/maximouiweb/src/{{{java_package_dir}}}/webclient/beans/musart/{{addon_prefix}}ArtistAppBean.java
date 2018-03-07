@@ -1,8 +1,8 @@
-package psdi.tr.webclient.beans.musart;
+package {{java_package}}.webclient.beans.musart;
 
 import psdi.webclient.system.beans.AppBean;
 
-public class TRArtistAppBean extends AppBean {
+public class {{addon_prefix}}ArtistAppBean extends AppBean {
 
 
 }

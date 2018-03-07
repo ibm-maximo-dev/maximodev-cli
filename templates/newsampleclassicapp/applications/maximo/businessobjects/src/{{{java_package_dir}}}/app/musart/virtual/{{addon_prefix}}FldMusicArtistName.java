@@ -25,7 +25,7 @@ public class {{addon_prefix}}FldMusicArtistName extends MAXTableDomain {
 		}
 		/*
 		else{
-			MboSetRemote artistSet = mboValue.getMbo().getMboSet("$TRARTISTNAMEREL", "TRARTIST", "name='" + mboValue.getString() + "'");
+			MboSetRemote artistSet = mboValue.getMbo().getMboSet("${{addon_prefix}}ARTISTNAMEREL", "{{addon_prefix}}ARTIST", "name='" + mboValue.getString() + "'");
 			MboRemote artist = artistSet.getMbo(0);
 			if (artist!=null){
 				mboValue.getMbo().setValue("artistnum", artist.getString("artistnum"));
