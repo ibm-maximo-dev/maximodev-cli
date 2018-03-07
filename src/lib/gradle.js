@@ -1,12 +1,14 @@
-let fs = require('fs-extra');
-var shell = require('shelljs');
-let path = require('path');
-var log = require('./logger');
+const fs = require('fs-extra');
+const shell = require('shelljs');
+const path = require('path');
+const log = require('./logger');
 
-let gradle = module.exports = Object.create({});
-let isWin = process.platform === "win32";
+const gradle = module.exports = Object.create({});
+
+const IS_WIN = process.platform === "win32";
+
 let gradleFilename = "gradlew";
-if (isWin) {
+if (IS_WIN) {
   gradleFilename = gradleFilename.append(".bat");
 };
 
@@ -18,7 +20,7 @@ gradle.exists = function(gradlePath) {
 };
 
 gradle.runTasks = function(tasks) {
-  shell.exec(`${gradleFilename} ${tasks}`);
+  shell.exec(`/bin/bash ${gradleFilename} ${tasks}`);
 };
 
 gradle.build = function() {

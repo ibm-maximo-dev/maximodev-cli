@@ -56,4 +56,10 @@ describe('test_command_lines', function() {
     expect(file('build/initaddon/applications/maximo/properties/product/bpaaa_prod1.xml.in')).to.exist;
   });
 
+  it('build should not fail', function() {
+    shelljs.exec('node src/maximo-cli.js build');
+    if (shelljs.error()) {
+      assert.fail(0,1, "init build failed")
+    }
+  });
 });
