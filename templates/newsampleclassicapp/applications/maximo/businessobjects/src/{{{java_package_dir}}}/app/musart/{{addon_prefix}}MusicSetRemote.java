@@ -1,7 +1,7 @@
-package psdi.tr.app.musart;
+package {{java_package}}.app.musart;
 
 import psdi.mbo.MboSetRemote;
 
-public interface TRMusicSetRemote extends MboSetRemote {
+public interface {{addon_prefix}}MusicSetRemote extends MboSetRemote {
 
 }

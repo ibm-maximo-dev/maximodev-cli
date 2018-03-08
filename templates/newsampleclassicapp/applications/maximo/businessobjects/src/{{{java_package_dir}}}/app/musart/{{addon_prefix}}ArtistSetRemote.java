@@ -1,7 +1,7 @@
-package psdi.tr.app.musart;
+package {{java_package}}.app.musart;
 
 import psdi.mbo.MboSetRemote;
 
-public interface TRArtistSetRemote extends MboSetRemote {
+public interface {{addon_prefix}}ArtistSetRemote extends MboSetRemote {
 
 }
