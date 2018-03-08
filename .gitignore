@@ -4,3 +4,4 @@ build/
 sample/
 bpaaa_*/
 .gradle
+dist

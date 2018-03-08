@@ -7,6 +7,7 @@ const program = require('commander');
 const log = require('./lib/logger');
 const gradle = require('./lib/gradle');
 const cli = require('./lib/cli');
+const dist = require('./lib/dist');
 
 const BUILD_FOLDER_NAME = "dist";
 
@@ -41,18 +42,9 @@ function build(result) {
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.
   log.log();
   log.log('Created files:');
-  shell.find(['applications']).filter((file) => {
-    return file.match(/\.class$/) || file.match(/\.jar$/) || file.match(/\.dbc$/);
-  }).forEach((classFile) => {
-    let classFileInfo = path.parse(classFile);
-    let folder = path.join(BUILD_FOLDER_NAME, classFileInfo.dir);
-    shell.mkdir('-p',folder);
-    log.log(`- ${path.join(folder,classFileInfo.base)}`);
-    shell.cp(classFile, folder);
-  });
 
+dist.build()
   // Update product.xml when necessary.
 
 
 }
-
