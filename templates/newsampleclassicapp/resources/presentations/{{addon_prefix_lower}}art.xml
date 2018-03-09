@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<presentation id="trartist" resultstableid="results_showlist" mboname="TRARTIST" orderby="ARTISTNUM" beanclass="psdi.tr.webclient.beans.musart.TRArtistAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
+<presentation id="trartist" resultstableid="results_showlist" mboname="{{addon_prefix}}ARTIST" orderby="ARTISTNUM" beanclass="{{java_package}}.webclient.beans.musart.{{addon_prefix}}ArtistAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
 
 	<page id="mainrec" >
 		<include id="pageHeader" />
@@ -13,7 +13,7 @@
 				<tab id="results" default="true" label="List" type="list" >
 					<menubar id="actiontoolbar" event="search" sourcemethod="getAppSearchOptions" />
 
-					<table id="results_showlist" datasrc="results_showlist" mboname="TRARTIST" inputmode="readonly" selectmode="multiple" label="Artists" >
+					<table id="results_showlist" datasrc="results_showlist" mboname="{{addon_prefix}}ARTIST" inputmode="readonly" selectmode="multiple" label="Artists" >
 
 						<tablebody id="results_showlist_tablebody" filterable="true" displayrowsperpage="20" filterexpanded="true" >
 							<tablecol id="results_showlist_tablebody_1" type="event" mxevent="toggleselectrow" mxevent_desc="Select Row {0}" dataattribute="artistnum" sortable="false" filterable="false" />
@@ -61,7 +61,7 @@
 						</sectionrow>
 					</section>
 					
-					<table id="main_table" label="Artist Musics" relationship="TRMUSIC" inputmode="readonly" beanclass="psdi.tr.webclient.beans.musart.TRArtistMusicBean">
+					<table id="main_table" label="Artist Musics" relationship="{{addon_prefix}}MUSIC" inputmode="readonly" beanclass="{{java_package}}.webclient.beans.musart.{{addon_prefix}}ArtistMusicBean">
 						<tablebody id="main_table_body" filterable="true" displayrowsperpage="20" filterexpanded="true" >
 							<tablecol id="main_table_body_f1" type="event" mxevent="toggledetailstate" mxevent_desc="Show Detail" sortable="false" filterable="false" />
 							<tablecol id="main_table_body_f2" dataattribute="musicnum" />
@@ -94,7 +94,7 @@
 
 	</page>
 	
-	<dialog id="associatemusic" label="Musics" parentdatasrc="MAINRECORD" relationship="TRMUSICWITHOUTARTIST" beanclass="psdi.webclient.system.beans.MultiselectDataBean" savemode="ONUNLOAD">
+	<dialog id="associatemusic" label="Musics" parentdatasrc="MAINRECORD" relationship="{{addon_prefix}}MUSICWITHOUTARTIST" beanclass="psdi.webclient.system.beans.MultiselectDataBean" savemode="ONUNLOAD">
 		<table id="associatemusic_table" label="Musics" inputmode="readonly" selectmode="multiple">
 			<tablebody id="associatemusic_table_body" filterable="true" displayrowsperpage="20" filterexpanded="true" >
 				<tablecol id="associatemusic_table_body_f1" type="event" mxevent="toggleselectrow" sortable="false" filterable="false" />

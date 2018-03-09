@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<presentation id="trmusic" resultstableid="results_showlist" mboname="TRMUSIC" orderby="MUSICNUM" beanclass="psdi.tr.webclient.beans.musart.TRMusicAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
+<presentation id="trmusic" resultstableid="results_showlist" mboname="{{addon_prefix}}MUSIC" orderby="MUSICNUM" beanclass="{{java_package}}.webclient.beans.musart.{{addon_prefix}}MusicAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
 
 	<page id="mainrec" >
 		<include id="pageHeader" />
@@ -13,7 +13,7 @@
 				<tab id="results" default="true" label="List" type="list" >
 					<menubar id="actiontoolbar" event="search" sourcemethod="getAppSearchOptions" />
 
-					<table id="results_showlist" datasrc="results_showlist" mboname="TRMUSIC" inputmode="readonly" selectmode="multiple" label="Musics" >
+					<table id="results_showlist" datasrc="results_showlist" mboname="{{addon_prefix}}MUSIC" inputmode="readonly" selectmode="multiple" label="Musics" >
 
 						<tablebody id="results_showlist_tablebody" filterable="true" displayrowsperpage="20" filterexpanded="true" >
 							<tablecol id="results_showlist_tablebody_1" type="event" mxevent="toggleselectrow" mxevent_desc="Select Row {0}" dataattribute="musicnum" sortable="false" filterable="false" />
