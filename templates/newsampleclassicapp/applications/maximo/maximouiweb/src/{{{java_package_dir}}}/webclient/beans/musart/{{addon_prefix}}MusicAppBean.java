@@ -1,8 +1,8 @@
-package psdi.tr.webclient.beans.musart;
+package {{java_package}}.webclient.beans.musart;
 
 import psdi.webclient.system.beans.AppBean;
 
-public class TRMusicAppBean extends AppBean {
+public class {{addon_prefix}}MusicAppBean extends AppBean {
 
 
 }

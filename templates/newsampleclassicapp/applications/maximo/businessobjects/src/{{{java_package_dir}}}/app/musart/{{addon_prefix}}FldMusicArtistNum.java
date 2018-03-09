@@ -1,13 +1,13 @@
-package psdi.tr.app.musart;
+package {{java_package}}.app.musart;
 
 import psdi.mbo.MAXTableDomain;
 import psdi.mbo.MboValue;
 
-public class TRFldMusicArtistNum extends MAXTableDomain {
+public class {{addon_prefix}}FldMusicArtistNum extends MAXTableDomain {
 
-	public TRFldMusicArtistNum(MboValue mbv) {
+	public {{addon_prefix}}FldMusicArtistNum(MboValue mbv) {
 		super(mbv);
-		setRelationship("TRARTIST", "artistnum=:artistnum");
+		setRelationship("{{addon_prefix}}ARTIST", "artistnum=:artistnum");
 		setListCriteria("artistnum <> 'JOAO'");
 		setLookupKeyMapInOrder(new String[]{"artistnum"}, new String[]{"artistnum"});
 	}

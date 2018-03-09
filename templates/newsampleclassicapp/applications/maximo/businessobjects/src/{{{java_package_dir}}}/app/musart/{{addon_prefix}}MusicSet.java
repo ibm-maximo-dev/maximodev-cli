@@ -1,4 +1,4 @@
-package psdi.tr.app.musart;
+package {{java_package}}.app.musart;
 
 import java.rmi.RemoteException;
 
@@ -7,15 +7,15 @@ import psdi.mbo.MboServerInterface;
 import psdi.mbo.MboSet;
 import psdi.util.MXException;
 
-public class TRMusicSet extends MboSet implements TRMusicSetRemote {
+public class {{addon_prefix}}MusicSet extends MboSet implements {{addon_prefix}}MusicSetRemote {
 
-	public TRMusicSet(MboServerInterface ms) throws RemoteException {
+	public {{addon_prefix}}MusicSet(MboServerInterface ms) throws RemoteException {
 		super(ms);
 	}
 
 	@Override
 	protected Mbo getMboInstance(MboSet ms) throws MXException, RemoteException {
-		return new TRMusic(ms);
+		return new {{addon_prefix}}Music(ms);
 	}
 
 }
