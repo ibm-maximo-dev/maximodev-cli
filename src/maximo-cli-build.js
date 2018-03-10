@@ -9,8 +9,6 @@ const gradle = require('./lib/gradle');
 const cli = require('./lib/cli');
 const dist = require('./lib/dist');
 
-const BUILD_FOLDER_NAME = "dist";
-
 const schema = {
   _version: '0.0.1',
   _description: 'Build the current Maximo artifact',
@@ -30,20 +28,44 @@ function build(result) {
   log.log('Check if gradle is present');
   if(gradle.exists()) {
     log.log('Gradle Found');
-    gradle.build();
+    //gradle.build();
   }
-
-  // Clean build folder (output)
-  if(!fs.existsSync(BUILD_FOLDER_NAME)) {
-    fs.mkdirSync(BUILD_FOLDER_NAME);
-  }
-  shell.rm('-Rf',`./${BUILD_FOLDER_NAME}/*`);
 
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.
   log.log();
-  log.log('Created files:');
 
-dist.build()
+  const excludes = [
+    { 
+      name: 'mi-stubs files',
+      pattern: /(rmi-stubs.(xml|cmd))$/,
+    },
+    { 
+      name: 'Hidden files',
+      pattern: /^\./,
+    },
+    { 
+      name: 'Unit test folder',
+      pattern: /unittest/,
+    },
+    { 
+      name: 'virtual folder',
+      pattern: /virtual/,
+    },
+    { 
+      name: 'Source folder',
+      pattern: /src/,
+    },
+    { 
+      name: 'Node modules folder',
+      pattern: /node_modules/,
+    },
+    { 
+      type: 'copy-resources file',
+      pattern: /copy-resources.xml/,
+    },
+  ];
+  dist.build(shell.env['PWD'], excludes)
+
   // Update product.xml when necessary.
 
 

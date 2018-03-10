@@ -5,99 +5,57 @@ const shell = require('shelljs');
 const log = require('./logger');
 const path = require('path');
 
-const BUILD_FOLDER_NAME = "dist";
+const dist = module.exports = Object.create({
+  BUILD_FOLDER_NAME: "dist",
+});
 
-const dist = module.exports = Object.create({});
-
-function canCopy(name, isDir, excludes) {
+dist.canCopy = function(name, excludes) {
+  //cant copy de build folder that is been built now
+  if(name === this.BUILD_FOLDER_NAME) {
+    return false
+  }
   for(let i = 0; i < excludes.length;i++) {
     let exclude = excludes[i];
-    let result = false;
-    if(exclude.type === (isDir?'dir':'file')) {
-      if(exclude.is) {
-        if(exclude.is === name) return false
-      } else if(exclude.endsWith) {
-        if(name.endsWith(exclude.endsWith)) return false;
-      } else if(exclude.startsWith) {
-        if(name.startsWith(exclude.startsWith)) return false;
-      };
-    };
+    if(name.match(exclude.pattern)) {
+      log.log(`${name} Ignored: ${exclude.name}`)
+      return false;
+    }
   }
   return true;
 }
 
-dist.parseDir = function(dirPath, excludes) {
-  fs.readdir(dirPath).then(files => {
-    files.forEach(file => {
-      fs.stat(`${dirPath}${path.sep}${file}`).then(fileStat => {
-        if(fileStat.isDirectory()) {
-          if(canCopy(file, true, excludes)) {
-            this.parseDir(`${dirPath}${path.sep}${file}`, excludes);
-          } else {
-            log.log(`Cant enter ${file}`)
-          }
-        } else {
-          if(canCopy(file, false, excludes)) {
-            log.log(`Copying ${dirPath}${path.sep}${file}`);
-            let folder = path.join(BUILD_FOLDER_NAME, `${dirPath}${path.sep}${file}`);
-            shell.mkdir('-p',folder);
-            shell.cp(`${dirPath}${path.sep}${file}`, folder);
-          } else {
-            log.log(`Cant copy ${file}`)
-          }
-        }
-      }).catch(ex => {
-        log.error(ex);
-      });;
-    });
-  }).catch(ex => {
-    log.error(ex);
-  });
+dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
+  const currentFolder = path.join(rootFolder, relativePath);
+  const files = fs.readdirSync(currentFolder);
+  for(let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const filePath = path.join(currentFolder, file);
+    log.log(`- ${filePath}`);
+    const fileStat = fs.statSync(filePath);
+    if(fileStat.isDirectory()) {
+      if(this.canCopy(file, excludes)) {
+        this.parseDir(rootFolder, excludes, path.join(relativePath, file));
+      }
+    } else {
+      if(this.canCopy(file, excludes)) {
+        const destFolder = path.join(rootFolder, this.BUILD_FOLDER_NAME, relativePath);
+        log.log(`Creating folder ${destFolder}`);
+        shell.mkdir('-p',destFolder);
+        log.log(`Copying to ${path.join(destFolder, file)}`);
+        shell.cp(filePath, destFolder);
+      }
+    }
+  }
 }
 
-dist.build = function() {
-  const rootDir = '/Users/jamerson/git-reps/ibm-ghe/maximo-cli';
-  const excludes = [
-    { 
-      type: 'file',
-      endsWith: '-rmi-stubs.cmd',
-    },
-    { 
-      type: 'file',
-      endsWith: '-rmi-stubs.xml',
-    },    
-    { 
-      type: 'dir',
-      is: 'unittest',
-    },
-    { 
-      type: 'dir',
-      is: 'virtual',
-    },
-    { 
-      type: 'dir',
-      is: 'src',
-    },
-    { 
-      type: 'file',
-      endsWith: '.java',
-    },
-    { 
-      type: 'dir',
-      startsWith: '.',
-    },
-    { 
-      type: 'dir',
-      is: 'node_modules',
-    },
-    { 
-      type: 'file',
-      startsWith: '.',
-    },
-    { 
-      type: 'file',
-      is: 'copy-resources.xml',
-    },
-  ];
-  this.parseDir(rootDir, excludes)
+dist.build = function(rootDir, excludes) {
+  // Clean build folder (output)
+  log.log(`Building ${rootDir}`);
+  const destFolder = path.join(rootDir, this.BUILD_FOLDER_NAME);
+  if(!fs.existsSync(destFolder)) {
+    shell.mkdir('-p',destFolder);
+  }
+  shell.rm('-Rf',`./${destFolder}/*`);
+
+  this.parseDir(rootDir, excludes);
 }
