@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<presentation id="trartist" resultstableid="results_showlist" mboname="TRARTIST" orderby="ARTISTNUM" beanclass="psdi.tr.webclient.beans.musart.TRArtistAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
+
+	<page id="mainrec" >
+		<include id="pageHeader" />
+
+		<clientarea id="clientarea" >
+
+			<tabgroup id="maintabs" style="form" >
+
+				<!-- List Tab -->
+				<tab id="results" default="true" label="List" type="list" >
+					<menubar id="actiontoolbar" event="search" sourcemethod="getAppSearchOptions" />
+
+					<table id="results_showlist" datasrc="results_showlist" mboname="TRARTIST" inputmode="readonly" selectmode="multiple" label="Artists" >
+
+						<tablebody id="results_showlist_tablebody" filterable="true" displayrowsperpage="20" filterexpanded="true" >
+							<tablecol id="results_showlist_tablebody_1" type="event" mxevent="toggleselectrow" mxevent_desc="Select Row {0}" dataattribute="artistnum" sortable="false" filterable="false" />
+							<tablecol id="results_showlist_tablebody_2" dataattribute="artistnum" type="link" mxevent="selectrecord" mxevent_desc="Go To %1"/>
+							<tablecol id="results_showlist_tablebody_3" dataattribute="name" />
+							<tablecol id="results_showlist_tablebody_4" dataattribute="email" />
+							<tablecol id="results_bookmark" type="event" mxevent="BOOKMARK" mxevent_desc="Add to Bookmarks" mxevent_icon ="btn_addtobookmarks.gif" sortable="false" filterable="false" />
+						</tablebody>
+
+					</table>
+
+				</tab>
+
+				<!-- Main Tab -->
+				<tab id="main" label="Artist" type="insert" >
+					
+					<section id="main_s1" border="true" >
+						<sectionrow id="main_s1r1" >
+							<sectioncol id="main_s1r1c1" >
+								<section id="main_s1r1c1s1" >
+									<textbox id="main_s1r1c1s1_f1" dataattribute="artistnum" />
+								</section>
+							</sectioncol>
+							<sectioncol id="main_s1r1c2" >
+								<section id="main_s1r1c2s1" >
+									<textbox id="main_s1r1c2s1_f1" dataattribute="name" />
+								</section>
+							</sectioncol>
+						</sectionrow>
+					</section>
+					
+					<section id="main_s2" label="Details" >
+						<sectionrow id="main_s2r1" >
+							<sectioncol id="main_s2r1c1" >
+								<section id="main_s2r1c1s1" >
+									<textbox id="main_s2r1c1s1_f1" dataattribute="birthdate" lookup="datelookup" />
+									<textbox id="main_s2r1c1s1_f2" dataattribute="birthdate" lookup="datelookup" synchronous="true" label="Birth Date (Sync)"/>
+								</section>
+							</sectioncol>
+							<sectioncol id="main_s2r1c2" >
+								<section id="main_s2r1c2s1" >
+									<textbox id="main_s2r1c2s1_f1" dataattribute="email" />
+								</section>
+							</sectioncol>
+						</sectionrow>
+					</section>
+					
+					<table id="main_table" label="Artist Musics" relationship="TRMUSIC" inputmode="readonly" beanclass="psdi.tr.webclient.beans.musart.TRArtistMusicBean">
+						<tablebody id="main_table_body" filterable="true" displayrowsperpage="20" filterexpanded="true" >
+							<tablecol id="main_table_body_f1" type="event" mxevent="toggledetailstate" mxevent_desc="Show Detail" sortable="false" filterable="false" />
+							<tablecol id="main_table_body_f2" dataattribute="musicnum" />
+							<tablecol id="main_table_body_f3" dataattribute="title" />
+							<tablecol id="main_table_body_f4" dataattribute="musictype" />
+						</tablebody>
+						<tabledetails id="main_table_detail">
+							<section id="main_table_detail_s1" label="Details" >
+								<sectionrow id="main_table_detail_s1r1" >
+									<sectioncol id="main_table_detail_s1r1c1" >
+										<section id="main_table_detail_s1r1c1s1" >
+											<textbox id="main_table_detail_s1r1c1s1_f1" dataattribute="description" />
+										</section>
+									</sectioncol>
+								</sectionrow>
+							</section>
+						</tabledetails>
+						<buttongroup id="main_table_btngrp">
+							<pushbutton id="main_table_btngrp_btn1" label="Associate Music" mxevent="associateMusic"/>
+						</buttongroup>
+					</table>
+					
+				</tab>
+				
+			</tabgroup>
+
+		</clientarea>
+
+		<include id="pageFooter" />
+
+	</page>
+	
+	<dialog id="associatemusic" label="Musics" parentdatasrc="MAINRECORD" relationship="TRMUSICWITHOUTARTIST" beanclass="psdi.webclient.system.beans.MultiselectDataBean" savemode="ONUNLOAD">
+		<table id="associatemusic_table" label="Musics" inputmode="readonly" selectmode="multiple">
+			<tablebody id="associatemusic_table_body" filterable="true" displayrowsperpage="20" filterexpanded="true" >
+				<tablecol id="associatemusic_table_body_f1" type="event" mxevent="toggleselectrow" sortable="false" filterable="false" />
+				<tablecol id="associatemusic_table_body_f2" dataattribute="musicnum" />
+				<tablecol id="associatemusic_table_body_f3" dataattribute="title" />
+				<tablecol id="associatemusic_table_body_f4" dataattribute="musictype" />
+			</tablebody>
+		</table>
+		<buttongroup id="associatemusic_table_btngrp">
+			<pushbutton id="associatemusic_table_btngrp_btn1" label="OK" mxevent="dialogok" value="associateSelectedMusic" default="true" />
+			<pushbutton id="associatemusic_table_btngrp_btn2" label="Cancel" mxevent="dialogcancel" />
+		</buttongroup>
+	</dialog>
+
+</presentation>

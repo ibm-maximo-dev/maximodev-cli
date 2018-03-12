@@ -23,6 +23,7 @@ env.PROP_KEYS = [
   'addon_id',
   'addon_description',
   'addon_version',
+  'addon_message_group',
   'maximo_home',
   'java_package'
 ];
@@ -293,6 +294,30 @@ env.maximoToolsHome = function() {
 env.isValidMaximoHome = function(dir) {
   return fs.existsSync(dir) && fs.existsSync(path.join(dir, 'tools/maximo/en/script/'));
 };
+
+/**
+ * Validate that WE are in an addon directory and that addon properties are loaded
+ */
+env.validateAddonDir = function() {
+  if (!env.props && !env.props.addon_prefix) {
+    console.log("ERR: You need to be in a valid add-on directory for this command to work.");
+    proces.exit(1);
+  }
+};
+
+/**
+ * appends a single line to a file
+ * @param file
+ * @param line
+ */
+env.appendFile = function(file, line) {
+  fs.appendFileSync(file, line);
+};
+
+env.writeFile = function(file, line) {
+  fs.writeFileSync(file, line);
+};
+
 
 // reload an initialize the env
 env.reload();

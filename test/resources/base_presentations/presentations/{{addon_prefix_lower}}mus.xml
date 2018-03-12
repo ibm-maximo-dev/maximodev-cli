@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<presentation id="trmusic" resultstableid="results_showlist" mboname="TRMUSIC" orderby="MUSICNUM" beanclass="psdi.tr.webclient.beans.musart.TRMusicAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
+
+	<page id="mainrec" >
+		<include id="pageHeader" />
+
+		<clientarea id="clientarea" >
+
+			<tabgroup id="maintabs" style="form" >
+
+				<!-- List Tab -->
+				<tab id="results" default="true" label="List" type="list" >
+					<menubar id="actiontoolbar" event="search" sourcemethod="getAppSearchOptions" />
+
+					<table id="results_showlist" datasrc="results_showlist" mboname="TRMUSIC" inputmode="readonly" selectmode="multiple" label="Musics" >
+
+						<tablebody id="results_showlist_tablebody" filterable="true" displayrowsperpage="20" filterexpanded="true" >
+							<tablecol id="results_showlist_tablebody_1" type="event" mxevent="toggleselectrow" mxevent_desc="Select Row {0}" dataattribute="musicnum" sortable="false" filterable="false" />
+							<tablecol id="results_showlist_tablebody_2" dataattribute="musicnum" type="link" mxevent="selectrecord" mxevent_desc="Go To %1"/>
+							<tablecol id="results_showlist_tablebody_3" dataattribute="title" />
+							<tablecol id="results_showlist_tablebody_4" dataattribute="musictype" lookup="valuelist" />
+							<tablecol id="results_bookmark" type="event" mxevent="BOOKMARK" mxevent_desc="Add to Bookmarks" mxevent_icon ="btn_addtobookmarks.gif" sortable="false" filterable="false" />
+						</tablebody>
+
+					</table>
+
+				</tab>
+
+				<!-- Main Tab -->
+				<tab id="main" label="Music" type="insert" >
+					
+					<section id="main_s1" border="true" >
+						<sectionrow id="main_s1r1" >
+							<sectioncol id="main_s1r1c1" >
+								<section id="main_s1r1c1s1" >
+									<textbox id="main_s1r1c1s1_f1" dataattribute="musicnum" />
+								</section>
+							</sectioncol>
+							<sectioncol id="main_s1r1c2" >
+								<section id="main_s1r1c2s1" >
+									<textbox id="main_s1r1c2s1_f1" dataattribute="title" inputmode="required" />
+								</section>
+							</sectioncol>
+						</sectionrow>
+					</section>
+					
+					<section id="main_s2" label="Details" >
+						<sectionrow id="main_s2r1" >
+							<sectioncol id="main_s2r1c1" >
+								<section id="main_s2r1c1s1" >
+									<textbox id="main_s2r1c1s1_f1" dataattribute="musictype" lookup="valuelist"/>
+									<textbox id="main_s2r1c1s1_f2" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="trartist"/>
+								</section>
+							</sectioncol>
+							<sectioncol id="main_s2r1c2" >
+								<section id="main_s2r1c2s1" >
+									<textbox id="main_s2r1c2s1_f1" dataattribute="description" lookup="longdesc" />
+									<textbox id="main_s2r1c2s1_f2" dataattribute="trartist.name" inputmode="readonly" />
+								</section>
+							</sectioncol>
+						</sectionrow>
+					</section>
+					
+					<section id="main_s3" label="Extra" >
+						<sectionrow id="main_s3r1" >
+							<sectioncol id="main_s3r1c1" >
+								<section id="main_s3r1c1s1" >
+									<combobox id="main_s3r1c1s1_f1" dataattribute="musictype" />
+									<multiparttextbox id="main_s3r1c1s1_f4" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="trartist" descdataattribute="trartist.name" descinputmode="readonly" />
+								</section>
+							</sectioncol>
+							<sectioncol id="main_s3r1c2" >
+								<section id="main_s3r1c2s1" >
+									<textbox id="main_s3r1c2s1_f4" dataattribute="artistname" lookup="trartist" label="Artist Name (NP)" />
+								</section>
+							</sectioncol>
+						</sectionrow>
+					</section>
+					
+				</tab>
+				
+			</tabgroup>
+
+		</clientarea>
+
+		<include id="pageFooter" />
+
+	</page>
+	
+	<dialog id="searchmore" label="More Search Fields" inputmode="query" beanclass="psdi.webclient.system.beans.QbeBean">
+		<section id="qbe_s1">
+			<sectionrow id="qbe_s1r1">
+				<sectioncol id="qbe_s1r1c1">
+					<section id="qbe_s1r1c1s1">
+						<textbox id="qbe_s1r1c1s1_f1" dataattribute="musicnum" inputmode="query" />
+						<textbox id="qbe_s1r1c1s1_f2" dataattribute="title" inputmode="query" />
+						<textbox id="qbe_s1r1c1s1_f3" dataattribute="musictype" lookup="valuelist" inputmode="query" />
+						<textbox id="qbe_s1r1c1s1_f4" dataattribute="description" inputmode="query" />
+						<textbox id="qbe_s1r1c1s1_f5" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="trartist" inputmode="query" />
+					</section>
+				</sectioncol>
+			</sectionrow>
+		</section>
+		<buttongroup id="qbe_btngrp">
+			<pushbutton id="qbe_btngrp_btn1" label="Find" default="true" mxevent="dialogok" />
+			<pushbutton id="qbe_btngrp_btn2" label="Clear" mxevent="qbeclear" />
+			<pushbutton id="qbe_btngrp_btn3" label="Cancel" mxevent="qbecancel" />
+		</buttongroup>
+	</dialog>
+
+</presentation>
