@@ -14,7 +14,7 @@ public class {{addon_prefix}}ArtistMusicBean extends DataBean {
 		MboRemote artist = app.getAppBean().getMbo();
 		MboSetRemote musicWithoutArtistSet = artist.getMboSet("{{addon_prefix}}MUSICWITHOUTARTIST");
 		if (musicWithoutArtistSet.isEmpty()){
-			throw new MXApplicationException("trartist","NoMusicToSelect");
+			throw new MXApplicationException("{{addon_prefix_lower}}trartist","NoMusicToSelect");
 		}
 		return EVENT_CONTINUE;
 	}

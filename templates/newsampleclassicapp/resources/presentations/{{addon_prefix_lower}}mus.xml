@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<presentation id="trmusic" resultstableid="results_showlist" mboname="{{addon_prefix}}MUSIC" orderby="MUSICNUM" beanclass="{{java_package}}.webclient.beans.musart.{{addon_prefix}}MusicAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
+<presentation id="{{addon_prefix_lower}}music" resultstableid="results_showlist" mboname="{{addon_prefix}}MUSIC" orderby="MUSICNUM" beanclass="{{java_package}}.webclient.beans.musart.{{addon_prefix}}MusicAppBean" version="7.1.1.0" xmlns="http://www.ibm.com/maximo/presentation" >
 
 	<page id="mainrec" >
 		<include id="pageHeader" />

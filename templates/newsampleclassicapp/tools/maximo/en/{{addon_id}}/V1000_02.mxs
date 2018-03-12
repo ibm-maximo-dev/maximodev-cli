@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updatescript version="">
-	<app apptype="webclient" id="trartist">
+	<app apptype="webclient" id="{{addon_prefix_lower}}artist">
 		<modify control="results">
 			<set property="label" value="List"/>
 		</modify>
@@ -41,7 +41,7 @@
 			<set property="label" value="OK"/>
 		</modify>
 		<modify control="ctrl_powerapp">
-			<set property="id" value="trartist"/>
+			<set property="id" value="{{addon_prefix_lower}}artist"/>
 			<set property="version" value="7.1.1.0"/>
 			<set property="beanclass" value="{{java_package}}.webclient.beans.musart.{{addon_prefix}}ArtistAppBean"/>
 			<set property="mboname" value="{{addon_prefix}}ARTIST"/>
@@ -66,8 +66,8 @@
 		</add>
 		<add container="associatemusic_table" control="tablebody">
 			<set property="displayrowsperpage" value="20"/>
-			<set property="filterable" value="true"/>
-			<set property="filterexpanded" value="true"/>
+			<set property="filterable" value="{{addon_prefix_lower}}ue"/>
+			<set property="filterexpanded" value="{{addon_prefix_lower}}ue"/>
 			<set property="id" value="associatemusic_table_body"/>
 		</add>
 		<add container="associatemusic_table_body" control="tablecol">
@@ -93,7 +93,7 @@
 			<set property="id" value="associatemusic_table_btngrp"/>
 		</add>
 		<add container="associatemusic_table_btngrp" control="pushbutton">
-			<set property="default" value="true"/>
+			<set property="default" value="{{addon_prefix_lower}}ue"/>
 			<set property="id" value="associatemusic_table_btngrp_btn1"/>
 			<set property="label" value="OK"/>
 			<set property="mxevent" value="dialogok"/>
@@ -158,8 +158,8 @@
 		</add>
 		<add container="main_table" control="tablebody">
 			<set property="displayrowsperpage" value="20"/>
-			<set property="filterable" value="true"/>
-			<set property="filterexpanded" value="true"/>
+			<set property="filterable" value="{{addon_prefix_lower}}ue"/>
+			<set property="filterexpanded" value="{{addon_prefix_lower}}ue"/>
 			<set property="id" value="main_table_body"/>
 		</add>
 		<add container="main_table_body" control="tablecol">
@@ -233,7 +233,7 @@
 			<set property="id" value="main_s2r1c1s1_f2"/>
 			<set property="label" value="Birth Date (Sync)"/>
 			<set property="lookup" value="datelookup"/>
-			<set property="synchronous" value="true"/>
+			<set property="synchronous" value="{{addon_prefix_lower}}ue"/>
 		</add>
 		<add container="main_s2r1" control="sectioncol">
 			<set property="id" value="main_s2r1c2"/>
@@ -246,7 +246,7 @@
 			<set property="id" value="main_s2r1c2s1_f1"/>
 		</add>
 		<add before="main_s2" container="main" control="section">
-			<set property="border" value="true"/>
+			<set property="border" value="{{addon_prefix_lower}}ue"/>
 			<set property="id" value="main_s1"/>
 		</add>
 		<add container="main_s1" control="sectionrow">
@@ -273,7 +273,7 @@
 			<set property="id" value="main_s1r1c2s1_f1"/>
 		</add>
 	</app>
-	<app apptype="webclient" id="trmusic">
+	<app apptype="webclient" id="{{addon_prefix_lower}}music">
 		<modify control="results">
 			<set property="label" value="List"/>
 		</modify>
@@ -314,7 +314,7 @@
 			<set property="label" value="OK"/>
 		</modify>
 		<modify control="ctrl_powerapp">
-			<set property="id" value="trmusic"/>
+			<set property="id" value="{{addon_prefix_lower}}music"/>
 			<set property="version" value="7.1.1.0"/>
 			<set property="beanclass" value="{{java_package}}.webclient.beans.musart.{{addon_prefix}}MusicAppBean"/>
 			<set property="mboname" value="{{addon_prefix}}MUSIC"/>
@@ -386,12 +386,12 @@
 			<set property="id" value="main_s3r1c1s1_f1"/>
 		</add>
 		<add container="main_s3r1c1s1" control="multiparttextbox">
-			<set property="applink" value="trartist"/>
+			<set property="applink" value="{{addon_prefix_lower}}artist"/>
 			<set property="dataattribute" value="artistnum"/>
-			<set property="descdataattribute" value="trartist.name"/>
+			<set property="descdataattribute" value="{{addon_prefix_lower}}artist.name"/>
 			<set property="descinputmode" value="readonly"/>
 			<set property="id" value="main_s3r1c1s1_f4"/>
-			<set property="lookup" value="trartist"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
 			<set property="menutype" value="normal"/>
 		</add>
 		<add container="main_s3r1" control="sectioncol">
@@ -404,7 +404,7 @@
 			<set property="dataattribute" value="artistname"/>
 			<set property="id" value="main_s3r1c2s1_f4"/>
 			<set property="label" value="Artist Name (NP)"/>
-			<set property="lookup" value="trartist"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
 		</add>
 		<add before="main_s3" container="main" control="section">
 			<set property="id" value="main_s2"/>
@@ -425,10 +425,10 @@
 			<set property="lookup" value="valuelist"/>
 		</add>
 		<add container="main_s2r1c1s1" control="textbox">
-			<set property="applink" value="trartist"/>
+			<set property="applink" value="{{addon_prefix_lower}}artist"/>
 			<set property="dataattribute" value="artistnum"/>
 			<set property="id" value="main_s2r1c1s1_f2"/>
-			<set property="lookup" value="trartist"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
 			<set property="menutype" value="normal"/>
 		</add>
 		<add container="main_s2r1" control="sectioncol">
@@ -443,12 +443,12 @@
 			<set property="lookup" value="longdesc"/>
 		</add>
 		<add container="main_s2r1c2s1" control="textbox">
-			<set property="dataattribute" value="trartist.name"/>
+			<set property="dataattribute" value="{{addon_prefix_lower}}artist.name"/>
 			<set property="id" value="main_s2r1c2s1_f2"/>
 			<set property="inputmode" value="readonly"/>
 		</add>
 		<add before="main_s2" container="main" control="section">
-			<set property="border" value="true"/>
+			<set property="border" value="{{addon_prefix_lower}}ue"/>
 			<set property="id" value="main_s1"/>
 		</add>
 		<add container="main_s1" control="sectionrow">
@@ -481,7 +481,7 @@
 			<set property="id" value="qbe_btngrp"/>
 		</add>
 		<add container="qbe_btngrp" control="pushbutton">
-			<set property="default" value="true"/>
+			<set property="default" value="{{addon_prefix_lower}}ue"/>
 			<set property="id" value="qbe_btngrp_btn1"/>
 			<set property="label" value="Find"/>
 			<set property="mxevent" value="dialogok"/>
@@ -530,48 +530,48 @@
 			<set property="inputmode" value="query"/>
 		</add>
 		<add container="qbe_s1r1c1s1" control="textbox">
-			<set property="applink" value="trartist"/>
+			<set property="applink" value="{{addon_prefix_lower}}artist"/>
 			<set property="dataattribute" value="artistnum"/>
 			<set property="id" value="qbe_s1r1c1s1_f5"/>
 			<set property="inputmode" value="query"/>
-			<set property="lookup" value="trartist"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
 			<set property="menutype" value="normal"/>
 		</add>
 	</app>
 	<systemlib apptype="webclient" id="lookups">
 		<add container="lookups" control="table">
-			<set property="id" value="trartist"/>
+			<set property="id" value="{{addon_prefix_lower}}artist"/>
 			<set property="inputmode" value="readonly"/>
 			<set property="selectmode" value="single"/>
 		</add>
 		<add container="trartist" control="tablebody">
 			<set property="displayrowsperpage" value="20"/>
-			<set property="filterable" value="true"/>
-			<set property="filterexpanded" value="true"/>
-			<set property="id" value="trartist_lookup_tablebody"/>
+			<set property="filterable" value="{{addon_prefix_lower}}ue"/>
+			<set property="filterexpanded" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody"/>
 		</add>
 		<add container="trartist_lookup_tablebody" control="tablecol">
 			<set property="dataattribute" value="artistnum"/>
-			<set property="id" value="trartist_lookup_tablebody_col_1"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody_col_1"/>
 			<set property="mxevent" value="selectrecord"/>
 			<set property="mxevent_desc" value="Go To %1"/>
-			<set property="sortable" value="true"/>
+			<set property="sortable" value="{{addon_prefix_lower}}ue"/>
 			<set property="type" value="link"/>
 		</add>
 		<add container="trartist_lookup_tablebody" control="tablecol">
 			<set property="dataattribute" value="name"/>
-			<set property="id" value="trartist_lookup_tablebody_col_2"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody_col_2"/>
 			<set property="mxevent" value="selectrecord"/>
 			<set property="mxevent_desc" value="Go To %1"/>
-			<set property="sortable" value="true"/>
+			<set property="sortable" value="{{addon_prefix_lower}}ue"/>
 			<set property="type" value="link"/>
 		</add>
 		<add container="trartist_lookup_tablebody" control="tablecol">
 			<set property="dataattribute" value="email"/>
-			<set property="id" value="trartist_lookup_tablebody_col_3"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody_col_3"/>
 			<set property="mxevent" value="selectrecord"/>
 			<set property="mxevent_desc" value="Go To %1"/>
-			<set property="sortable" value="true"/>
+			<set property="sortable" value="{{addon_prefix_lower}}ue"/>
 			<set property="type" value="link"/>
 		</add>
 	</systemlib>
