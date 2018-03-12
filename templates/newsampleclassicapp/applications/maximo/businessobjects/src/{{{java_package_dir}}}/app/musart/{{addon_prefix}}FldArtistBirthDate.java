@@ -26,7 +26,7 @@ public class {{addon_prefix}}FldArtistBirthDate extends MboValueAdapter {
 		Date serverDate = MXServer.getMXServer().getDate();
 		
 		if (birthDate.after(serverDate)){
-			throw new MXApplicationException("trartist", "DateCannotBeFuture");
+			throw new MXApplicationException("{{addon_prefix}}artist", "DateCannotBeFuture");
 		}
 		
 	}

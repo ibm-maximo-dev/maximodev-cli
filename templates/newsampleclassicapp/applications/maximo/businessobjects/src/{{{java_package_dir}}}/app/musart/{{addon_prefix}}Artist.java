@@ -21,7 +21,7 @@ public class {{addon_prefix}}Artist extends Mbo implements {{addon_prefix}}Artis
 		super.canDelete();
 		if (!this.getMboSet("{{addon_prefix}}MUSIC").isEmpty()){
 			Object[] params = new Object[]{this.getString("name")};
-			throw new MXApplicationException("trartist", "CannotDeleteArtistWithMusic", params);
+			throw new MXApplicationException("{{addon_prefix}}artist", "CannotDeleteArtistWithMusic", params);
 		}
 	}
 	
