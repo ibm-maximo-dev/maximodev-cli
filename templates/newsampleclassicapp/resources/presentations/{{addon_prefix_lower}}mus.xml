@@ -50,7 +50,7 @@
 							<sectioncol id="main_s2r1c1" >
 								<section id="main_s2r1c1s1" >
 									<textbox id="main_s2r1c1s1_f1" dataattribute="musictype" lookup="valuelist"/>
-									<textbox id="main_s2r1c1s1_f2" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="trartist"/>
+									<textbox id="main_s2r1c1s1_f2" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="{{addon_prefix_lower}}artist"/>
 								</section>
 							</sectioncol>
 							<sectioncol id="main_s2r1c2" >
@@ -67,7 +67,7 @@
 							<sectioncol id="main_s3r1c1" >
 								<section id="main_s3r1c1s1" >
 									<combobox id="main_s3r1c1s1_f1" dataattribute="musictype" />
-									<multiparttextbox id="main_s3r1c1s1_f4" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="trartist" descdataattribute="trartist.name" descinputmode="readonly" />
+									<multiparttextbox id="main_s3r1c1s1_f4" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="{{addon_prefix_lower}}artist" descdataattribute="{{addon_prefix_lower}}artist.name" descinputmode="readonly" />
 								</section>
 							</sectioncol>
 							<sectioncol id="main_s3r1c2" >
@@ -97,7 +97,7 @@
 						<textbox id="qbe_s1r1c1s1_f2" dataattribute="title" inputmode="query" />
 						<textbox id="qbe_s1r1c1s1_f3" dataattribute="musictype" lookup="valuelist" inputmode="query" />
 						<textbox id="qbe_s1r1c1s1_f4" dataattribute="description" inputmode="query" />
-						<textbox id="qbe_s1r1c1s1_f5" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="trartist" inputmode="query" />
+						<textbox id="qbe_s1r1c1s1_f5" dataattribute="artistnum" menutype="normal" lookup="trartist" applink="{{addon_prefix_lower}}artist" inputmode="query" />
 					</section>
 				</sectioncol>
 			</sectionrow>
