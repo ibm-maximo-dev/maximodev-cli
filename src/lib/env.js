@@ -296,6 +296,16 @@ env.isValidMaximoHome = function(dir) {
 };
 
 /**
+ * Validate that WE are in an addon directory and that addon properties are loaded
+ */
+env.validateAddonDir = function() {
+  if (!env.props && !env.props.addon_prefix) {
+    console.log("ERR: You need to be in a valid add-on directory for this command to work.");
+    proces.exit(1);
+  }
+};
+
+/**
  * appends a single line to a file
  * @param file
  * @param line
