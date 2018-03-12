@@ -16,9 +16,12 @@ dist.canCopy = function(name, excludes) {
   }
   for(let i = 0; i < excludes.length;i++) {
     let exclude = excludes[i];
-    if(name.match(exclude.pattern)) {
-      log.log(`${name} Ignored: ${exclude.name}`)
-      return false;
+    for(let j = 0; j < exclude.patterns.length;j++) {
+      const pattern = exclude.patterns[j];
+      if(name.match(pattern)) {
+        log.info(`${name} Ignored: ${exclude.name}`)
+        return false;
+      }
     }
   }
   return true;
@@ -30,7 +33,6 @@ dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
   for(let i = 0; i < files.length; i++) {
     const file = files[i]
     const filePath = path.join(currentFolder, file);
-    log.log(`- ${filePath}`);
     const fileStat = fs.statSync(filePath);
     if(fileStat.isDirectory()) {
       if(this.canCopy(file, excludes)) {
@@ -39,9 +41,7 @@ dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
     } else {
       if(this.canCopy(file, excludes)) {
         const destFolder = path.join(rootFolder, this.BUILD_FOLDER_NAME, relativePath);
-        log.log(`Creating folder ${destFolder}`);
         shell.mkdir('-p',destFolder);
-        log.log(`Copying to ${path.join(destFolder, file)}`);
         shell.cp(filePath, destFolder);
       }
     }

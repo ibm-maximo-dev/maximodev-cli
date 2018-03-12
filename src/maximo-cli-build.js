@@ -37,31 +37,43 @@ function build(result) {
   const excludes = [
     { 
       name: 'mi-stubs files',
-      pattern: /(rmi-stubs.(xml|cmd))$/,
+      patterns: [/(rmi-stubs.(xml|cmd))$/],
     },
     { 
-      name: 'Hidden files',
-      pattern: /^\./,
+      name: 'Hidden files (except .settings)',
+      patterns: [/^\.(?!settings)/],
+    },
+    { 
+      name: 'Garbage files',
+      patterns: [/^Thumbs.db$/],
+    },
+    { 
+      name: 'Others',
+      patterns: [/^mxdiff$/],
+    },
+    { 
+      name: 'Instalation-related files and folders',
+      patterns: [/^rmic-classes.txt$/, /^copy-resources.xml$/, /^installer(Imports)?$/, /^launchpad$/],
     },
     { 
       name: 'Unit test folder',
-      pattern: /unittest/,
+      patterns: [/unittest/],
     },
     { 
-      name: 'virtual folder',
-      pattern: /virtual/,
+      name: 'Documentation folder',
+      patterns: [/^documents$/],
+    },
+    { 
+      name: 'Presentation-related files and folder',
+      patterns: [/^ BASE.xml$/],
     },
     { 
       name: 'Source folder',
-      pattern: /src/,
+      patterns: [/^src$/],
     },
     { 
-      name: 'Node modules folder',
-      pattern: /node_modules/,
-    },
-    { 
-      type: 'copy-resources file',
-      pattern: /copy-resources.xml/,
+      name: 'Node.js-related files',
+      patterns: [/^node_modules$/],
     },
   ];
   dist.build(shell.env['PWD'], excludes)
