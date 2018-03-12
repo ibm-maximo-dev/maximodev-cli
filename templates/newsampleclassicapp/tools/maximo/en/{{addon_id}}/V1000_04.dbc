@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="{{author}}" scriptname="{{addon_prefix}}_V7500_02">
+	<description>Music Application</description>
+	<statements>
+		
+		<!-- Auto Keys -->
+		<freeform description="Create Autokey used by Music table">
+			<sql target="all">
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{addon_prefix}}MUSICSEQ', null, 'EN', autokeyseq.nextval)
+				;
+			</sql>
+		</freeform>
+		
+		<!-- Music Type ALN Domain -->
+		<specify_aln_domain domainid="{{addon_prefix}}MUSICTYPE" description="Music Types" maxtype="UPPER" length="12">
+			<alnvalueinfo value="CLASSIC" description="Classic" />
+			<alnvalueinfo value="ROCK" description="Rock" />
+			<alnvalueinfo value="JAZZ" description="Jazz" />
+			<alnvalueinfo value="POP" description="Pop" />
+		</specify_aln_domain>
+		
+		<!-- Music Table -->
+		<define_table persistent="true" type="system" object="{{addon_prefix}}MUSIC" description="Music Table" service="ASSET" classname="{{java_package}}.app.musart.{{addon_prefix}}MusicSet" primarykey="MUSICNUM" mainobject="true" internal="false">
+			<attrdef attribute="MUSICNUM" canautonum="true" autokey="{{addon_prefix}}MUSICSEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Music" remarks="Music Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+			<attrdef attribute="TITLE" title="Title" remarks="Music Title" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="DESCRIPTION" title="Description" remarks="Music's Description" maxtype="ALN" length="256" persistent="true" haslongdesc="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="MUSICTYPE" domain="{{addon_prefix}}MUSICTYPE" title="Music Type" remarks="Music's Type" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="ARTISTNUM" classname="{{java_package}}.app.musart.{{addon_prefix}}FldMusicArtistNum" title="Artist" remarks="Artist Number" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="ARTISTNAME" classname="{{java_package}}.app.musart.virtual.{{addon_prefix}}FldMusicArtistName" persistent="false" title="Artist Name" remarks="Artist Name" sameasobject="{{addon_prefix}}ARTIST" sameasattribute="NAME" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+		</define_table>
+		
+		<!-- Music Application -->
+		<create_app app="{{addon_prefix}}MUSIC" description="Music ({{addon_prefix}})" maintbname="{{addon_prefix}}MUSIC" />
+		
+		<!-- Music Main Sigoptions -->
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="INSERT" description="New Music" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SAVE" description="Save Music" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="CLEAR" description="Clear Changes" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="PREVIOUS" description="Previous Music" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="NEXT" description="Next Music" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="DELETE" description="Delete Music" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Music - Search Sigoptions -->
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHAT{{addon_prefix}}" description="Attribute Search" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHBOOK" description="Bookmarks" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHMORE" description="More Search Fields" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHSQRY" description="Save Current Query" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHTIPS" description="View Search Tips" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHVMQR" description="View/Manage Queries" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="SEARCHWHER" description="Where Clause" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Music - Tools Menu -->
+		<create_app_menu app="{{addon_prefix}}MUSIC" type="tool" >
+			<app_menu_option option="INSERT" tabdisplay="ALL" image="nav_icon_insertkey.gif" accesskey="CTRL+ALT+I" />
+			<app_menu_option option="SAVE" tabdisplay="MAIN" image="nav_icon_save.gif" accesskey="CTRL+ALT+S"/>
+			<app_menu_option option="CLEAR" tabdisplay="MAIN" image="nav_icon_clear.gif" accesskey="CTRL+ALT+C"/>
+			<menu_separator tabdisplay="MAIN" />
+			<app_menu_option option="PREVIOUS" tabdisplay="ALL" image="nav_icon_previous.gif" accesskey="CTRL+ALT+P"/>
+			<app_menu_option option="NEXT" tabdisplay="ALL" image="nav_icon_next.gif" accesskey="CTRL+ALT+N"/>
+		</create_app_menu>
+		
+		<!-- Music - Application Menu -->
+		<create_app_menu app="{{addon_prefix}}MUSIC" type="action" >
+			<app_menu_option option="DELETE" tabdisplay="MAIN" />
+		</create_app_menu>
+		
+		<!-- Music - Search Menu -->
+		<create_app_menu app="{{addon_prefix}}MUSIC" type="search" >
+			<app_menu_header headerdescription="Advanced Search" image="atb_search.gif" >
+				<app_menu_option option="SEARCHMORE" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHWHER" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHAT{{addon_prefix}}" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHTIPS" tabdisplay="ALL" />
+			</app_menu_header>
+			<app_menu_header headerdescription="Save Query" image="atb_save.gif" >
+				<app_menu_option option="SEARCHSQRY" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHVMQR" tabdisplay="ALL" />
+			</app_menu_header>
+			<app_menu_option option="SEARCHBOOK" tabdisplay="ALL" image="atb_bookmark.gif" />
+		</create_app_menu>
+
+		<!-- Music and Artist Module -->
+		<create_module module="{{addon_prefix}}MUSART" description="Music and Artist ({{addon_prefix}})" >
+			<module_menu_app app="{{addon_prefix}}MUSIC" />
+			<module_menu_app app="{{addon_prefix}}ARTIST" />
+		</create_module>
+		
+		<!-- Relationships -->
+		<create_relationship parent="{{addon_prefix}}MUSIC" child="{{addon_prefix}}ARTIST" name="{{addon_prefix}}ARTIST" whereclause="artistnum=:artistnum" remarks="Returns artist reference from a music." />
+		
+	</statements>
+</script>

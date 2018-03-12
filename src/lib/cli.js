@@ -174,4 +174,3 @@ function printCommandLine(schema, program, result) {
   console.log("Expanded commandline args were...");
   console.log(cmd);
 }
-

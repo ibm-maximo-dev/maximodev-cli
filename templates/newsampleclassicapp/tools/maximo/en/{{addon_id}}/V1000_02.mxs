@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatescript version="">
+	<app apptype="webclient" id="{{addon_prefix_lower}}artist">
+		<modify control="results">
+			<set property="label" value="List"/>
+		</modify>
+		<modify control="results_showlist">
+			<set property="label" value="TABLE TITLE"/>
+		</modify>
+		<modify control="results_showlist_column_select">
+			<set property="mxevent_desc" value="Select Row {0}"/>
+		</modify>
+		<modify control="results_showlist_column_link">
+			<set property="mxevent_desc" value="Go To %1"/>
+		</modify>
+		<modify control="results_bookmark">
+			<set property="mxevent_desc" value="Add to Bookmarks"/>
+		</modify>
+		<modify control="main">
+			<set property="label" value="Main"/>
+		</modify>
+		<modify control="searchmore">
+			<set property="label" value="More Search Fields"/>
+		</modify>
+		<modify control="searchmore_buttongroup_1">
+			<set property="label" value="Find"/>
+		</modify>
+		<modify control="searchmore_buttongroup_2">
+			<set property="label" value="Clear"/>
+		</modify>
+		<modify control="searchmore_buttongroup_3">
+			<set property="label" value="Cancel"/>
+		</modify>
+		<modify control="searchbook">
+			<set property="label" value="My Bookmarks"/>
+		</modify>
+		<modify control="bookmarks_tablecolumn_3">
+			<set property="mxevent_desc" value="Delete"/>
+		</modify>
+		<modify control="bookmarks_2_1">
+			<set property="label" value="OK"/>
+		</modify>
+		<modify control="ctrl_powerapp">
+			<set property="id" value="{{addon_prefix_lower}}artist"/>
+			<set property="version" value="7.1.1.0"/>
+			<set property="beanclass" value="{{java_package}}.webclient.beans.musart.{{addon_prefix}}ArtistAppBean"/>
+			<set property="mboname" value="{{addon_prefix}}ARTIST"/>
+			<set property="orderby" value="ARTISTNUM"/>
+			<set property="xmlns" value="http://www.ibm.com/maximo/presentation"/>
+		</modify>
+		<remove container="trartist" control="searchmore"/>
+		<remove container="trartist" control="searchbook"/>
+		<add container="trartist" control="dialog">
+			<set property="beanclass" value="psdi.webclient.system.beans.MultiselectDataBean"/>
+			<set property="id" value="associatemusic"/>
+			<set property="label" value="Musics"/>
+			<set property="parentdatasrc" value="MAINRECORD"/>
+			<set property="relationship" value="{{addon_prefix}}MUSICWITHOUTARTIST"/>
+			<set property="savemode" value="ONUNLOAD"/>
+		</add>
+		<add container="associatemusic" control="table">
+			<set property="id" value="associatemusic_table"/>
+			<set property="inputmode" value="readonly"/>
+			<set property="label" value="Musics"/>
+			<set property="selectmode" value="multiple"/>
+		</add>
+		<add container="associatemusic_table" control="tablebody">
+			<set property="displayrowsperpage" value="20"/>
+			<set property="filterable" value="{{addon_prefix_lower}}ue"/>
+			<set property="filterexpanded" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="associatemusic_table_body"/>
+		</add>
+		<add container="associatemusic_table_body" control="tablecol">
+			<set property="filterable" value="false"/>
+			<set property="id" value="associatemusic_table_body_f1"/>
+			<set property="mxevent" value="toggleselectrow"/>
+			<set property="sortable" value="false"/>
+			<set property="type" value="event"/>
+		</add>
+		<add container="associatemusic_table_body" control="tablecol">
+			<set property="dataattribute" value="musicnum"/>
+			<set property="id" value="associatemusic_table_body_f2"/>
+		</add>
+		<add container="associatemusic_table_body" control="tablecol">
+			<set property="dataattribute" value="title"/>
+			<set property="id" value="associatemusic_table_body_f3"/>
+		</add>
+		<add container="associatemusic_table_body" control="tablecol">
+			<set property="dataattribute" value="musictype"/>
+			<set property="id" value="associatemusic_table_body_f4"/>
+		</add>
+		<add container="associatemusic" control="buttongroup">
+			<set property="id" value="associatemusic_table_btngrp"/>
+		</add>
+		<add container="associatemusic_table_btngrp" control="pushbutton">
+			<set property="default" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="associatemusic_table_btngrp_btn1"/>
+			<set property="label" value="OK"/>
+			<set property="mxevent" value="dialogok"/>
+			<set property="value" value="associateSelectedMusic"/>
+		</add>
+		<add container="associatemusic_table_btngrp" control="pushbutton">
+			<set property="id" value="associatemusic_table_btngrp_btn2"/>
+			<set property="label" value="Cancel"/>
+			<set property="mxevent" value="dialogcancel"/>
+		</add>
+		<remove container="results" control="actiontoolbar1"/>
+		<add before="results_showlist" container="results" control="menubar">
+			<set property="event" value="search"/>
+			<set property="id" value="actiontoolbar"/>
+			<set property="sourcemethod" value="getAppSearchOptions"/>
+		</add>
+		<modify control="results_showlist">
+			<set property="label" value="Artists"/>
+			<set property="mboname" value="{{addon_prefix}}ARTIST"/>
+			<set property="datasrc" value="results_showlist"/>
+		</modify>
+		<remove container="results_showlist_tablebody" control="results_showlist_column_select"/>
+		<remove container="results_showlist_tablebody" control="results_showlist_column_link"/>
+		<remove container="results_showlist_tablebody" control="results_showlist_column"/>
+		<add before="results_bookmark" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="email"/>
+			<set property="id" value="results_showlist_tablebody_4"/>
+		</add>
+		<add before="results_showlist_tablebody_4" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="name"/>
+			<set property="id" value="results_showlist_tablebody_3"/>
+		</add>
+		<add before="results_showlist_tablebody_3" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="artistnum"/>
+			<set property="id" value="results_showlist_tablebody_2"/>
+			<set property="mxevent" value="selectrecord"/>
+			<set property="mxevent_desc" value="Go To %1"/>
+			<set property="type" value="link"/>
+		</add>
+		<add before="results_showlist_tablebody_2" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="artistnum"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="results_showlist_tablebody_1"/>
+			<set property="mxevent" value="toggleselectrow"/>
+			<set property="mxevent_desc" value="Select Row {0}"/>
+			<set property="sortable" value="false"/>
+			<set property="type" value="event"/>
+		</add>
+		<modify control="results_bookmark">
+			<clear property="hidden"/>
+		</modify>
+		<modify control="main">
+			<set property="label" value="Artist"/>
+		</modify>
+		<remove container="main" control="maintab_section"/>
+		<add container="main" control="table">
+			<set property="beanclass" value="{{java_package}}.webclient.beans.musart.{{addon_prefix}}ArtistMusicBean"/>
+			<set property="id" value="main_table"/>
+			<set property="inputmode" value="readonly"/>
+			<set property="label" value="Artist Musics"/>
+			<set property="relationship" value="{{addon_prefix}}MUSIC"/>
+		</add>
+		<add container="main_table" control="tablebody">
+			<set property="displayrowsperpage" value="20"/>
+			<set property="filterable" value="{{addon_prefix_lower}}ue"/>
+			<set property="filterexpanded" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="main_table_body"/>
+		</add>
+		<add container="main_table_body" control="tablecol">
+			<set property="filterable" value="false"/>
+			<set property="id" value="main_table_body_f1"/>
+			<set property="mxevent" value="toggledetailstate"/>
+			<set property="mxevent_desc" value="Show Detail"/>
+			<set property="sortable" value="false"/>
+			<set property="type" value="event"/>
+		</add>
+		<add container="main_table_body" control="tablecol">
+			<set property="dataattribute" value="musicnum"/>
+			<set property="id" value="main_table_body_f2"/>
+		</add>
+		<add container="main_table_body" control="tablecol">
+			<set property="dataattribute" value="title"/>
+			<set property="id" value="main_table_body_f3"/>
+		</add>
+		<add container="main_table_body" control="tablecol">
+			<set property="dataattribute" value="musictype"/>
+			<set property="id" value="main_table_body_f4"/>
+		</add>
+		<add container="main_table" control="tabledetails">
+			<set property="id" value="main_table_detail"/>
+		</add>
+		<add container="main_table_detail" control="section">
+			<set property="id" value="main_table_detail_s1"/>
+			<set property="label" value="Details"/>
+		</add>
+		<add container="main_table_detail_s1" control="sectionrow">
+			<set property="id" value="main_table_detail_s1r1"/>
+		</add>
+		<add container="main_table_detail_s1r1" control="sectioncol">
+			<set property="id" value="main_table_detail_s1r1c1"/>
+		</add>
+		<add container="main_table_detail_s1r1c1" control="section">
+			<set property="id" value="main_table_detail_s1r1c1s1"/>
+		</add>
+		<add container="main_table_detail_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="description"/>
+			<set property="id" value="main_table_detail_s1r1c1s1_f1"/>
+		</add>
+		<add container="main_table" control="buttongroup">
+			<set property="id" value="main_table_btngrp"/>
+		</add>
+		<add container="main_table_btngrp" control="pushbutton">
+			<set property="id" value="main_table_btngrp_btn1"/>
+			<set property="label" value="Associate Music"/>
+			<set property="mxevent" value="associateMusic"/>
+		</add>
+		<add before="main_table" container="main" control="section">
+			<set property="id" value="main_s2"/>
+			<set property="label" value="Details"/>
+		</add>
+		<add container="main_s2" control="sectionrow">
+			<set property="id" value="main_s2r1"/>
+		</add>
+		<add container="main_s2r1" control="sectioncol">
+			<set property="id" value="main_s2r1c1"/>
+		</add>
+		<add container="main_s2r1c1" control="section">
+			<set property="id" value="main_s2r1c1s1"/>
+		</add>
+		<add container="main_s2r1c1s1" control="textbox">
+			<set property="dataattribute" value="birthdate"/>
+			<set property="id" value="main_s2r1c1s1_f1"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add container="main_s2r1c1s1" control="textbox">
+			<set property="dataattribute" value="birthdate"/>
+			<set property="id" value="main_s2r1c1s1_f2"/>
+			<set property="label" value="Birth Date (Sync)"/>
+			<set property="lookup" value="datelookup"/>
+			<set property="synchronous" value="{{addon_prefix_lower}}ue"/>
+		</add>
+		<add container="main_s2r1" control="sectioncol">
+			<set property="id" value="main_s2r1c2"/>
+		</add>
+		<add container="main_s2r1c2" control="section">
+			<set property="id" value="main_s2r1c2s1"/>
+		</add>
+		<add container="main_s2r1c2s1" control="textbox">
+			<set property="dataattribute" value="email"/>
+			<set property="id" value="main_s2r1c2s1_f1"/>
+		</add>
+		<add before="main_s2" container="main" control="section">
+			<set property="border" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="main_s1"/>
+		</add>
+		<add container="main_s1" control="sectionrow">
+			<set property="id" value="main_s1r1"/>
+		</add>
+		<add container="main_s1r1" control="sectioncol">
+			<set property="id" value="main_s1r1c1"/>
+		</add>
+		<add container="main_s1r1c1" control="section">
+			<set property="id" value="main_s1r1c1s1"/>
+		</add>
+		<add container="main_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="artistnum"/>
+			<set property="id" value="main_s1r1c1s1_f1"/>
+		</add>
+		<add container="main_s1r1" control="sectioncol">
+			<set property="id" value="main_s1r1c2"/>
+		</add>
+		<add container="main_s1r1c2" control="section">
+			<set property="id" value="main_s1r1c2s1"/>
+		</add>
+		<add container="main_s1r1c2s1" control="textbox">
+			<set property="dataattribute" value="name"/>
+			<set property="id" value="main_s1r1c2s1_f1"/>
+		</add>
+	</app>
+	<app apptype="webclient" id="{{addon_prefix_lower}}music">
+		<modify control="results">
+			<set property="label" value="List"/>
+		</modify>
+		<modify control="results_showlist">
+			<set property="label" value="TABLE TITLE"/>
+		</modify>
+		<modify control="results_showlist_column_select">
+			<set property="mxevent_desc" value="Select Row {0}"/>
+		</modify>
+		<modify control="results_showlist_column_link">
+			<set property="mxevent_desc" value="Go To %1"/>
+		</modify>
+		<modify control="results_bookmark">
+			<set property="mxevent_desc" value="Add to Bookmarks"/>
+		</modify>
+		<modify control="main">
+			<set property="label" value="Main"/>
+		</modify>
+		<modify control="searchmore">
+			<set property="label" value="More Search Fields"/>
+		</modify>
+		<modify control="searchmore_buttongroup_1">
+			<set property="label" value="Find"/>
+		</modify>
+		<modify control="searchmore_buttongroup_2">
+			<set property="label" value="Clear"/>
+		</modify>
+		<modify control="searchmore_buttongroup_3">
+			<set property="label" value="Cancel"/>
+		</modify>
+		<modify control="searchbook">
+			<set property="label" value="My Bookmarks"/>
+		</modify>
+		<modify control="bookmarks_tablecolumn_3">
+			<set property="mxevent_desc" value="Delete"/>
+		</modify>
+		<modify control="bookmarks_2_1">
+			<set property="label" value="OK"/>
+		</modify>
+		<modify control="ctrl_powerapp">
+			<set property="id" value="{{addon_prefix_lower}}music"/>
+			<set property="version" value="7.1.1.0"/>
+			<set property="beanclass" value="{{java_package}}.webclient.beans.musart.{{addon_prefix}}MusicAppBean"/>
+			<set property="mboname" value="{{addon_prefix}}MUSIC"/>
+			<set property="orderby" value="MUSICNUM"/>
+			<set property="xmlns" value="http://www.ibm.com/maximo/presentation"/>
+		</modify>
+		<remove container="trmusic" control="searchbook"/>
+		<remove container="results" control="actiontoolbar1"/>
+		<add before="results_showlist" container="results" control="menubar">
+			<set property="event" value="search"/>
+			<set property="id" value="actiontoolbar"/>
+			<set property="sourcemethod" value="getAppSearchOptions"/>
+		</add>
+		<modify control="results_showlist">
+			<set property="label" value="Musics"/>
+			<set property="mboname" value="{{addon_prefix}}MUSIC"/>
+			<set property="datasrc" value="results_showlist"/>
+		</modify>
+		<remove container="results_showlist_tablebody" control="results_showlist_column_select"/>
+		<remove container="results_showlist_tablebody" control="results_showlist_column_link"/>
+		<remove container="results_showlist_tablebody" control="results_showlist_column"/>
+		<add before="results_bookmark" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="musictype"/>
+			<set property="id" value="results_showlist_tablebody_4"/>
+			<set property="lookup" value="valuelist"/>
+		</add>
+		<add before="results_showlist_tablebody_4" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="title"/>
+			<set property="id" value="results_showlist_tablebody_3"/>
+		</add>
+		<add before="results_showlist_tablebody_3" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="musicnum"/>
+			<set property="id" value="results_showlist_tablebody_2"/>
+			<set property="mxevent" value="selectrecord"/>
+			<set property="mxevent_desc" value="Go To %1"/>
+			<set property="type" value="link"/>
+		</add>
+		<add before="results_showlist_tablebody_2" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="musicnum"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="results_showlist_tablebody_1"/>
+			<set property="mxevent" value="toggleselectrow"/>
+			<set property="mxevent_desc" value="Select Row {0}"/>
+			<set property="sortable" value="false"/>
+			<set property="type" value="event"/>
+		</add>
+		<modify control="results_bookmark">
+			<clear property="hidden"/>
+		</modify>
+		<modify control="main">
+			<set property="label" value="Music"/>
+		</modify>
+		<remove container="main" control="maintab_section"/>
+		<add container="main" control="section">
+			<set property="id" value="main_s3"/>
+			<set property="label" value="Extra"/>
+		</add>
+		<add container="main_s3" control="sectionrow">
+			<set property="id" value="main_s3r1"/>
+		</add>
+		<add container="main_s3r1" control="sectioncol">
+			<set property="id" value="main_s3r1c1"/>
+		</add>
+		<add container="main_s3r1c1" control="section">
+			<set property="id" value="main_s3r1c1s1"/>
+		</add>
+		<add container="main_s3r1c1s1" control="combobox">
+			<set property="dataattribute" value="musictype"/>
+			<set property="id" value="main_s3r1c1s1_f1"/>
+		</add>
+		<add container="main_s3r1c1s1" control="multiparttextbox">
+			<set property="applink" value="{{addon_prefix_lower}}artist"/>
+			<set property="dataattribute" value="artistnum"/>
+			<set property="descdataattribute" value="{{addon_prefix_lower}}artist.name"/>
+			<set property="descinputmode" value="readonly"/>
+			<set property="id" value="main_s3r1c1s1_f4"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
+			<set property="menutype" value="normal"/>
+		</add>
+		<add container="main_s3r1" control="sectioncol">
+			<set property="id" value="main_s3r1c2"/>
+		</add>
+		<add container="main_s3r1c2" control="section">
+			<set property="id" value="main_s3r1c2s1"/>
+		</add>
+		<add container="main_s3r1c2s1" control="textbox">
+			<set property="dataattribute" value="artistname"/>
+			<set property="id" value="main_s3r1c2s1_f4"/>
+			<set property="label" value="Artist Name (NP)"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
+		</add>
+		<add before="main_s3" container="main" control="section">
+			<set property="id" value="main_s2"/>
+			<set property="label" value="Details"/>
+		</add>
+		<add container="main_s2" control="sectionrow">
+			<set property="id" value="main_s2r1"/>
+		</add>
+		<add container="main_s2r1" control="sectioncol">
+			<set property="id" value="main_s2r1c1"/>
+		</add>
+		<add container="main_s2r1c1" control="section">
+			<set property="id" value="main_s2r1c1s1"/>
+		</add>
+		<add container="main_s2r1c1s1" control="textbox">
+			<set property="dataattribute" value="musictype"/>
+			<set property="id" value="main_s2r1c1s1_f1"/>
+			<set property="lookup" value="valuelist"/>
+		</add>
+		<add container="main_s2r1c1s1" control="textbox">
+			<set property="applink" value="{{addon_prefix_lower}}artist"/>
+			<set property="dataattribute" value="artistnum"/>
+			<set property="id" value="main_s2r1c1s1_f2"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
+			<set property="menutype" value="normal"/>
+		</add>
+		<add container="main_s2r1" control="sectioncol">
+			<set property="id" value="main_s2r1c2"/>
+		</add>
+		<add container="main_s2r1c2" control="section">
+			<set property="id" value="main_s2r1c2s1"/>
+		</add>
+		<add container="main_s2r1c2s1" control="textbox">
+			<set property="dataattribute" value="description"/>
+			<set property="id" value="main_s2r1c2s1_f1"/>
+			<set property="lookup" value="longdesc"/>
+		</add>
+		<add container="main_s2r1c2s1" control="textbox">
+			<set property="dataattribute" value="{{addon_prefix_lower}}artist.name"/>
+			<set property="id" value="main_s2r1c2s1_f2"/>
+			<set property="inputmode" value="readonly"/>
+		</add>
+		<add before="main_s2" container="main" control="section">
+			<set property="border" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="main_s1"/>
+		</add>
+		<add container="main_s1" control="sectionrow">
+			<set property="id" value="main_s1r1"/>
+		</add>
+		<add container="main_s1r1" control="sectioncol">
+			<set property="id" value="main_s1r1c1"/>
+		</add>
+		<add container="main_s1r1c1" control="section">
+			<set property="id" value="main_s1r1c1s1"/>
+		</add>
+		<add container="main_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="musicnum"/>
+			<set property="id" value="main_s1r1c1s1_f1"/>
+		</add>
+		<add container="main_s1r1" control="sectioncol">
+			<set property="id" value="main_s1r1c2"/>
+		</add>
+		<add container="main_s1r1c2" control="section">
+			<set property="id" value="main_s1r1c2s1"/>
+		</add>
+		<add container="main_s1r1c2s1" control="textbox">
+			<set property="dataattribute" value="title"/>
+			<set property="id" value="main_s1r1c2s1_f1"/>
+			<set property="inputmode" value="required"/>
+		</add>
+		<remove container="searchmore" control="searchmore_1"/>
+		<remove container="searchmore" control="searchmore_buttongroup"/>
+		<add container="searchmore" control="buttongroup">
+			<set property="id" value="qbe_btngrp"/>
+		</add>
+		<add container="qbe_btngrp" control="pushbutton">
+			<set property="default" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="qbe_btngrp_btn1"/>
+			<set property="label" value="Find"/>
+			<set property="mxevent" value="dialogok"/>
+		</add>
+		<add container="qbe_btngrp" control="pushbutton">
+			<set property="id" value="qbe_btngrp_btn2"/>
+			<set property="label" value="Clear"/>
+			<set property="mxevent" value="qbeclear"/>
+		</add>
+		<add container="qbe_btngrp" control="pushbutton">
+			<set property="id" value="qbe_btngrp_btn3"/>
+			<set property="label" value="Cancel"/>
+			<set property="mxevent" value="qbecancel"/>
+		</add>
+		<add before="qbe_btngrp" container="searchmore" control="section">
+			<set property="id" value="qbe_s1"/>
+		</add>
+		<add container="qbe_s1" control="sectionrow">
+			<set property="id" value="qbe_s1r1"/>
+		</add>
+		<add container="qbe_s1r1" control="sectioncol">
+			<set property="id" value="qbe_s1r1c1"/>
+		</add>
+		<add container="qbe_s1r1c1" control="section">
+			<set property="id" value="qbe_s1r1c1s1"/>
+		</add>
+		<add container="qbe_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="musicnum"/>
+			<set property="id" value="qbe_s1r1c1s1_f1"/>
+			<set property="inputmode" value="query"/>
+		</add>
+		<add container="qbe_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="title"/>
+			<set property="id" value="qbe_s1r1c1s1_f2"/>
+			<set property="inputmode" value="query"/>
+		</add>
+		<add container="qbe_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="musictype"/>
+			<set property="id" value="qbe_s1r1c1s1_f3"/>
+			<set property="inputmode" value="query"/>
+			<set property="lookup" value="valuelist"/>
+		</add>
+		<add container="qbe_s1r1c1s1" control="textbox">
+			<set property="dataattribute" value="description"/>
+			<set property="id" value="qbe_s1r1c1s1_f4"/>
+			<set property="inputmode" value="query"/>
+		</add>
+		<add container="qbe_s1r1c1s1" control="textbox">
+			<set property="applink" value="{{addon_prefix_lower}}artist"/>
+			<set property="dataattribute" value="artistnum"/>
+			<set property="id" value="qbe_s1r1c1s1_f5"/>
+			<set property="inputmode" value="query"/>
+			<set property="lookup" value="{{addon_prefix_lower}}artist"/>
+			<set property="menutype" value="normal"/>
+		</add>
+	</app>
+	<systemlib apptype="webclient" id="lookups">
+		<add container="lookups" control="table">
+			<set property="id" value="{{addon_prefix_lower}}artist"/>
+			<set property="inputmode" value="readonly"/>
+			<set property="selectmode" value="single"/>
+		</add>
+		<add container="trartist" control="tablebody">
+			<set property="displayrowsperpage" value="20"/>
+			<set property="filterable" value="{{addon_prefix_lower}}ue"/>
+			<set property="filterexpanded" value="{{addon_prefix_lower}}ue"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody"/>
+		</add>
+		<add container="trartist_lookup_tablebody" control="tablecol">
+			<set property="dataattribute" value="artistnum"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody_col_1"/>
+			<set property="mxevent" value="selectrecord"/>
+			<set property="mxevent_desc" value="Go To %1"/>
+			<set property="sortable" value="{{addon_prefix_lower}}ue"/>
+			<set property="type" value="link"/>
+		</add>
+		<add container="trartist_lookup_tablebody" control="tablecol">
+			<set property="dataattribute" value="name"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody_col_2"/>
+			<set property="mxevent" value="selectrecord"/>
+			<set property="mxevent_desc" value="Go To %1"/>
+			<set property="sortable" value="{{addon_prefix_lower}}ue"/>
+			<set property="type" value="link"/>
+		</add>
+		<add container="trartist_lookup_tablebody" control="tablecol">
+			<set property="dataattribute" value="email"/>
+			<set property="id" value="{{addon_prefix_lower}}artist_lookup_tablebody_col_3"/>
+			<set property="mxevent" value="selectrecord"/>
+			<set property="mxevent_desc" value="Go To %1"/>
+			<set property="sortable" value="{{addon_prefix_lower}}ue"/>
+			<set property="type" value="link"/>
+		</add>
+	</systemlib>
+</updatescript>

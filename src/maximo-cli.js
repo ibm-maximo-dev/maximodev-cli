@@ -12,7 +12,7 @@ program
   // .command('package', 'package an add-on for distribution').alias('d')
   .command('init [options]', 'initialize maximo add-on environment and java').alias('i')
   .command('update [options]', 'update a maximo artifact such as product xml version').alias('u')
-  // .command('set [options]', 'set add-on option').alias('s')
+  .command('set [options]', 'set add-on option').alias('s')
   // .command('export [options]', 'export something from a maximo instance').alias('exp')
   // .command('import [options]', 'import something into a maximo instance').alias('imp')
   // .command('clone [options]', 'clone a maximo application').alias('cl')

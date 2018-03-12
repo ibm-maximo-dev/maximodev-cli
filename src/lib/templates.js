@@ -18,7 +18,9 @@ templates.dir = function() {
  * @returns {string}
  */
 templates.render = function (templateStr, templateArgs) {
-  return mustache.render(templateStr, templateArgs);
+  var args = {...templateArgs};
+  if (args.addon_id) args.addon_id_lower = args.addon_id.toLowerCase();
+  return mustache.render(templateStr, args);
 };
 
 /**
