@@ -60,6 +60,17 @@ If you run `maximo-cli` without any parameters, it will show a list of top level
 ## Understanding Template Files
 `maximo-cli` makes use to some templated files during development.  For example your master product xml might be called `properties/product/myaddon.xml.in` (note the `.in` suffix).  `.in` files are template input files.  These files are processed during other commands, where the real file will be generated.  For example during a `maximo-cli update product-xml` command, `myaddon.xml.in` is processed and updated with the last script number, and, a new file, `myaddon.xml` is generated.  When template files exist, they are source files, and their generated counterparts should never be edited, but rather the `.in` version of that file should be edited.  So when you see a `.in` file, you should be aware that some command will generate its non `.in` version.
 
+## Importing Projects into Eclipse
+If you enabled Java support, then, you will have a `build.gradle` file in your project's root directory.  `Gradle` has support for automatically creating project files for `Eclipse`.
+
+```bash
+./gradlew cleanEclipse eclipse
+```
+
+The `cleanEclipse` task will remove any existing eclipse projects.   The `eclipse` task will then create projects that can be imported into `Eclipse`.
+
+To import the projects, you should create a new Eclipse workspace, and then use the `File->Import->Existing Projects Into Workspace` action, click `Next` and then navigate to the root of your project.  It should list 5 projects; `businessobjects`, `maximouiweb`, `properties`, `resources`, and `tools`.  Click `Finish`. 
+
 ## Links to references
 For more information on developing add-ons and using dbc scripts, see the [Database Configuration Scripts](https://developer.ibm.com/static/site-id/155/maximodev/dbcguide/) document.
 
