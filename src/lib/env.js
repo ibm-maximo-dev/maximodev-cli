@@ -2,7 +2,9 @@ var props = require('properties-parser');
 var fs = require('fs-extra');
 var path = require('path');
 var util = require('util');
+var shelljs = require('shelljs');
 var dateformat = require('dateformat');
+var readline = require('readline-sync');
 var log = require('./logger');
 
 var env = module.exports = Object.create({});
@@ -270,11 +272,19 @@ env.resolveMaximoPath =  function(pathArr) {
   if (Array.isArray(pathArr)) {
     var arr = [];
     pathArr.forEach(function(e){
-      arr.push(env.resolveMaximoPath(e));
+      var file = env.resolveMaximoPath(e);
+      if (fs.existsSync(file) && fs.lstatSync(file).isDirectory() && path.basename(file) !== 'classes') {
+        fs.readdirSync(file).forEach(function (f) {
+          if (f.endsWith('.jar'))
+            arr.push(path.resolve(path.join(file, f)));
+        });
+      } else {
+        arr.push(file);
+      }
     });
     return arr;
   } else {
-    return path.resolve(path.join(home), pathArr);
+    return path.resolve(path.join(home, pathArr));
   }
 };
 
@@ -283,6 +293,45 @@ env.resolveMaximoPath =  function(pathArr) {
  */
 env.maximoToolsHome = function() {
   return path.resolve(path.join(env.maximoHome(), 'tools/maximo/'));
+};
+
+/**
+ * Runs a Maximo Java Tool from the Maximo Home Tools area.
+ *
+ * @param toolClass
+ * @param args
+ * @param workingDir
+ * @param onSuccess
+ * @param onError
+ */
+env.runMaximoTool = function(toolClass, args, workingDir, onSuccess, onError) {
+  var classpath = env.resolveMaximoPath([
+    'tools/maximo/classes',
+    'applications/maximo/businessobjects/classes',
+    'applications/maximo/maximouiweb/webmodule/WEB-INF/classes',
+    'applications/maximo/lib/'
+  ]);
+
+  var workingDir = workingDir || env.maximoToolsHome();
+
+  var cmd = util.format('java -cp "%s" %s %s', makeClassPath(classpath), toolClass, args);
+
+  log.debug("Running Maximo Java Command\n%s", cmd);
+  log.debug("From working dir %s", workingDir);
+
+  shelljs.cd(workingDir);
+  var proc =shelljs.exec(cmd);
+  if (proc.code!==0) {
+    if (onError)
+      onError(cmd, proc);
+    else
+      log.error("command failed with code: %d", proc.code);
+  } else {
+    if (onSuccess)
+      onSuccess(cmd, proc);
+    else
+      log.info("Command completed OK.");
+  }
 };
 
 /**
@@ -301,7 +350,7 @@ env.isValidMaximoHome = function(dir) {
 env.validateAddonDir = function() {
   if (!env.props && !env.props.addon_prefix) {
     console.log("ERR: You need to be in a valid add-on directory for this command to work.");
-    proces.exit(1);
+    process.exit(1);
   }
 };
 
@@ -318,6 +367,27 @@ env.writeFile = function(file, line) {
   fs.writeFileSync(file, line);
 };
 
+/**
+ * Asks a Yes/No question to the user.  Calls the Handler with true, or false.
+ * @param question
+ * @param def
+ * @param handler
+ */
+env.askYesNo = function(question, def, handler) {
+  var resp = readline.question(question + " [Y/n]: ");
+  if (!resp) resp=def;
+  if (resp == null) resp='Y';
+  if (handler) handler(resp.toLowerCase().startsWith('y'));
+};
+
+/**
+ * simple command to make a classpath
+ * @param items
+ * @returns {*|string}
+ */
+function makeClassPath(items) {
+  return items.join(path.delimiter);
+}
 
 // reload an initialize the env
 env.reload();

@@ -39,9 +39,6 @@ If you run `maximo-cli` without any parameters, it will show a list of top level
 ### maximo-cli create dbc-script
 `create dbc-script` will look in your product's script directory, and create a new script with a number that is the next number in in your script sequence.  For example, if your last script was `V7601_22.dbc`, then this command would create `V7601_23.dbc`.  The newly created script will be an xml script stub where you can later edit it and add your statements.
 
-### maximo-cli create presentation-diff
-`create presentation-diff` is a utility that can create a delta presentation dbc script of your changes, provided you give it an original file and your modified file.   This can be used to automate your presentation updates by adding them to a dbc script that is processed during an `updatedb` cycle.
-
 ### maxio-cli create java-field-validator
 `create java-field-validator` will create a simple Java field validation class and corresponding dbc file, and/or, update the product xml.  The goal here is to show how to build a field validation class and how to register it.  You may need to tweak the output scripts to register it to the correct object, field, etc.
 
@@ -54,8 +51,18 @@ If you run `maximo-cli` without any parameters, it will show a list of top level
 ### maximo-cli update product-xml
 `update product-xml` is a utility that will update the last script number in your product xml by inspecting and finding the last script in your product scripts area.   This assumes that your product xml is a `template` file, which, it will be is your used `maximo-cli` to create it.
 
-## maximo-cli set
+### maximo-cli set
 `maximo-cli set` is a command that can be used to update your `addon.properties`.  For example if you need to set/change your Java Home or your Maximo Home, you can use the following commands, respectively; `maximo-cli set java-home`  or `maximo-cli set maximo-home`.  These `set` commands will prompt a question, and then proceed to update the `addon.properties`
+
+## Wrapper Commands
+Wrapper commands are `maximo-cli` commands that basically just wrap existing tools in Maximo.  These script require that the `MAXIMO_HOME` environment variable be set, OR, that your `addon.properties` contains the `maximo_home` property set to a valid Maximo installation/dev directory.
+
+### maximo-cli run-dbc
+`run-dbc` is a utility wrapper around Maximo's `runscriptfile` command.  It differs in that `run-dbc` will accept the full path to a script instead of having to pass a script directory and script filename without the extension.  `run-dbc` will also prompt you to automatically show the log file if the script fails.
+
+### maximo-cli create presentation-diff
+`create presentation-diff` is a utility wrapper around Maximo's `MXDiff` tool that can create a delta presentation dbc script of your changes, provided you give it an original file and your modified file.   This can be used to automate your presentation updates by adding them to a dbc script that is processed during an `updatedb` cycle.
+
 
 ## Understanding Template Files
 `maximo-cli` makes use to some templated files during development.  For example your master product xml might be called `properties/product/myaddon.xml.in` (note the `.in` suffix).  `.in` files are template input files.  These files are processed during other commands, where the real file will be generated.  For example during a `maximo-cli update product-xml` command, `myaddon.xml.in` is processed and updated with the last script number, and, a new file, `myaddon.xml` is generated.  When template files exist, they are source files, and their generated counterparts should never be edited, but rather the `.in` version of that file should be edited.  So when you see a `.in` file, you should be aware that some command will generate its non `.in` version.

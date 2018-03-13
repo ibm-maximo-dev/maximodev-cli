@@ -30,29 +30,16 @@ presentations.combine = function(srcDir, outFile) {
 presentations.diff = function(orig, newfile, outdbc) {
   log.info("Presentation Diff %s %s -> %s", orig, newfile, outdbc);
 
-  var classpath = env.resolveMaximoPath([
-    'tools/maximo/classes',
-    'applications/maximo/businessobjects/classes',
-    'applications/maximo/maximouiweb/webmodule/WEB-INF/classes',
-    'applications/maximo/lib/log4j-1.2.16.jar'
-  ]);
   var command = "psdi.webclient.upgrade.MXScreenDiff";
-  var cmd = util.format('java -cp "%s" %s -b"%s" -m"%s" -t"%s" -q', makeClassPath(classpath), command, orig, newfile, outdbc);
+  var args = util.format('-b"%s" -m"%s" -t"%s" -q', orig, newfile, outdbc);
 
-  log.debug("Issuing Java Command\n%s", cmd);
-
-  shell.cd(env.maximoToolsHome());
-  if (shell.exec(cmd).code!==0) {
-    log.error("command failed!");
-  } else {
+  env.runMaximoTool(command, args, null, function(cmd, proc) {
     if (!fs.existsSync(path.resolve(outdbc))) {
       log.error("Presentation diff did not create a file");
     } else {
       log.info("created %s", outdbc);
     }
-  }
+  }, function (cmd, proc) {
+    log.error("The presentation diff tool failed to process the screens.");
+  });
 };
-
-function makeClassPath(items) {
-  return items.join(path.delimiter);
-}

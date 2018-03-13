@@ -82,3 +82,21 @@ describe('createNewScriptInDir', function() {
   });
 
 });
+
+describe('test parse log file name', function() {
+  it('should parse log file name', function() {
+    var output='\nsdfsdfsdf\nLog file: MXServer_RUNSCRIPT_V1000_01.msg.log\nsdfsdfsdf\n';
+    var re = new RegExp('Log file: (.*)');
+    var log=null;
+    var r = output.match(re);
+    //console.log(r);
+    if (r) {
+      //console.log(r);
+      log = r[1];
+    }
+    expect(log).to.be.equal('MXServer_RUNSCRIPT_V1000_01.msg.log');
+  });
+
+});
+
+
