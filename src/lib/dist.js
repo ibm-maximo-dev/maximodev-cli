@@ -5,6 +5,49 @@ const shell = require('shelljs');
 const log = require('./logger');
 const path = require('path');
 
+const defaultExcludes = [
+  { 
+    name: 'mi-stubs files',
+    patterns: [/(rmi-stubs.(xml|cmd))$/],
+  },
+  { 
+    name: 'Hidden files',
+    patterns: [/^\./],
+  },
+  { 
+    name: 'Garbage files',
+    patterns: [/^Thumbs.db$/],
+  },
+  { 
+    name: 'Others',
+    patterns: [/^mxdiff$/],
+  },
+  { 
+    name: 'Instalation-related files and folders',
+    patterns: [/^rmic-classes.txt$/, /^copy-resources.xml$/, /^installer(Imports)?$/, /^launchpad$/],
+  },
+  { 
+    name: 'Unit test folder',
+    patterns: [/unittest/],
+  },
+  { 
+    name: 'Documentation folder',
+    patterns: [/^documents$/],
+  },
+  { 
+    name: 'Presentation-related files and folder',
+    patterns: [/^ BASE.xml$/],
+  },
+  { 
+    name: 'Source folder',
+    patterns: [/^src$/],
+  },
+  { 
+    name: 'Node.js-related files',
+    patterns: [/^node_modules$/],
+  },
+];
+
 const dist = module.exports = Object.create({
   BUILD_FOLDER_NAME: "dist",
 });
@@ -48,7 +91,18 @@ dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
   }
 }
 
-dist.build = function(rootDir, excludes) {
+dist.canBuild = function(buildDir) {
+  console.log('test', buildDir, fs.existsSync('applications'))
+  if(fs.existsSync(path.join(buildDir,'applications'))) {
+    return true;
+  }
+  return false;
+}
+
+dist.build = function(rootDir, userExcludes) {
+
+  const excludes = userExcludes || defaultExcludes;
+
   // Clean build folder (output)
   log.log(`Building ${rootDir}`);
   const destFolder = path.join(rootDir, this.BUILD_FOLDER_NAME);

@@ -8,6 +8,7 @@ const log = require('./lib/logger');
 const gradle = require('./lib/gradle');
 const cli = require('./lib/cli');
 const dist = require('./lib/dist');
+const env = require('./lib/env');
 
 const schema = {
   _version: '0.0.1',
@@ -18,65 +19,29 @@ const schema = {
 cli.process(schema, process.argv, build);
 
 function build(result) {
-  log.log('Building Maximo...');
-
-  // Read the current directory.
+  const buildDir = shell.env['PWD'];
 
   // Identify that it is a valid a folder structure created by create addon or create sample-add commands.
+  if(!dist.canBuild(buildDir)) {
+    log.error(`${buildDir} does not appear to be a valid Maximo home directory, exiting...`);
+    return;
+  }
+
+  log.log('Building Maximo...');
 
   // Run task build of any present gradle script.
   log.log('Check if gradle is present');
   if(gradle.exists()) {
-    log.log('Gradle Found');
-    //gradle.build();
+    log.log('Gradle Found, building...');
+    gradle.build();
   }
 
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.
   log.log();
 
-  const excludes = [
-    { 
-      name: 'mi-stubs files',
-      patterns: [/(rmi-stubs.(xml|cmd))$/],
-    },
-    { 
-      name: 'Hidden files (except .settings)',
-      patterns: [/^\.(?!settings)/],
-    },
-    { 
-      name: 'Garbage files',
-      patterns: [/^Thumbs.db$/],
-    },
-    { 
-      name: 'Others',
-      patterns: [/^mxdiff$/],
-    },
-    { 
-      name: 'Instalation-related files and folders',
-      patterns: [/^rmic-classes.txt$/, /^copy-resources.xml$/, /^installer(Imports)?$/, /^launchpad$/],
-    },
-    { 
-      name: 'Unit test folder',
-      patterns: [/unittest/],
-    },
-    { 
-      name: 'Documentation folder',
-      patterns: [/^documents$/],
-    },
-    { 
-      name: 'Presentation-related files and folder',
-      patterns: [/^ BASE.xml$/],
-    },
-    { 
-      name: 'Source folder',
-      patterns: [/^src$/],
-    },
-    { 
-      name: 'Node.js-related files',
-      patterns: [/^node_modules$/],
-    },
-  ];
-  dist.build(shell.env['PWD'], excludes)
+  log.log(`Creating output folder: ${dist.BUILD_FOLDER_NAME}`);
+
+  dist.build(buildDir);
 
   // Update product.xml when necessary.
 

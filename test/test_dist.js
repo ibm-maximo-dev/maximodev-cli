@@ -116,4 +116,9 @@ describe('dist', function() {
     expect(shell.test('-f',path.join(outputFolder, 'sub', 'aaa-bbb-rmi-stubs.txt')), 'failed to copy sub/aaa-bbb-rmi-stubs.txt').to.be.true;
     expect(shell.test('-d',path.join(outputFolder, 'sub', 'node_modules')), 'failed to ignore node_modules').to.be.false;
   });
+
+  it('should check if a folder can be built correctly', function() {
+    const buildFolder = path.join(shell.env['PWD'], 'test');
+    expect(dist.canBuild(buildFolder)).to.be.true;
+  });
 });
