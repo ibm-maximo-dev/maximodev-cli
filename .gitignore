@@ -5,3 +5,4 @@ sample/
 bpaaa_*/
 .gradle
 dist
+.vscode

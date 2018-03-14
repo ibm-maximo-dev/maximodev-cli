@@ -1,14 +1,12 @@
 #! /usr/bin/env node
 
-const fs = require('fs-extra');
 const shell = require('shelljs');
-const path = require('path');
-const program = require('commander');
 const log = require('./lib/logger');
 const gradle = require('./lib/gradle');
 const cli = require('./lib/cli');
 const dist = require('./lib/dist');
 const env = require('./lib/env');
+const productxml = require('./lib/productxml');
 
 const schema = {
   _version: '0.0.1',
@@ -44,6 +42,7 @@ function build(result) {
   dist.build(buildDir);
 
   // Update product.xml when necessary.
-
+  productxml.updateVersion(env.productXmlIn(), env.scriptDir());
+  log.info("product xml updated with the latest version");
 
 }
