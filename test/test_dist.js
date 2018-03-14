@@ -74,6 +74,17 @@ describe('dist', function() {
     expect(dist.canCopy('installerImporting',e), 'failed to accept installerImporting name').to.be.true;
   });
 
+  it('should ignore template files', function() {
+    const e = [
+      { 
+        name: 'Template file',
+        patterns: [/.in$/],
+      },
+    ];
+    expect(dist.canCopy('product.xml.in',e), 'failed to ignore template file name').to.be.false;
+    expect(dist.canCopy('product.xml',e), 'failed to accept product file name').to.be.true;
+  });
+
   it('should create dist successfully', function() {
     const excludes = [
       { 

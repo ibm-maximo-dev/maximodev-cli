@@ -19,6 +19,10 @@ const defaultExcludes = [
     patterns: [/^Thumbs.db$/],
   },
   { 
+    name: 'Template file',
+    patterns: [/.in$/],
+  },
+  { 
     name: 'Others',
     patterns: [/^mxdiff$/],
   },
