@@ -78,11 +78,12 @@ describe('dist', function() {
     const e = [
       { 
         name: 'Template file',
-        patterns: [/.in$/],
+        patterns: [/.\.in$/],
       },
     ];
     expect(dist.canCopy('product.xml.in',e), 'failed to ignore template file name').to.be.false;
     expect(dist.canCopy('product.xml',e), 'failed to accept product file name').to.be.true;
+    expect(dist.canCopy('bin',e), 'failed to accept a filename ending with in that is not a extension').to.be.true;
   });
 
   it('should create dist successfully', function() {

@@ -20,11 +20,11 @@ const defaultExcludes = [
   },
   { 
     name: 'Template file',
-    patterns: [/.in$/],
+    patterns: [/.\.in$/],
   },
   { 
     name: 'Others',
-    patterns: [/^mxdiff$/],
+    patterns: [/^mxdiff$/, /^addon.properties$/],
   },
   { 
     name: 'Instalation-related files and folders',
@@ -35,12 +35,16 @@ const defaultExcludes = [
     patterns: [/unittest/],
   },
   { 
+    name: 'Gradle-related files and folders',
+    patterns: [/gradle/],
+  },
+  { 
     name: 'Documentation folder',
     patterns: [/^documents$/],
   },
   { 
     name: 'Presentation-related files and folder',
-    patterns: [/^ BASE.xml$/],
+    patterns: [/^BASE.xml$/,/^resources$/],
   },
   { 
     name: 'Source folder',
@@ -66,7 +70,7 @@ dist.canCopy = function(name, excludes) {
     for(let j = 0; j < exclude.patterns.length;j++) {
       const pattern = exclude.patterns[j];
       if(name.match(pattern)) {
-        log.info(`${name} Ignored: ${exclude.name}`)
+        log.info(`${name} ignored: ${exclude.name}`)
         return false;
       }
     }
@@ -96,7 +100,6 @@ dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
 }
 
 dist.canBuild = function(buildDir) {
-  console.log('test', buildDir, fs.existsSync('applications'))
   if(fs.existsSync(path.join(buildDir,'applications'))) {
     return true;
   }
@@ -113,7 +116,7 @@ dist.build = function(rootDir, userExcludes) {
   if(!fs.existsSync(destFolder)) {
     shell.mkdir('-p',destFolder);
   }
-  shell.rm('-Rf',`./${destFolder}/*`);
+  shell.rm('-Rf',`${destFolder}/*`);
 
   this.parseDir(rootDir, excludes);
 }
