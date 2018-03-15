@@ -34,6 +34,11 @@ function build(result) {
     gradle.build();
   }
 
+  // Update product.xml when necessary.
+  productxml.updateVersion(env.productXmlIn(), env.scriptDir());
+  log.info("product xml updated with the latest version");
+
+
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.
   log.log();
 
@@ -41,8 +46,5 @@ function build(result) {
 
   dist.build(buildDir);
 
-  // Update product.xml when necessary.
-  productxml.updateVersion(env.productXmlIn(), env.scriptDir());
-  log.info("product xml updated with the latest version");
 
 }
