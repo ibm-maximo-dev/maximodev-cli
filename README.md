@@ -40,7 +40,7 @@ If you run `maximo-cli` without any parameters, it will show a list of top level
 ### maximo-cli create dbc-script
 `create dbc-script` will look in your product's script directory, and create a new script with a number that is the next number in in your script sequence.  For example, if your last script was `V7601_22.dbc`, then this command would create `V7601_23.dbc`.  The newly created script will be an xml script stub where you can later edit it and add your statements.
 
-### maxio-cli create java-field-validator
+### maximo-cli create java-field-validator
 `create java-field-validator` will create a simple Java field validation class and corresponding dbc file, and/or, update the product xml.  The goal here is to show how to build a field validation class and how to register it.  You may need to tweak the output scripts to register it to the correct object, field, etc.
 
 ### maximo-cli create script-field-validator

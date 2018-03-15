@@ -55,5 +55,4 @@ describe('test_command_lines', function() {
     expect(file('build/initaddon/addon.properties')).to.exist;
     expect(file('build/initaddon/applications/maximo/properties/product/bpaaa_prod1.xml.in')).to.exist;
   });
-
 });

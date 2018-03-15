@@ -3,3 +3,6 @@ node_modules/
 build/
 sample/
 bpaaa_*/
+.gradle
+dist
+.vscode
