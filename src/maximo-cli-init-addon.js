@@ -90,7 +90,7 @@ function init_addon(result) {
   env.reload(path.join(baseDir, 'addon.properties'));
 
   if (env.bool(result.create_productxml)) {
-    log.info("Addon Working Diretory is %s", env.addonDir());
+    log.info("Addon Working Directory is %s", env.addonDir());
 
     // set our current working directory to be the new addon dir, now.
     shell.cd(env.addonDir());

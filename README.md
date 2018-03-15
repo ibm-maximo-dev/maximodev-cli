@@ -1,4 +1,5 @@
 # Maximo Command Line Tools for Development
+[![Build Status](https://travis.ibm.com/maximo-ohio/maximo-cli.svg?token=yJyC5zQ7wEuSAyYtDC53&branch=master)](https://travis.ibm.com/maximo-ohio/maximo-cli)
 
 The `maximo-cli` is a set of command line tools for developing with `Maximo`, helping accelerate some tasks, such as creating add-ons, MBOs, field validations, etc.  
 
