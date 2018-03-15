@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
-  <name>{{addon_description}}</name>
+  <name>{{addon_id}}</name>
+  <description>{{addon_description}}</description>
   <version>
     <major>{{version_major}}</major>
     <minor>{{version_minor}}</minor>

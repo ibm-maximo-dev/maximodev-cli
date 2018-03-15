@@ -15,9 +15,9 @@
 		<!-- Artist Table -->
 		<define_table persistent="true" type="system" object="TRARTIST" description="Artist Table" service="ASSET" classname="psdi.tr.app.musart.TRArtistSet" primarykey="ARTISTNUM" mainobject="true" internal="false">
 			<attrdef attribute="ARTISTNUM" canautonum="true" autokey="TRARTISTSEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Artist" remarks="Artist Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
-			<attrdef attribute="NAME" title="Name" remarks="Artist’s name" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
-			<attrdef attribute="BIRTHDATE" classname="psdi.tr.app.musart.TRFldArtistBirthDate" title="Date of Birth" remarks="Artist’s date of birth" maxtype="DATETIME" persistent="true" haslongdesc="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
-			<attrdef attribute="EMAIL" title="E-mail" remarks="Artist’s e-mail" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="NAME" title="Name" remarks="Artist's name" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="BIRTHDATE" classname="psdi.tr.app.musart.TRFldArtistBirthDate" title="Date of Birth" remarks="Artistï¿½s date of birth" maxtype="DATETIME" persistent="true" haslongdesc="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="EMAIL" title="E-mail" remarks="Artist's e-mail" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
 		</define_table>
 		
 		<!-- Artist Application -->
