@@ -14,7 +14,7 @@
     "pretestcmds": "rm -rf build/testcmds && mkdir -p build/testcmds/ && cp test/addon.properties build/testcmds/",
     "testcmds": "MAXIMO_ADDON_PROPERTIES=build/testcmds/addon.properties MAXIMO_CLI_NO_PROMPT=Y mocha testcmds/"
   },
-  "author": "",
+  "author": "sls@ca.ibm.com",
   "license": "ISC",
   "dependencies": {
     "commander": "^2.14.1",

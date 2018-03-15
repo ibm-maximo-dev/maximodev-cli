@@ -6,6 +6,7 @@ var log = require('./lib/logger');
 var mbos = require('./lib/mbos');
 var env = require('./lib/env');
 var cli = require('./lib/cli');
+var gradle = require('./lib/gradle');
 
 // https://www.npmjs.com/package/prompt
 var path = require('path');
@@ -177,12 +178,7 @@ function create_addon(result) {
 
   if (env.bool(result.add_java_support) && env.bool(result.eclipse)) {
     log.log("Configuring Eclipse Projects...");
-    var isWin = process.platform === "win32";
-    if (isWin) {
-      shell.exec('gradlew.bat cleanEclipse eclipse');
-    } else {
-      shell.exec('./gradlew cleanEclipse eclipse');
-    }
+    gradle.runTasks('cleanEclipse eclipse')
     log.log("");
   }
 }

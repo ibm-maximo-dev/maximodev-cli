@@ -4,3 +4,6 @@ build/
 sample/
 bpaaa_*/
 .DS_Store
+.gradle
+dist
+.vscode
