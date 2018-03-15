@@ -38,6 +38,21 @@ var schema = {
       _cli: 'addon_name',
       _prop: 'addon_id'
     },
+    add_java_support: {
+      description: "Add Java support?",
+      required: true,
+      _cli: 'java_support',
+      _yesno: true,
+      default: 'n'
+    },
+    java_package: {
+      description: "Default Java Package",
+      pattern: /^[a-zA-Z_0-9.]+$/,
+      message: 'Must only contain letters, numbers, underscores, or dots',
+      required: true,
+      _cli: 'java_package',
+      _depends: 'add_java_support',
+    },
     author: {
       description: "Addon Author",
       required: false,

@@ -56,7 +56,7 @@
 							<sectioncol id="main_s2r1c2" >
 								<section id="main_s2r1c2s1" >
 									<textbox id="main_s2r1c2s1_f1" dataattribute="description" lookup="longdesc" />
-									<textbox id="main_s2r1c2s1_f2" dataattribute="trartist.name" inputmode="readonly" />
+									<textbox id="main_s2r1c2s1_f2" dataattribute="{{addon_prefix_lower}}artist.name" inputmode="readonly" />
 								</section>
 							</sectioncol>
 						</sectionrow>

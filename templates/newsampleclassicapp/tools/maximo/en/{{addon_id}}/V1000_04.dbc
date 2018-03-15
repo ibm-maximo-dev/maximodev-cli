@@ -82,7 +82,7 @@
 		</create_app_menu>
 
 		<!-- Music and Artist Module -->
-		<create_module module="{{addon_prefix}}MUSART" description="Music and Artist ({{addon_prefix}})" >
+		<create_module module="{{addon_prefix}}MA" description="Music and Artist ({{addon_prefix}})" >
 			<module_menu_app app="{{addon_prefix}}MUSIC" />
 			<module_menu_app app="{{addon_prefix}}ARTIST" />
 		</create_module>
