@@ -39,11 +39,13 @@ var schema = {
       _prop: 'addon_id'
     },
     java_package: {
-      description: "Java package",
+      description: "Default Java Package",
+      pattern: /^[a-zA-Z_0-9.]+$/,
+      message: 'Must only contain letters, numbers, underscores, or dots',
       required: true,
       _cli: 'java_package',
       _prop: 'java_package',
-      default: 'plus.sound'
+      default: 'plusp.sound'
     },
     author: {
       description: "Addon Author",
