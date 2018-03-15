@@ -23,7 +23,7 @@ describe('test_command_lines', function() {
   });
 
   it('create product xml should not fail', function() {
-    shelljs.exec('node src/maximo-cli.js create productxml --addon_prefix "test"  --addon_name "test_prod1"  --author "test"  --desc ""  --ver "1.0.0.0"  --xml "build/newproductxml/applications/maximo/properties/product/test_prod1.xml"');
+    shelljs.exec('node src/maximo-cli.js create product-xml --addon_prefix "test"  --addon_name "test_prod1"  --author "test"  --desc ""  --ver "1.0.0.0"  --xml "build/newproductxml/applications/maximo/properties/product/test_prod1.xml"');
     if (shelljs.error()) {
       assert.fail(0,1, "create productxml failed")
     }
