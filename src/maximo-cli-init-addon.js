@@ -38,6 +38,13 @@ var schema = {
       _cli: 'addon_name',
       _prop: 'addon_id'
     },
+    java_package: {
+      description: "Java package",
+      required: true,
+      _cli: 'java_package',
+      _prop: 'java_package',
+      default: 'plus.sound'
+    },
     author: {
       description: "Addon Author",
       required: false,
