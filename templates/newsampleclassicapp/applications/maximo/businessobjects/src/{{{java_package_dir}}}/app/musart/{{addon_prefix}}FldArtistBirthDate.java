@@ -1,4 +1,4 @@
-package psdi.tr.app.musart;
+package {{java_package}}.app.musart;
 
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -9,9 +9,9 @@ import psdi.server.MXServer;
 import psdi.util.MXApplicationException;
 import psdi.util.MXException;
 
-public class TRFldArtistBirthDate extends MboValueAdapter {
+public class {{addon_prefix}}FldArtistBirthDate extends MboValueAdapter {
 
-	public TRFldArtistBirthDate(MboValue mbv) {
+	public {{addon_prefix}}FldArtistBirthDate(MboValue mbv) {
 		super(mbv);
 	}
 	
@@ -26,7 +26,7 @@ public class TRFldArtistBirthDate extends MboValueAdapter {
 		Date serverDate = MXServer.getMXServer().getDate();
 		
 		if (birthDate.after(serverDate)){
-			throw new MXApplicationException("trartist", "DateCannotBeFuture");
+			throw new MXApplicationException("{{addon_prefix}}artist", "DateCannotBeFuture");
 		}
 		
 	}

@@ -1,8 +1,12 @@
-var log = require('./logger');
 var fs = require('fs');
+var path = require('path');
+var shell = require('shelljs');
+var util = require('util');
+
+var log = require('./logger');
 var templates = require('./templates');
 var env = require('./env');
-var path = require('path');
+
 
 var dbcscripts = module.exports = Object.create({});
 
@@ -65,6 +69,68 @@ dbcscripts.lastScript = function(dir) {
   if (files.length===0) return null;
   return files[files.length-1];
 };
+
+/**
+ * Given the script/scriptname, resolve the script and then run it
+ * @param script
+ */
+dbcscripts.runScript = function (script) {
+  var dbc = null;
+  if (fs.existsSync(script)) {
+    dbc = path.resolve(script);
+  } else if (fs.existsSync(path.join(env.scriptDir(), script))) {
+    dbc = path.resolve(path.join(env.scriptDir(), script));
+  } else {
+    log.error("Invalid Script: %s", script);
+    process.exit(1);
+  }
+
+  // TODO: what if we get a script without an ext?  Should we resolve it?
+
+  log.info("Processing Script: %s", dbc);
+
+  // need to copy the script to the maximo home, to a tmp product dir, and then run the script from there
+  var productDirName = 'zzztmp'; // this is a temp script dir that we will use to load the file
+  var productDir = path.resolve(path.join(env.maximoToolsHome(),'en', productDirName));
+  var scriptName = path.basename(dbc);
+  shell.mkdir("-p", productDir);
+  shell.cp(dbc, productDir);
+  log.debug("Copied DBC %s to %s", scriptName, productDir);
+
+  var handler = function(cmd, proc) {
+    var stderr = proc.stderr;
+    var stdout = proc.stdout;
+
+    if ((stderr && stderr.match(new RegExp("Error"))) || (stdout && stdout.match(new RegExp("COMPLETED WITH ERROR"))) ) {
+      console.log("\n\n");
+      log.error("The script failed to run!!!");
+
+      var out = stdout;
+      if (out) {
+        var re =  new RegExp('Log file: (.*)');
+        var r = out.match(re);
+        if (r) {
+          var logFile = path.resolve(path.join(env.maximoToolsHome(),'log', r[1]));
+          if (fs.existsSync(logFile)) {
+            log.info("DBC Log File: %s", logFile);
+            env.askYesNo('Do you want to view the log file?', 'y', function(response) {
+              if (response) {
+                console.log("\n\n");
+                console.log(fs.readFileSync(logFile).toString());
+              }
+            });
+          }
+        }
+      }
+    }
+  };
+
+  // the script name should just be the base script name without ext
+  scriptName = scriptName.slice(0, -4);
+
+  env.runMaximoTool("psdi.tools.RunScriptFile", util.format("-c%s -f%s", productDirName, scriptName), null, handler, handler);
+};
+
 
 /**
  * Creates a new empty script in the script dir with the give name.  If name is null then it will attempt to find the
