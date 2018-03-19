@@ -5,7 +5,7 @@ var log = require('./lib/logger');
 var env = require('./lib/env');
 var cli = require('./lib/cli');
 var mbo = require('./lib/mbos');
-//var installer = require("./lib/template_installers");
+var installer = require("./lib/template_installers");
 
 
 var schema = {
@@ -32,22 +32,55 @@ var schema = {
       required: true,
       _cli: 'java_package',
       _depends: 'add_java_support',
-    }
+    },
+    mbo_name: {
+      description: "Mbo class name",
+      pattern: /^[a-zA-Z]+$/,
+      message: 'Must only contain letters (i.e MYTABLE)',
+      required: true,
+      _cli: 'mbo_name',
+      _cli_arg_value: '<ClassName>',
+      _prop: 'mbo_name',
+      default: 'XMBO',
+      conform: function(v) {
+        // set default addon name based on the prefix
+        schema.properties.addon_id.default = v.toU()+"_prod1";
+        schema.properties.author.default = v.toLowerCase();
+        return true;
+      }
+    },
+    output_directory: {
+      description: "Create addon in directory",
+      required: true,
+      _cli: 'output_directory',
+      default: '.',
+      conform: function(v) {
+        if (v.length>5) return false;
+        schema.properties.output_directory.default = v.toLowerCase();
+        schema.properties.java_package.default = v.toLowerCase();
+        return true;
+      }
+    }//Ending out put directory
+    
   }//Ending properties.
 };
 
-cli.process(schema, process.argv, create_app);
+cli.process(schema, process.argv, create_mbo);
 
-function create_app(result) {
-  if (!env.bool(result.add_sample)) {
-    log.info("MBO not created");
-    process.exit(0);
-  }
+function create_mbo(result) {
+  
+  // if (!env.bool(result.add_sample)) {
+  //   log.info("MBO not created");
+  //   process.exit(0);
+  // }
 
   var args = Object.assign({}, env.props, result);
-  if (!args.java_package) {
-    log.error("This command generates MBO java files  is not configured for Java support.  You need to install java support first using 'maximo-cli init java'");
-   process.exit(1);
-  } //Check for any variable that should be created
-  mbo.addJavaSample("mbos", env.addonDir(), args);
+  // if (!args.java_package) {
+  //   log.error("This command generates MBO java files  is not configured for Java support.  You need to install java support first using 'maximo-cli init java'");
+  //  process.exit(1);
+  // } //Check for any variable that should be created
+
+  
+  installer.installTemplateMbo("mbos", env.addonDir(), args);
 }
+

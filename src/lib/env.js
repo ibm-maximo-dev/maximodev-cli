@@ -27,7 +27,8 @@ env.PROP_KEYS = [
   'addon_version',
   'addon_message_group',
   'maximo_home',
-  'java_package'
+  'java_package',
+  'mbo_name'
 ];
 
 
@@ -353,6 +354,13 @@ env.validateAddonDir = function() {
     process.exit(1);
   }
 };
+
+env.validateMboName = function(){
+  if (!env.props && !env.props.mbo_name) {
+    console.log("ERR: You need to set the mbo name.");
+    process.exit(1);
+  }
+}
 
 /**
  * appends a single line to a file

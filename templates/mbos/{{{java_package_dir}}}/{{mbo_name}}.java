@@ -6,9 +6,9 @@ import psdi.mbo.Mbo;
 import psdi.mbo.MboSet;
 import psdi.util.MXException;
 
-public class {{addon_prefix}} extends Mbo implements {{addon_prefix}}Remote {
+public class {{mbo_name}} extends Mbo implements {{mbo_name}}Remote {
 
-	public {{addon_prefix}}(MboSet ms) throws RemoteException {
+	public {{mbo_name}}(MboSet ms) throws RemoteException {
 		super(ms);
 	}
 	
