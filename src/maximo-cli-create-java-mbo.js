@@ -41,13 +41,7 @@ var schema = {
       _cli: 'mbo_name',
       _cli_arg_value: '<ClassName>',
       _prop: 'mbo_name',
-      default: 'XMBO',
-      conform: function(v) {
-        // set default addon name based on the prefix
-        schema.properties.addon_id.default = v.toU()+"_prod1";
-        schema.properties.author.default = v.toLowerCase();
-        return true;
-      }
+      default: 'XMBO'
     },
     output_directory: {
       description: "Create addon in directory",
