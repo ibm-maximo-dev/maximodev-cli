@@ -76,9 +76,9 @@ template_installers.installTemplateMbo = function(template, dir, templateArgs) {
      templateArgs.mbo_name_lower = templateArgs.mbo_name.toLowerCase();
   }
 
-  // if (!templateArgs.java_package_dir) {
-  //   templateArgs.java_package_dir = path.join(...templateArgs.java_package.split('.'));
-  // }
+  if (!templateArgs.java_package_dir) {
+     templateArgs.java_package_dir = path.join(...templateArgs.java_package.split('.'));
+  }
 
 
   log.info("Install %s into %s", template, dir);

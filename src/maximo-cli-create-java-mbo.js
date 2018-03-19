@@ -42,19 +42,19 @@ var schema = {
       _cli_arg_value: '<ClassName>',
       _prop: 'mbo_name',
       default: 'XMBO'
-    },
-    output_directory: {
-      description: "Create addon in directory",
-      required: true,
-      _cli: 'output_directory',
-      default: '.',
-      conform: function(v) {
-        if (v.length>5) return false;
-        schema.properties.output_directory.default = v.toLowerCase();
-        schema.properties.java_package.default = v.toLowerCase();
-        return true;
-      }
-    }//Ending out put directory
+    }
+    // output_directory: {
+    //   description: "Create addon in directory",
+    //   required: true,
+    //   _cli: 'output_directory',
+    //   default: '.',
+    //   conform: function(v) {
+    //     if (v.length>5) return false;
+    //     schema.properties.output_directory.default = v.toLowerCase();
+    //     schema.properties.java_package.default = v.toLowerCase();
+    //     return true;
+    //   }
+    //}//Ending out put directory
     
   }//Ending properties.
 };
