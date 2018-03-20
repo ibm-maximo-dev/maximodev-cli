@@ -36,14 +36,23 @@ var schema = {
       _depends: 'add_java_support',
     },
     mbo_name: {
-      description: "Mbo class name",
+      description: "Mbo Name",
       pattern: /^[A-Z]+$/,
-      message: 'Must only contain letters in capital (i.e MYTABLE)',
+      message: 'Must only contain capital letters(i.e MYTABLE)',
       required: true,
       _cli: 'mbo_name',
-      _cli_arg_value: '<ClassName>',
       _prop: 'mbo_name',
       default: 'MYTABLE'
+    },
+    mbo_class_name: {
+      description: "Mbo class name",
+      pattern: /^[a-zA-Z0-9]+$/,
+      message: 'Must contain  (i.e MyTable)',
+      required: true,
+      _cli: 'mbo_class_name',
+      _cli_arg_value: '<ClassName>',
+      _prop: 'mbo_class_name',
+      default: 'MyTable'
     },
     dbc_script: {
       description: "Adding DBC Script",
@@ -108,9 +117,7 @@ function create_mbo(result) {
   var args = Object.assign({}, env.props, result);
   
   if(env.bool(result.dbc_script)){
-    log.info("Creating DBC files");
-    //Create the DBC folder structure. 
-    //dbc.createNewScriptInDir(args, result.addon_id,result.dbc_folder);
+    log.info("Will create the DBC files");
   }
   
   installer.installTemplateMbo("mbos", env.addonDir(), args);

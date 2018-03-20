@@ -29,6 +29,7 @@ env.PROP_KEYS = [
   'maximo_home',
   'java_package',
   'mbo_name',
+  'mbo_class_name',
   'dbc_script',
   'dbc_folder',
   'dbc_prefix',
@@ -362,6 +363,13 @@ env.validateAddonDir = function() {
 env.validateMboName = function(){
   if (!env.props && !env.props.mbo_name) {
     console.log("ERR: You need to set the mbo name.");
+    process.exit(1);
+  }
+}
+
+env.validateMboClassName = function(){
+  if (!env.props && !env.props.mbo_class_name) {
+    console.log("ERR: You need to set the mbo class name.");
     process.exit(1);
   }
 }
