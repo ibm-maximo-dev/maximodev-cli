@@ -92,8 +92,7 @@ template_installers.installTemplateMbo = function(template, dir, templateArgs) {
 
 template_installers.installTemplateMboFile = function(template, outBaseDir, filePath, templateArgs) {
   var destPath = templates.render(filePath, templateArgs);
-
-
+ 
   // handle dbc scripts
   var script = dbcscripts.script(path.basename(template));
   if (script) {

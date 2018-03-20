@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="{{author}}" scriptname="{{addon_prefix}}_V7500_01">
+	<description>Artist Application</description>
+	<statements>
+
+		<!-- Auto Keys -->
+		<freeform description="Create Autokey used by Artist table">
+			<sql target="all">
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{addon_prefix}}ARTISTSEQ', null, 'EN', autokeyseq.nextval)
+				;
+			</sql>
+		</freeform>
+
+		<!-- Artist Table -->
+		<define_table persistent="true" type="system" object="{{addon_prefix}}ARTIST" description="Artist Table" service="ASSET" classname="{{java_package}}.app.musart.{{addon_prefix}}ArtistSet" primarykey="ARTISTNUM" mainobject="true" internal="false">
+			<attrdef attribute="ARTISTNUM" canautonum="true" autokey="{{addon_prefix}}ARTISTSEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Artist" remarks="Artist Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+			<attrdef attribute="NAME" title="Name" remarks="Artist's name" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="BIRTHDATE" classname="{{java_package}}.app.musart.{{addon_prefix}}FldArtistBirthDate" title="Date of Birth" remarks="Artist's date of birth" maxtype="DATETIME" persistent="true" haslongdesc="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+			<attrdef attribute="EMAIL" title="E-mail" remarks="Artist's e-mail" maxtype="ALN" length="256" persistent="true" haslongdesc="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" />
+		</define_table>
+		
+		<!-- Artist Application -->
+		<create_app app="{{addon_prefix}}ARTIST" description="Artist ({{addon_prefix}})" maintbname="{{addon_prefix}}ARTIST" />
+		
+		<!-- Artist Main Sigoptions -->
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="INSERT" description="New Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SAVE" description="Save Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="CLEAR" description="Clear Changes" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="PREVIOUS" description="Previous Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="NEXT" description="Next Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="DELETE" description="Delete Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Artist - Search Sigoptions --> 
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHAT{{addon_prefix}}" description="Attribute Search" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHBOOK" description="Bookmarks" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHMORE" description="More Search Fields" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHSQRY" description="Save Current Query" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHTIPS" description="View Search Tips" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHVMQR" description="View/Manage Queries" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SEARCHWHER" description="Where Clause" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Music - Tools Menu -->
+		<create_app_menu app="{{addon_prefix}}ARTIST" type="tool" >
+			<app_menu_option option="INSERT" tabdisplay="ALL" image="nav_icon_insertkey.gif" accesskey="CTRL+ALT+I" />
+			<app_menu_option option="SAVE" tabdisplay="MAIN" image="nav_icon_save.gif" accesskey="CTRL+ALT+S"/>
+			<app_menu_option option="CLEAR" tabdisplay="MAIN" image="nav_icon_clear.gif" accesskey="CTRL+ALT+C"/>
+			<menu_separator tabdisplay="MAIN" />
+			<app_menu_option option="PREVIOUS" tabdisplay="ALL" image="nav_icon_previous.gif" accesskey="CTRL+ALT+P"/>
+			<app_menu_option option="NEXT" tabdisplay="ALL" image="nav_icon_next.gif" accesskey="CTRL+ALT+N"/>
+		</create_app_menu>
+		
+		<!-- Artist - Application Menu -->
+		<create_app_menu app="{{addon_prefix}}ARTIST" type="action" >
+			<app_menu_option option="DELETE" tabdisplay="MAIN" />
+		</create_app_menu>
+		
+		<!-- Artist - Search Menu -->
+		<create_app_menu app="{{addon_prefix}}ARTIST" type="search" >
+			<app_menu_header headerdescription="Advanced Search" image="atb_search.gif" >
+				<app_menu_option option="SEARCHMORE" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHWHER" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHAT{{addon_prefix}}" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHTIPS" tabdisplay="ALL" />
+			</app_menu_header>
+			<app_menu_header headerdescription="Save Query" image="atb_save.gif" >
+				<app_menu_option option="SEARCHSQRY" tabdisplay="ALL" />
+				<app_menu_option option="SEARCHVMQR" tabdisplay="ALL" />
+			</app_menu_header>
+			<app_menu_option option="SEARCHBOOK" tabdisplay="ALL" image="atb_bookmark.gif" />
+		</create_app_menu>
+
+		<!-- Relationships -->
+		<create_relationship parent="{{addon_prefix}}ARTIST" child="{{addon_prefix}}MUSIC" name="{{addon_prefix}}MUSIC" whereclause="artistnum=:artistnum" remarks="Return all musics associated with the artist" />
+		<create_relationship parent="{{addon_prefix}}ARTIST" child="{{addon_prefix}}MUSIC" name="{{addon_prefix}}MUSICWITHOUTARTIST" whereclause="artistnum is null" remarks="Return all musics without artist" />
+		
+	</statements>
+</script>

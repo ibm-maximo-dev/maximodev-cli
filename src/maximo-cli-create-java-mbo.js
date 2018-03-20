@@ -5,6 +5,8 @@ var log = require('./lib/logger');
 var env = require('./lib/env');
 var cli = require('./lib/cli');
 var mbo = require('./lib/mbos');
+var dbc = require('./lib/dbcscripts');
+
 var installer = require("./lib/template_installers");
 
 
@@ -13,7 +15,7 @@ var schema = {
   _description: 'create a MBO structure for a new Maximo application/customization ',
   properties: {
     add_sample: {
-      description: "Are you sure to create the MBO structure for an application?",
+      description: "Are you sure to create the MBO structure for an Maximo application?",
       required: true,
       _cli: 'add_sample',
       _yesno: 'n',
@@ -35,27 +37,67 @@ var schema = {
     },
     mbo_name: {
       description: "Mbo class name",
-      pattern: /^[a-zA-Z]+$/,
-      message: 'Must only contain letters (i.e MYTABLE)',
+      pattern: /^[A-Z]+$/,
+      message: 'Must only contain letters in capital (i.e MYTABLE)',
       required: true,
       _cli: 'mbo_name',
       _cli_arg_value: '<ClassName>',
       _prop: 'mbo_name',
-      default: 'XMBO'
+      default: 'MYTABLE'
+    },
+    dbc_script: {
+      description: "Adding DBC Script",
+      required: true,
+      _cli: 'dbc_script',
+      _yesno: true,
+      default: 'y'
+    },
+    dbc_prefix: {
+      description: "DBC prefix (i.e. DBC file prefix)",
+      _depends: 'dbc_script',
+      pattern: /^[A-Z0-9]+$/,
+      message: 'Must capital letters only with a number (i.e V1000)',
+      required: true,
+      _cli: 'dbc_prefix',
+      _prop: 'dbc_prefix',
+      default: 'V1000'
+    },
+    dbc_version: {
+      description: "DBC Version",
+      _depends: 'dbc_script',
+      pattern: /^[0-9]+$/,
+      message: 'Must be a sequency of numbers',
+      required: true,
+      _cli: 'dbc_version',
+      _prop: 'dbc_version',
+      default: '01'
+    },
+    addon_id: {
+      description: "Target application name",
+      _depends: 'dbc_script',
+      pattern: /^[a-zA-Z_0-9]+$/,
+      message: 'Must only contain letters, numbers, and underscores',
+      required: true,
+      _cli: 'addon_name',
+      conform: function(v) {
+        schema.properties.java_package.default = v.toLowerCase().replace('_','.');
+        return true;
+      }
+    },
+    dbc_folder: {
+      description: "What is the DBC script's folder name",
+      _depends: 'dbc_script',
+      required: true,
+      _cli: 'dbc_folder',
+      _prop: 'dbc_folder',
+      default: 'tools/maximo/en/'
+    },
+    overwrite: {
+      description: "overwrite existing files, if it exists?",
+      required: true,
+      _cli: 'overwrite',
+      _yesno: 'n'
     }
-    // output_directory: {
-    //   description: "Create addon in directory",
-    //   required: true,
-    //   _cli: 'output_directory',
-    //   default: '.',
-    //   conform: function(v) {
-    //     if (v.length>5) return false;
-    //     schema.properties.output_directory.default = v.toLowerCase();
-    //     schema.properties.java_package.default = v.toLowerCase();
-    //     return true;
-    //   }
-    //}//Ending out put directory
-    
   }//Ending properties.
 };
 
@@ -63,18 +105,14 @@ cli.process(schema, process.argv, create_mbo);
 
 function create_mbo(result) {
   
-  // if (!env.bool(result.add_sample)) {
-  //   log.info("MBO not created");
-  //   process.exit(0);
-  // }
-
   var args = Object.assign({}, env.props, result);
-  // if (!args.java_package) {
-  //   log.error("This command generates MBO java files  is not configured for Java support.  You need to install java support first using 'maximo-cli init java'");
-  //  process.exit(1);
-  // } //Check for any variable that should be created
-
   
-  installer.installTemplateMbo("mbos", env.addonDir(), args);
+  if(env.bool(result.dbc_script)){
+    log.info("Creating DBC files");
+    //Create the DBC folder structure. 
+    //dbc.createNewScriptInDir(args, result.addon_id,result.dbc_folder);
+  }
+  
+  installer.installTemplateMbo("mbos", result.dbc_folder+result.addon_id, args);
 }
 
