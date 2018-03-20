@@ -113,6 +113,6 @@ function create_mbo(result) {
     //dbc.createNewScriptInDir(args, result.addon_id,result.dbc_folder);
   }
   
-  installer.installTemplateMbo("mbos", result.dbc_folder+result.addon_id, args);
+  installer.installTemplateMbo("mbos", env.addonDir(), args);
 }
 
