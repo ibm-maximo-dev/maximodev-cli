@@ -101,6 +101,21 @@ var schema = {
       _prop: 'dbc_folder',
       default: 'tools/maximo/en/'
     },
+    add_service_support: {
+      description: "Will add a Mbo's service support, if you do not specify one, the ASSET's service will be taken as default.",
+      required: true,
+      _cli: 'java_support',
+      _yesno: true,
+      default: 'n'
+    },
+    service_support: {
+      description: "What would be the service name",
+      _depends: 'add_service_support',
+      required: true,
+      _cli: 'service_support',
+      _prop: 'service_support',
+      default: 'ASSET'
+    },
     overwrite: {
       description: "overwrite existing files, if it exists?",
       required: true,
@@ -118,6 +133,12 @@ function create_mbo(result) {
   
   if(env.bool(result.dbc_script)){
     log.info("Will create the DBC files");
+  }
+
+  
+  if(!env.bool(result.add_service_support)){
+    log.info("Will use the ASSET services");
+    result.add_service_support = "ASSET";
   }
   
   installer.installTemplateMbo("mbos", env.addonDir(), args);

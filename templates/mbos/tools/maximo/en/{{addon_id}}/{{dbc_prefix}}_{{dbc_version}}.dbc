@@ -13,7 +13,7 @@
 		</freeform>
 
 		<!-- Mbo Table -->
-		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximo-cli" service="ASSET" classname="{{java_package}}.{{addon_prefix}}.{{mbo_class_name}}" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
+		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximo-cli" service="{{service_support}}" classname="{{java_package}}.{{addon_prefix}}.{{mbo_class_name}}" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
 			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" autokey="{{mbo_name}}ARTISTSEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
 		</define_table>
 		
