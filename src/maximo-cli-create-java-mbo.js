@@ -7,7 +7,7 @@ var mbo = require('./lib/mbos');
 
 var schema = {
   _version: '0.0.1',
-  _description: 'create a MBO structure for a new Maximo application/customization ',
+  _description: 'Create a MBO structure for a new Maximo application/customization ',
   properties: {
     add_sample: {
       description: "Are you sure to create the MBO structure for an Maximo application?",
@@ -25,7 +25,7 @@ var schema = {
     mbo_name: {
       description: "Mbo Name",
       pattern: /^[A-Z]+$/,
-      message: 'Must only contain capital letters(i.e MYTABLE)',
+      message: 'Must only contain capital letters (i.e MYTABLE)',
       required: true,
       _cli: 'mbo_name',
       _prop: 'mbo_name',
@@ -34,7 +34,7 @@ var schema = {
     mbo_class_name: {
       description: "Mbo class name",
       pattern: /^[a-zA-Z0-9]+$/,
-      message: 'Must contain  (i.e MyTable)',
+      message: 'Must follow Java conventions to define a Java class name (i.e MyTable)',
       required: true,
       _cli: 'mbo_class_name',
       _cli_arg_value: '<ClassName>',
@@ -42,7 +42,7 @@ var schema = {
       default: 'MyTable'
     },
     dbc_script: {
-      description: "Adding DBC Script",
+      description: "Adding DBC script",
       required: true,
       _cli: 'dbc_script',
       _yesno: true,
@@ -52,7 +52,7 @@ var schema = {
       description: "DBC prefix (i.e. DBC file prefix)",
       _depends: 'dbc_script',
       pattern: /^[A-Z0-9]+$/,
-      message: 'Must capital letters only with a number (i.e V1000)',
+      message: 'May contain a capital letter followed by a number representing the application version (i.e. V1000)',
       required: true,
       _cli: 'dbc_prefix',
       _prop: 'dbc_prefix',
