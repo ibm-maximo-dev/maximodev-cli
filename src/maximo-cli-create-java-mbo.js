@@ -103,12 +103,18 @@ var schema = {
     service_name: {
       description: "What would be the service name?",
       _depends: 'add_service_support',
-      message: 'The service name will be set into the DBC file! It must contains capital letters only.',
+      message: 'It must contains capital letters only and should have no more then 18 characters',
       pattern: /^[A-Z]+$/,
       required: true,
       _cli: 'service_support',
       _prop: 'service_support',
-      default: 'ASSET'
+      default: 'ASSET',
+      conform: function(v) {
+        if (v.length>18){ 
+          return false;
+        }
+        return true;
+      }
     },
     overwrite: {
       description: "overwrite existing files, if it exists?",
