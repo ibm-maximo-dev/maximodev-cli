@@ -20,20 +20,12 @@ var schema = {
       _cli: 'add_sample',
       _yesno: 'n',
     },
-    add_java_support: {
-      description: "Add Java support?",
-      required: true,
-      _cli: 'java_support',
-      _yesno: true,
-      default: 'n'
-    },
     java_package: {
       description: "Default Java Package",
       pattern: /^[a-zA-Z_0-9.]+$/,
       message: 'Must only contain letters, numbers, underscores, or dots',
       required: true,
       _cli: 'java_package',
-      _depends: 'add_java_support',
     },
     mbo_name: {
       description: "Mbo Name",
@@ -102,15 +94,17 @@ var schema = {
       default: 'tools/maximo/en/'
     },
     add_service_support: {
-      description: "Will add a Mbo's service support, if you do not specify one, the ASSET's service will be taken as default.",
+      description: "Add a Mbo's service support? If you do not specify one, the ASSET's service will be taken as default.",
       required: true,
       _cli: 'java_support',
       _yesno: true,
       default: 'n'
     },
-    service_support: {
-      description: "What would be the service name",
+    service_name: {
+      description: "What would be the service name?",
       _depends: 'add_service_support',
+      message: 'The service name will be set into the DBC file! It must contains capital letters only.',
+      pattern: /^[A-Z]+$/,
       required: true,
       _cli: 'service_support',
       _prop: 'service_support',
@@ -132,15 +126,22 @@ function create_mbo(result) {
   var args = Object.assign({}, env.props, result);
   
   if(env.bool(result.dbc_script)){
-    log.info("Will create the DBC files");
+    log.info("Creating DBC files");
+    installer.installTemplateMbo("mbos/dbc", env.addonDir(), args);
   }
 
-  
+  /**
+   * Add service support on create 
+   */
   if(!env.bool(result.add_service_support)){
     log.info("Will use the ASSET services");
     result.add_service_support = "ASSET";
+  }else{
+    log.info("Setting up "+result.service_name+" service.");
+      //Will create the new Mbo service 
+      installer.installTemplateMbo("mbos/service", env.addonDir(), args);
   }
   
-  installer.installTemplateMbo("mbos", env.addonDir(), args);
+  installer.installTemplateMbo("mbos/java", env.addonDir(), args);
 }
 
