@@ -1,14 +1,9 @@
 #! /usr/bin/env node
 
-var dbcscripts = require('./lib/dbcscripts');
 var log = require('./lib/logger');
 var env = require('./lib/env');
 var cli = require('./lib/cli');
 var mbo = require('./lib/mbos');
-var dbc = require('./lib/dbcscripts');
-
-var installer = require("./lib/template_installers");
-
 
 var schema = {
   _version: '0.0.1',
@@ -133,7 +128,7 @@ function create_mbo(result) {
   
   if(env.bool(result.dbc_script)){
     log.info("Creating DBC files");
-    installer.installTemplateMbo("mbos/dbc", env.addonDir(), args);
+    mbo.installTemplateMbo("mbos/dbc", env.addonDir(), args);
   }
 
   /**
@@ -145,9 +140,9 @@ function create_mbo(result) {
   }else{
     log.info("Setting up "+result.service_name+" service.");
       //Will create the new Mbo service 
-      installer.installTemplateMbo("mbos/service", env.addonDir(), args);
+      mbo.installTemplateMbo("mbos/service", env.addonDir(), args);
   }
   
-  installer.installTemplateMbo("mbos/java", env.addonDir(), args);
+  mbo.installTemplateMbo("mbos/java", env.addonDir(), args);
 }
 
