@@ -32,9 +32,7 @@ env.PROP_KEYS = [
   'mbo_class_name',
   'dbc_script',
   'dbc_folder',
-  'dbc_prefix',
-  'dbc_version'
-];
+  ];
 
 
 /**
