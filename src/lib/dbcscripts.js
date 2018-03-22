@@ -183,6 +183,25 @@ dbcscripts.script = function(str) {
 };
 
 /**
+ * Return the MXS delta script that is used for this addon/version.
+ * @param dir
+ * @returns {*|string}
+ */
+dbcscripts.getMxsScript = function(dir) {
+  dir=dir||env.scriptDir();
+
+  // figure out where we need to write to script delta
+  // in most cases, script deltas are written to the 02 dbc file
+  var nextScript = dbcscripts.nextScript(dir,'mxs');
+  var script_parts = dbcscripts.script(nextScript);
+  script_parts.number=2;
+
+  var script = dbcscripts.format(script_parts);
+  return path.join(dir, script);
+
+};
+
+/**
  * return true if the scriptname is valid
  * @param s
  */

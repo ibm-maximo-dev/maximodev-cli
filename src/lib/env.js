@@ -319,7 +319,7 @@ env.runMaximoTool = function(toolClass, args, workingDir, onSuccess, onError) {
   log.debug("Running Maximo Java Command\n%s", cmd);
   log.debug("From working dir %s", workingDir);
 
-  shelljs.cd(workingDir);
+  shelljs.pushd(workingDir);
   var proc =shelljs.exec(cmd);
   if (proc.code!==0) {
     if (onError)
@@ -332,6 +332,7 @@ env.runMaximoTool = function(toolClass, args, workingDir, onSuccess, onError) {
     else
       log.info("Command completed OK.");
   }
+  shelljs.popd();
 };
 
 /**

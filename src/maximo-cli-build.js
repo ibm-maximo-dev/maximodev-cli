@@ -7,6 +7,8 @@ const cli = require('./lib/cli');
 const dist = require('./lib/dist');
 const env = require('./lib/env');
 const productxml = require('./lib/productxml');
+const presentations = require('./lib/presentations');
+const dbcscripts = require('./lib/dbcscripts');
 
 const schema = {
   _version: '0.0.1',
@@ -34,9 +36,13 @@ function build(result) {
     gradle.build();
   }
 
+  // rebuild the presentation mxs files
+  presentations.diffAllForAddon();
+
   // Update product.xml when necessary.
   productxml.updateVersion(env.productXmlIn(), env.scriptDir());
   log.info("product xml updated with the latest version");
+
 
 
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.

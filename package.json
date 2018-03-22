@@ -12,7 +12,8 @@
     "test": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties mocha test/",
     "posttest": "npm run testcmds",
     "pretestcmds": "rm -rf build/testcmds && mkdir -p build/testcmds/ && cp test/addon.properties build/testcmds/",
-    "testcmds": "MAXIMO_ADDON_PROPERTIES=build/testcmds/addon.properties MAXIMO_CLI_NO_PROMPT=Y mocha testcmds/"
+    "testcmds": "MAXIMO_ADDON_PROPERTIES=build/testcmds/addon.properties MAXIMO_CLI_NO_PROMPT=Y mocha testcmds/",
+    "test1": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties mocha $1"
   },
   "author": "sls@ca.ibm.com",
   "license": "ISC",
@@ -25,6 +26,7 @@
     "properties-parser": "^0.3.1",
     "readline-sync": "^1.4.9",
     "shelljs": "^0.8.1",
+    "tmp": "0.0.33",
     "xml2js": "^0.4.19",
     "xmldom": "^0.1.27"
   },
