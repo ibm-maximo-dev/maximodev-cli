@@ -27,11 +27,7 @@ env.PROP_KEYS = [
   'addon_version',
   'addon_message_group',
   'maximo_home',
-  'java_package',
-  'mbo_name',
-  'mbo_class_name',
-  'dbc_script',
-  'dbc_folder',
+  'java_package'
   ];
 
 
@@ -358,34 +354,9 @@ env.validateAddonDir = function() {
   }
 };
 
-env.validateMboName = function(){
+dateMboName = function(){
   if (!env.props && !env.props.mbo_name) {
     console.log("ERR: You need to set the mbo name.");
-    process.exit(1);
-  }
-}
-
-env.validateMboClassName = function(){
-  if (!env.props && !env.props.mbo_class_name) {
-    console.log("ERR: You need to set the mbo class name.");
-    process.exit(1);
-  }
-}
-/**
- * Validates the dbc prefix version. 
- */
-env.validateDBCVersion = function(){
-  if (!env.props && !env.props.dbc_script) {
-    console.log("ERR: You need to set the DBC prefix version.");
-    process.exit(1);
-  }
-}
-/**
- * Validates the dbc folder name. 
- */
-env.validateDBCFolderName = function(){
-  if (!env.props && !env.props.dbc_folder) {
-    console.log("ERR: You need to set the DBC folder name.");
     process.exit(1);
   }
 }

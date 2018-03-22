@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script SYSTEM "script.dtd">
-<script author="maximo-cli" scriptname="{{dbc_prefix}}_{{dbc_version}}">
+<script author="maximo-cli" scriptname="{{script}}">
 	<description>Mbo script creation - create by maximo-cli</description>
 	<statements>
 
 		<!-- Auto Keys -->
 		<freeform description="Create Autokey used by Table">
 			<sql target="all">
-				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{mbo_name}}ARTISTSEQ', null, 'EN', autokeyseq.nextval)
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{mbo_name}}SEQ', null, 'EN', autokeyseq.nextval)
 				;
 			</sql>
 		</freeform>
 
 		<!-- Mbo Table -->
 		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximo-cli" service="{{service_support}}" classname="{{java_package}}.{{addon_prefix}}.{{mbo_class_name}}" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
-			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" autokey="{{mbo_name}}ARTISTSEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" autokey="{{mbo_name}}SEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
 		</define_table>
 		
 	</statements>
