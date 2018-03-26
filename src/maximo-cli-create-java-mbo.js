@@ -56,8 +56,8 @@ var schema = {
       message: 'It must contains capital letters only and should have no more then 18 characters',
       pattern: /^[A-Z]+$/,
       required: true,
-      _cli: 'service_support',
-      _prop: 'service_support',
+      _cli: 'service_name',
+      _prop: 'service_name',
       default: 'ASSET',
       conform: function(v) {
         if (v.length>18){ 
