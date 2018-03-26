@@ -6,10 +6,10 @@ var cli = require('./lib/cli');
 var mbo = require('./lib/mbos');
 var dbcscripts = require('./lib/dbcscripts'); 
 
-var lastScript = null;
+var nextScript = null;
 
 try {
-  lastScript = dbcscripts.lastScript();
+  nextScript = dbcscripts.nextScript();
 } catch (e) {} // we might not be in an add-on dir, but we can still run scripts
 
 
@@ -47,12 +47,11 @@ var schema = {
       required: true,
       description: 'DBC Script',
       _cli: 'script',
-      default: lastScript,
+      default: nextScript.substr(0,nextScript.indexOf('.')),
       message: 'file does not exist'
     },
     service_name: {
       description: "What would be the service name?",
-      _depends: 'add_service_support',
       message: 'It must contains capital letters only and should have no more then 18 characters',
       pattern: /^[A-Z]+$/,
       required: true,
@@ -81,12 +80,9 @@ function create_mbo(result) {
   
   var args = Object.assign({}, env.props, result);
   /**
-   * Checks for dbc script to be generated.
+   * Add database configuration script.
    */
-  if(env.bool(result.dbc_script)){
-    log.info("Creating DBC files");
-    mbo.installTemplateMbo("mbos/dbc", env.addonDir(), args);
-  }
+  mbo.installTemplateMbo("mbos/dbc", env.addonDir(), args);
 
   /**
    * Add service support on create 
