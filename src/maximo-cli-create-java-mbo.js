@@ -88,9 +88,13 @@ function create_mbo(result) {
    * Add service support on create 
    */
   log.info("Setting up "+result.service_name+" service.");
+
+  if(service_name!=result.service_name){
+    mbo.installTemplateMbo("mbos/service", env.addonDir(), args);
+  }
   
   //Will create the new Mbo service 
-  mbo.installTemplateMbo("mbos/service", env.addonDir(), args);
+  
   
   //Will create the java files
   mbo.installTemplateMbo("mbos/java", env.addonDir(), args);
