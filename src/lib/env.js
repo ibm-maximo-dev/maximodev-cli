@@ -354,13 +354,6 @@ env.validateAddonDir = function() {
   }
 };
 
-dateMboName = function(){
-  if (!env.props && !env.props.mbo_name) {
-    console.log("ERR: You need to set the mbo name.");
-    process.exit(1);
-  }
-}
-
 /**
  * appends a single line to a file
  * @param file
