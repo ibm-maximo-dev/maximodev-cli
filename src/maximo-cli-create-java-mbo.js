@@ -87,9 +87,11 @@ function create_mbo(result) {
   /**
    * Add service support on create 
    */
-  log.info("Setting up "+result.service_name+" service.");
 
-  if(service_name!=result.service_name){
+  var service_name = result.service_name;
+  log.info("Setting up "+service_name+" service.");
+
+  if(service_name!='ASSET'){
     mbo.installTemplateMbo("mbos/service", env.addonDir(), args);
   }
   
