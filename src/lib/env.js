@@ -28,7 +28,7 @@ env.PROP_KEYS = [
   'addon_message_group',
   'maximo_home',
   'java_package'
-];
+  ];
 
 
 /**

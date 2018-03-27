@@ -69,6 +69,7 @@ templates.renderToFile = function(templateFileIn, templateArgs, outputFile) {
   log.trace(tplText);
   var rendered = templates.render(tplText, templateArgs);
   log.trace(rendered);
+
   if (rendered) {
     fs.ensureDirSync(path.dirname(outputFile));
     fs.writeFileSync(outputFile, rendered, "utf8");

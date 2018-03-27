@@ -12,6 +12,7 @@ program
   .command('java-field-validator', 'create Java field validation class').alias('jfv')
   //.command('script-field-validator', 'create Script field validation').alias('sfv')
   .command('sample-classic-app', 'create a sample maximo classic application').alias('sca')
+  .command('java-mbo', 'create a java MBO (Maximo Business Object) structure for Maximo development ').alias('mbo')
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
   .parse(process.argv);
 
