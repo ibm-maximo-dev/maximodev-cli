@@ -23,7 +23,6 @@ var schema = {
       message: 'Must only contain capital letters (i.e MYTABLE)',
       required: true,
       _cli: 'mbo_name',
-      _prop: 'mbo_name',
       default: 'MYTABLE'
     },
     java_package: {
@@ -32,6 +31,7 @@ var schema = {
       message: 'Must only contain letters, numbers, underscores, or dots',
       required: true,
       _cli: 'java_package',
+      _prop: 'java_package'
     },
     mbo_class_name: {
       description: "Mbo class name",
@@ -40,7 +40,6 @@ var schema = {
       required: true,
       _cli: 'mbo_class_name',
       _cli_arg_value: '<ClassName>',
-      _prop: 'mbo_class_name',
       default: 'MyTable'
     },
     script: {
@@ -56,7 +55,6 @@ var schema = {
       pattern: /^[A-Z]+$/,
       required: true,
       _cli: 'service_name',
-      _prop: 'service_name',
       default: 'ASSET',
       conform: function(v) {
         if (v.length>18){ 
