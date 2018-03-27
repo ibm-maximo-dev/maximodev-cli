@@ -110,6 +110,13 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
       def = program[(o._cli)];
       // adjust for boolean commandline args
       if (def===true) def = 'y';
+      if (def) {
+        o.ask = function() {
+          // don't prompt, but conform it
+          if (o.conform) {o.conform(def)}
+          return false;
+        }
+      }
     }
 
     // no default from command line, check the props

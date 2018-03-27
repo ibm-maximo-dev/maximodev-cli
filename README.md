@@ -7,7 +7,7 @@ The `maximo-cli` is a set of command line tools for developing with `Maximo`, he
 
 The vision for `maximo-cli` is provide a set of lifecycle tools to the developer, allowing them to create, build, test, deploy, and package an add-on, while offering other additional tools are useful in the development lifecycle of Maximo.
 
-`maximo-cli` will require direct access to your development Maximo instance's home directory.   If you are using Java support, or if you calling some commands, like `presentation-diff`, then direct access is required, or this features will not work correctly.  You can use many features of `maximo-cli` without a local Maximo instance, but, be warned, some things will fail (especially Java compiling) without local filesytem access to a Maximo instance.
+`maximo-cli` will require direct access to your development Maximo instance's home directory.   If you are using Java support, or if you calling some commands, like `presentation-diff`, then direct access is required, or these features will not work correctly.  You can use many features of `maximo-cli` without a local Maximo instance, but, be warned, some things will fail (especially Java compiling) without local filesystem access to a Maximo instance.
 
 ## Installation
 
@@ -47,16 +47,19 @@ If you run `maximo-cli` without any parameters, it will show a list of top level
 `create script-field-validator`, like the `java-field-valiator` will create a field validator and register it to an object and field.  The difference being that this field valiator will use the `automation scripting` framework and will not require Java.
 
 ### maximo-cli create sample-classic-app
-`create sample-classic-app` prompts your for some information, and it will create a new sample application in your add-on location.  This sample app is mainly used to help you scaffold a new application, or for you to see how to build a complete working sample application within your addon.  It adds dbc scripts and Java files, and it is a fully working applications.  You can then `build` and `deploy` your addon to see it working within your Maximo environment.
+`create sample-classic-app` prompts your for some information, and it will create a new sample application in your add-on location.  This sample app is mainly used to help you scaffold a new application, or for you to see how to build a complete working sample application within your addon.  It adds dbc scripts and Java files, and it is a fully working application.  You can then `build` and `deploy` your addon to see it working within your Maximo environment.
 
 ### maximo-cli update product-xml
 `update product-xml` is a utility that will update the last script number in your product xml by inspecting and finding the last script in your product scripts area.   This assumes that your product xml is a `template` file, which, it will be is your used `maximo-cli` to create it.
 
 ### maximo-cli set
-`maximo-cli set` is a command that can be used to update your `addon.properties`.  For example if you need to set/change your Java Home or your Maximo Home, you can use the following commands, respectively; `maximo-cli set java-home`  or `maximo-cli set maximo-home`.  These `set` commands will prompt a question, and then proceed to update the `addon.properties`
+`maximo-cli set` is a command that can be used to update your `addon.properties`.  If you need to set or change your Maximo Home, you can use the following command `maximo-cli set maximo-home`.  The `set` command will prompt a question, and then proceed to update the `addon.properties`.  Currently only setting or updating the `maximo_home` is supported, but in the future more options may be added.
+
+### maximo-cli build
+`maximo-cli build` will build and copy your add-on artifacts to a `dist` directory.  If you have a `Java` project, then `gradle` will be executed to build all the java parts.  This build process will also update your `product xml` with the last script number, and it will create a `.mxs` file of your presentation files, optionally creating a delta of changes in if a `BASE/resources/presentations` directory exists with base presentation files.  Once a `build` is complete all files in the `dist` folder can be packaged or copied to a `Maximo` instance.
 
 ## Wrapper Commands
-Wrapper commands are `maximo-cli` commands that basically just wrap existing tools in Maximo.  These script require that the `MAXIMO_HOME` environment variable be set, OR, that your `addon.properties` contains the `maximo_home` property set to a valid Maximo installation/dev directory.
+Wrapper commands are `maximo-cli` commands that basically just wrap existing tools in Maximo.  These scripts require that the `MAXIMO_HOME` environment variable be set, OR, that your `addon.properties` contains the `maximo_home` property set to a valid Maximo installation/dev directory.
 
 ### maximo-cli run-dbc
 `run-dbc` is a utility wrapper around Maximo's `runscriptfile` command.  It differs in that `run-dbc` will accept the full path to a script instead of having to pass a script directory and script filename without the extension.  `run-dbc` will also prompt you to automatically show the log file if the script fails.
@@ -79,20 +82,28 @@ The `cleanEclipse` task will remove any existing eclipse projects.   The `eclips
 
 To import the projects, you should create a new Eclipse workspace, and then use the `File->Import->Existing Projects Into Workspace` action, click `Next` and then navigate to the root of your project.  It should list 5 projects; `businessobjects`, `maximouiweb`, `properties`, `resources`, and `tools`.  Click `Finish`. 
 
+## Example
+The following commands illustrate how to create a new addon, with java support, and creating the sample classic app in your project.
+
+```bash
+$ maximo-cli create addon
+```
+When prompted, enter, `BPAAA` for the prefix, and `bpaaa_myproduct` for the product.  Be sure to also select `y` for `Java Support` and `y` for `Initialize eclipse projects`.  You will also need to enter the full location to where your local Maximo installation folder exists.
+
+```bash
+$ cd bpaa_myproduct
+$ maximo-cli create sample-classic-app
+$ maximo-cli build
+```
+
+After this process, you will have a new addon, and it will be fully built in the `dist` folder.  You can not deploy this to your local maximo.
+
+
 ## Links to references
 For more information on developing add-ons and using dbc scripts, see the [Database Configuration Scripts](https://developer.ibm.com/static/site-id/155/maximodev/dbcguide/) document.
 
 <!--
 These are ideas for other cli tools
-
-create java-field-validator
-- ask mbo
-- ask attribute
-- ask classname
-- ask package
-- create dbc file
-- create java file
-- install gradle if missing
 
 create script-field-validator
 - ask mbo
@@ -110,13 +121,6 @@ create syndomain
 
 export autoscript NAME
 - call boris' script
-
-export presentation-diff FILE
-- create mxs file using file with same name from BASE/ or from maximo install dir
-
-build
-- compile all files
-- move all files to the dist area
 
 deploy
 - copies files into maximo dev tree

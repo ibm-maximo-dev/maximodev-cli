@@ -14,7 +14,7 @@ const schema = {
   _version: '0.0.1',
   _description: 'Build the current Maximo artifact',
   properties: {}
-}
+};
 
 cli.process(schema, process.argv, build);
 

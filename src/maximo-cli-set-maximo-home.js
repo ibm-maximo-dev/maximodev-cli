@@ -17,13 +17,14 @@ var schema = {
       conform: function (v) {
         return env.isValidMaximoHome(v);
       }
-    },
-    global: {
-      required: false,
-      description: 'set it globally',
-      _cli: 'global',
-      _yesno: 'n'
     }
+    // TODO: At some point add the concept of setting this globaly
+    // global: {
+    //   required: false,
+    //   description: 'set it globally',
+    //   _cli: 'global',
+    //   _yesno: 'n'
+    // }
 
   }
 };
