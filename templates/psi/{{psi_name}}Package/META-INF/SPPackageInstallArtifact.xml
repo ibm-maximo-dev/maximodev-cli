@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Begin Standard Header
+     
+     File:     SPPackageInstallArtifact.xml
+     Version: SP 7.5.3
+     Created 7.5 installation.
+     Created by: Tara Ventura
+     Date: 11/10/2010
+     
+     
+     
+     Licensed Materials - Property of IBM
+     
+     Restricted Materials of IBM
+     
+     5724-M19
+     
+     (C) COPYRIGHT IBM CORP. 2010, 2014 All Rights Reserved.
+     
+     US Government Users Restricted Rights - Use, duplication or
+     disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+     
+     End Standard Header
+-->
+<action:artifact xmlns:iudd="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD" xmlns:osac="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions" language_bundle="InstallPackage" xmlns:action="http://www.ibm.com/namespaces/autonomic/solutioninstall/action" xmlns:base="http://www.ibm.com/namespaces/autonomic/solutioninstall/BASE" xmlns:command="http://www.ibm.com/namespaces/autonomic/solutioninstall/command" xmlns:rtype="http://www.ibm.com/namespaces/autonomic/solutioninstall/ResourceTypes" xmlns:sigt="http://www.ibm.com/namespaces/autonomic/solutioninstall/Signatures" xmlns:vsn="http://www.ibm.com/namespaces/autonomic/common/version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions osActions.xsd">
+    <artifactType>Install</artifactType>
+    <artifactSchemaVersion>1.2.1</artifactSchemaVersion>
+     
+    <!-- This group of actions unpacks the license agreement files and then  -->
+    <!-- executes the "LAP Tool" which prompts the user for acceptance of    -->
+    <!-- the relevant license agreement.                                    -->
+     
+    <actionGroup xsi:type="osac:OsActionGroup">
+        <actions>
+            <addDirectory actionId="Unpack_License_Files">
+                <displayName>
+                    <defaultLineText key="CREATE_TEMP_LICENSE_DIR">Create Temporary License Directory</defaultLineText>
+                </displayName>
+                <directory temporary="true">
+                    <name>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>LicenseZip</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+            <executeJavaClass actionId="Run_License_Acceptance_Util">
+                <displayName>
+                    <defaultLineText key="RUN_LAP_UTIL">Run License Acceptance Tool</defaultLineText>
+                </displayName>
+                <action operation="Create">
+                    <class_name>com.ibm.tivoli.ccmdb.install.ps.si.actions.common.ManageLAP</class_name>
+                    <classpath>
+                        <path>$(CCMDBInstallLocation)/lib/CTGPSIDeploymentServices.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/CTGInstallResources.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/CTGInstallCommon.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/icl.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/Lapapp.jar</path>
+                    </classpath>
+                    <bean_properties>
+                        <property name="LapSource">
+                            <setter>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</setter>
+                        </property>
+                        <property name="LapDest">
+                            <setter>$(ModuleInstallDir)</setter>
+                        </property>
+                        <property name="CCMDBHomeDirectory">
+                            <setter>$(CCMDBInstallLocation)</setter>
+                        </property>
+                        <property name="AcceptLicense">
+                            <setter>$(AcceptLicense)</setter>
+                        </property>
+                    </bean_properties>
+                </action>
+            </executeJavaClass>
+        </actions>
+    </actionGroup>
+     
+    <actionGroup xsi:type="osac:OsActionGroup">
+        <actions>
+            <addDirectory actionId="Unpack_License_Files_Upd">
+                <displayName>
+                    <defaultLineText key="CREATE_TEMP_LICENSE_DIR">Create Temporary License Directory</defaultLineText>
+                </displayName>
+                <directory temporary="true">
+                    <name>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>LicenseZip</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+            <executeJavaClass actionId="Run_License_Acceptance_Util_Upd">
+                <displayName>
+                    <defaultLineText key="RUN_LAP_UTIL">Run License Acceptance Tool</defaultLineText>
+                </displayName>
+                <action operation="Update">
+                    <class_name>com.ibm.tivoli.ccmdb.install.ps.si.actions.common.ManageLAP</class_name>
+                    <classpath>
+                        <path>$(CCMDBInstallLocation)/lib/CTGPSIDeploymentServices.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/CTGInstallResources.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/CTGInstallCommon.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/icl.jar</path>
+                        <path>$(CCMDBInstallLocation)/lib/Lapapp.jar</path>
+                    </classpath>
+                    <bean_properties>
+                        <property name="LapSource">
+                            <setter>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</setter>
+                        </property>
+                        <property name="LapDest">
+                            <setter>$(ModuleInstallDir)</setter>
+                        </property>
+                        <property name="CCMDBHomeDirectory">
+                            <setter>$(CCMDBInstallLocation)</setter>
+                        </property>
+                        <property name="AcceptLicense">
+                            <setter>$(AcceptLicense)</setter>
+                        </property>
+                    </bean_properties>
+                </action>
+            </executeJavaClass>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- This section creates the package log directory.     -->
+    <actionGroup xsi:type="osac:OsActionGroup">
+        <actions>
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="CREATE_PKG_LOG_DIR">Create Package Log Directory</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(PkgLogDirectory)</name>
+                </directory>
+            </addDirectory>
+             
+             
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="CREATE_PKG_INSTALL_DIR">Create Package Install Directory</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(ModuleInstallDir)</name>
+                </directory>
+            </addDirectory>
+             
+            <!-- This section extracts and installs SWG TAGS-->
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="UNPACK_SWGTAGS">Unpack the Software Group Files files</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(MaximoInstallLocation)</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>SWGTAGS</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+             
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="UNPACK_SWGCOMPTAGS">Unpack the Component Software Group Files files</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(CCMDBInstallLocation)</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>SWGCOMPTAGS</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+             
+             
+             
+            <addDirectory actionId="Add_Help_Plugin">
+                <displayName>
+                    <defaultLineText key="ADD_HELP_PLUGIN_FILE">Unpack IBM User Interface Help System plugin</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(MaximoInstallLocation)/applications/mxiehs/iehsweb/webmodule/WEB-INF/eclipse/plugins</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>HELPPLUGIN</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+             
+             
+            <!-- Create dir for the output of Maximo pkginstall.bat     -->
+            <!-- The tool will fail if this dir is not already present. -->
+             
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="CREATE_ENABLEMENT_KEY_DIR">Create Enablement Key Output Dir</defaultLineText>
+                </displayName>
+                 
+                <directory temporary="false">
+                    <name>$(MaximoInstallLocation)/applications/maximo/businessobjects/classes/psdi/app/signature/apps</name>
+                </directory>
+            </addDirectory>
+             
+            <!-- Unpack the file contianing the Maximo enablement keys.       -->
+            <!-- Note that this is unpacked to the Maximo Home Directory.     -->
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="ADD_ENABLEMENT_KEYS">Unpack the Maximo Asset Management Service Provider Key to Maximo Directory</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(MaximoInstallLocation)/tools/maximo</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>ENABLEMENTKEYZIPFILE</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+             
+            <!-- This action unpacks the language pack files to the Maximo directory tree. -->
+            <addDirectory actionId="Unpack_Language_Files_to_Maximo_Dir">
+                <displayName>
+                    <defaultLineText key="UNPACK_XLIFF_LANG_FILES">Unpack Language Files to Maximo Directory</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(MaximoInstallLocation)</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>MAMSERVICEPROVIDERXLIFF</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+        </actions>
+    </actionGroup>
+     
+    <!-- Note that this is where the enablement keys are deployed.     -->
+    <actionGroup xsi:type="osac:OsActionGroup">
+        <actions>
+            <!--  Run pkginstall.bat on .pkg file -->
+            <executeExternalCommand actionId="DEPLOY_ENABLEMENT_KEY">
+                <displayName>
+                    <defaultLineText key="UNPACK_KEYS">Deploy enablement keys</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(MaximoInstallLocation)/tools/maximo/pkginstall.$(shExt)</command>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Deploy_Key.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Deploy_Key.err</std_error_file>
+                    <!--  <working_dir>$(CCMDBInstallLocation)/temp</working_dir> -->
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+    <!-- Note that this is where the enablement keys are deployed.     -->
+    <actionGroup xsi:type="osac:OsActionGroup">
+        <actions>
+            <!--  Run pkginstall.bat on .pkg file -->
+            <executeExternalCommand actionId="DEPLOY_ENABLEMENT_KEY">
+                <displayName>
+                    <defaultLineText key="UNPACK_KEYS">Deploy enablement keys</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(MaximoInstallLocation)/tools/maximo/pkginstall.$(shExt)</command>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Deploy_Key.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Deploy_Key.err</std_error_file>
+                    <!--  <working_dir>$(CCMDBInstallLocation)/temp</working_dir> -->
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- This section extracts and installs the Service Provider files for Maximo Asset Management    -->
+    <actionGroup xsi:type="osac:OsActionGroup">
+        <actions>
+            <addDirectory>
+                <displayName>
+                    <defaultLineText key="UNPACK_MAMSERVICEPROVIDER">Unpack the Maximo Asset Management Service Provider Component</defaultLineText>
+                </displayName>
+                <directory temporary="false">
+                    <name>$(MaximoInstallLocation)</name>
+                    <source>
+                        <source_archive format="zip">
+                            <fileIdRef>MAMSERVICEPROVIDER</fileIdRef>
+                        </source_archive>
+                    </source>
+                </directory>
+            </addDirectory>
+        </actions>
+    </actionGroup>
+     
+    <!-- This section includes code to condition out any WebSphere specific actions. -->
+    <!-- Run Updatedb.bat.  This deploys updatedb in WebSphere only.  -->
+    <!-- RAS This was moved to ensure that updatedb is run before building and deploying the ear -->
+     
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunWASAdminActions)' = 'true')">
+        <actions>
+            <executeExternalCommand actionId="Maximo_Update_DB_Create">
+                <displayName>
+                    <defaultLineText key="MAXIMO_UPDATEDB">Stop Application Server, Run Maximo UpdateDB Script, Start Application Server</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(CCMDBInstallLocation)/jacl/solutions/updatedbWrapper.$(shExt)</argument>
+                            <argument>$(WASAdminUserName)</argument>
+                            <argument>$(WASAdminPassword)</argument>
+                            <argument>$(WASApplicationServerName)</argument>
+                            <argument>$(WASNodeName)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Update_DB_create.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Update_DB_create.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- This section includes code to condition out any WebSphere specific actions. -->
+    <!-- Run Updatedb.bat.  This deploys updatedb in WebSphere only.  -->
+    <!-- RAS This was moved to ensure that updatedb is run before building and deploying the ear -->
+     
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunWASAdminActions)' = 'true')">
+        <actions>
+            <executeExternalCommand actionId="Maximo_Update_DB_Update">
+                <displayName>
+                    <defaultLineText key="MAXIMO_UPDATEDB">Stop Application Server, Run Maximo UpdateDB Script, Start Application Server</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(CCMDBInstallLocation)/jacl/solutions/updatedbWrapper.$(shExt)</argument>
+                            <argument>$(WASAdminUserName)</argument>
+                            <argument>$(WASAdminPassword)</argument>
+                            <argument>$(WASApplicationServerName)</argument>
+                            <argument>$(WASNodeName)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Update_DB_update.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Update_DB_update.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+     
+    <!-- Runs updatedb.bat for Weblogic.  This will not deploy automatically onto BEA WebLogic. -->
+    <!-- WebLogic: run updatedb directly. Does not stop/start the AS. \-->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunWASAdminActions)' = 'false')">
+        <actions>
+            <executeExternalCommand actionId="Maximo_Update_DB_WebLogic_create">
+                <displayName>
+                    <defaultLineText key="MAXIMO_UPDATEDB_BEA">Run Maximo UpdateDB Script</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/tools/maximo/updatedb.$(shExtWinBatUnixSh)</argument>
+                            <argument>-v1</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Update_DB_create.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Update_DB_create.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+     
+    <!-- Runs updatedb.bat for Weblogic.  This will not deploy automatically onto BEA WebLogic. -->
+    <!-- WebLogic: run updatedb directly. Does not stop/start the AS. \-->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunWASAdminActions)' = 'false')">
+        <actions>
+            <executeExternalCommand actionId="Maximo_Update_DB_WebLogic_update">
+                <displayName>
+                    <defaultLineText key="MAXIMO_UPDATEDB_BEA">Run Maximo UpdateDB Script</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/tools/maximo/updatedb.$(shExtWinBatUnixSh)</argument>
+                            <argument>-v1</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Update_DB_update.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Update_DB_update.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- Runs Scriptfile -->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true')">
+        <actions>
+            <executeExternalCommand actionId="Run_scriptfile">
+                <displayName>
+                    <defaultLineText key="RUN_SCRIPTFILE">Run scriptfile</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/tools/maximo/internal/runscriptfile.$(shExt)</argument>
+                            <argument>-cserviceprovider</argument>
+                            <argument>-fProductEnabler</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Run_scriptfile.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Run_scriptfile.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo/internal</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- Runs Scriptfile -->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true')">
+        <actions>
+            <executeExternalCommand actionId="Run_scriptfile_update">
+                <displayName>
+                    <defaultLineText key="RUN_SCRIPTFILE">Run scriptfile</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/tools/maximo/internal/runscriptfile.$(shExt)</argument>
+                            <argument>-cserviceprovider</argument>
+                            <argument>-fProductEnabler</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Run_scriptfile.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Run_scriptfile.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo/internal</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- This group of actions runs the Maximo TDToolkit batch file, thereby -->
+    <!-- updating the PMP to use multiple languages.                         -->
+     
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true')">
+        <actions>
+            <executeExternalCommand actionId="Maximo_Update_PMP_create">
+                <displayName>
+                    <defaultLineText key="MAXIMO_UPDATEPMP">Update Service Provider PMP for Language Support</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/tools/maximo/TDToolkit.$(shExt)</argument>
+                            <argument>-pmpupdateserviceprovider</argument>
+                            <argument>-mxe.db.user$(mxedbuser)</argument>
+                            <argument>-mxe.db.password$(mxedbpassword)</argument>
+                            <argument>-mxe.db.url&quot;$(mxedburl)&quot;</argument>
+                            <argument>-mxe.db.driver$(mxedbdriver)</argument>
+                            <argument>-mxe.db.schemaowner&quot;$(mxedbschemaowner)&quot;</argument>
+                             
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Maximo_Lang_Update.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Maximo_Lang_Update.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+             
+            <executeExternalCommand actionId="Maximo_Update_PMP_update">
+                <displayName>
+                    <defaultLineText key="MAXIMO_UPDATEPMP">Update Service Provider PMP for Language Support</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/tools/maximo/TDToolkit.$(shExt)</argument>
+                            <argument>-pmpupdateserviceprovider</argument>
+                            <argument>-mxe.db.user$(mxedbuser)</argument>
+                            <argument>-mxe.db.password$(mxedbpassword)</argument>
+                            <argument>-mxe.db.url&quot;$(mxedburl)&quot;</argument>
+                            <argument>-mxe.db.driver$(mxedbdriver)</argument>
+                            <argument>-mxe.db.schemaowner&quot;$(mxedbschemaowner)&quot;</argument>
+                             
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Upgrade_Maximo_Lang_Update.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Upgrade_Maximo_Lang_Update.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/tools/maximo</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+     
+     
+    <!-- This actionGroup contains actions pursuant to rebuilding EAR  -->
+    <!-- files for Both BEA and WebSphere-->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRebuildActions)' = 'true')">
+        <actions>
+            <!-- As Maximo PMP's are installed into the actual Maximo EAR -->
+            <!-- itself, the entire EAR requires a rebuild and redeploy   -->
+            <!-- to the WAS server. We use a Maximo built-in script to do -->
+            <!-- this.                                                    -->
+            <!-- As tested, this batch file is a good citizen, and        -->
+            <!-- returns a return code of value '1' on an error. However, -->
+            <!-- the usage of wrapper.bat here is still necessary.        -->
+            <executeExternalCommand actionId="Rebuild_Maximo_EAR">
+                <displayName>
+                    <defaultLineText key="MAXIMO_REBUILD_EAR">Maximo EAR Rebuild Script</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/deployment/buildmaximoear.$(shExtWinCmdUnixSh)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Rebuild_EAR_create.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Rebuild_EAR_create.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/deployment</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+     
+     
+    <!-- This actionGroup contains actions pursuant to rebuilding EAR  -->
+    <!-- files for Both BEA and WebSphere-->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRebuildActions)' = 'true')">
+        <actions>
+            <!-- As Maximo PMP's are installed into the actual Maximo EAR -->
+            <!-- itself, the entire EAR requires a rebuild and redeploy   -->
+            <!-- to the WAS server. We use a Maximo built-in script to do -->
+            <!-- this.                                                    -->
+            <!-- As tested, this batch file is a good citizen, and        -->
+            <!-- returns a return code of value '1' on an error. However, -->
+            <!-- the usage of wrapper.bat here is still necessary.        -->
+            <executeExternalCommand actionId="Rebuild_Maximo_EAR_Update">
+                <displayName>
+                    <defaultLineText key="MAXIMO_REBUILD_EAR">Maximo EAR Rebuild Script</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/deployment/buildmaximoear.$(shExtWinCmdUnixSh)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Rebuild_EAR_update.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Rebuild_EAR_update.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/deployment</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+     
+    <!-- This actionGroup contains actions pursuant to rebuilding Maximo Help EAR  -->
+    <!-- files for Both BEA and WebSphere-->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRebuildActions)' = 'true')">
+        <actions>
+            <!-- As Maximo PMP's are installed into the actual Maximo EAR -->
+            <!-- itself, the entire EAR requires a rebuild and redeploy   -->
+            <!-- to the WAS server. We use a Maximo built-in script to do -->
+            <!-- this.                                                    -->
+            <!-- As tested, this batch file is a good citizen, and        -->
+            <!-- returns a return code of value '1' on an error. However, -->
+            <!-- the usage of wrapper.bat here is still necessary.        -->
+            <executeExternalCommand actionId="Rebuild_Maximo__Help_EAR">
+                <displayName>
+                    <defaultLineText key="MAXIMO_REBUILD_HELP_EAR">Maximo Help EAR Rebuild Script</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/deployment/buildmxiehsear.$(shExtWinCmdUnixSh)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Rebuild_Help_EAR.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Rebuild_Help_EAR.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/deployment</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- This actionGroup contains actions pursuant to rebuilding Maximo Help EAR  -->
+    <!-- files for Both BEA and WebSphere-->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRebuildActions)' = 'true')">
+        <actions>
+            <!-- As Maximo PMP's are installed into the actual Maximo EAR -->
+            <!-- itself, the entire EAR requires a rebuild and redeploy   -->
+            <!-- to the WAS server. We use a Maximo built-in script to do -->
+            <!-- this.                                                    -->
+            <!-- As tested, this batch file is a good citizen, and        -->
+            <!-- returns a return code of value '1' on an error. However, -->
+            <!-- the usage of wrapper.bat here is still necessary.        -->
+            <executeExternalCommand actionId="Rebuild_Maximo__Help_EAR_upd">
+                <displayName>
+                    <defaultLineText key="MAXIMO_REBUILD_HELP_EAR">Maximo Help EAR Rebuild Script</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(MaximoInstallLocation)/deployment/buildmxiehsear.$(shExtWinCmdUnixSh)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Rebuild_Help_EAR_upd.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Rebuild_Help_EAR_upd.err</std_error_file>
+                    <working_dir>$(MaximoInstallLocation)/deployment</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- The next command will be to the WAS thin client to deploy     -->
+    <!-- the updated EAR (in $(MaximoHomeDirectory)/deployment/default -->
+    <!-- to the WAS server.      -->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRedeployActions)' = 'true' and '$(ApplicationServerVendor)' = 'WebSphere')">
+        <actions>
+            <executeExternalCommand actionId="Deploy_Maximo_EAR">
+                <displayName>
+                    <defaultLineText key="MAXIMO_DEPLOY_EAR">Deploy Maximo EAR with WAS Thin Client</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(CCMDBInstallLocation)/jacl/solutions/DeployApplication.$(shExtWinBatUnixSh)</argument>
+                            <argument>$(WASAdminUserName)</argument>
+                            <argument>$(WASAdminPassword)</argument>
+                            <argument>MAXIMO</argument>
+                            <argument>$(WASNodeName)</argument>
+                            <argument>$(WASApplicationServerName)</argument>
+                            <argument>$(MaximoInstallLocation)/deployment/default/maximo.ear</argument>
+                            <argument>$(WASVirtualHost)</argument>
+                            <argument>$(WASWebServerName)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Deploy_EAR.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Deploy_EAR.err</std_error_file>
+                    <working_dir>$(CCMDBInstallLocation)/jacl/solutions</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+    <!-- The next command will be to the WAS thin client to deploy     -->
+    <!-- the updated EAR (in $(MaximoHomeDirectory)/deployment/default -->
+    <!-- to the WAS server.      -->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRedeployActions)' = 'true' and '$(ApplicationServerVendor)' = 'WebSphere')">
+        <actions>
+            <executeExternalCommand actionId="Deploy_Maximo_EAR_Upd">
+                <displayName>
+                    <defaultLineText key="MAXIMO_DEPLOY_EAR">Deploy Maximo EAR with WAS Thin Client</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(CCMDBInstallLocation)/jacl/solutions/DeployApplication.$(shExtWinBatUnixSh)</argument>
+                            <argument>$(WASAdminUserName)</argument>
+                            <argument>$(WASAdminPassword)</argument>
+                            <argument>MAXIMO</argument>
+                            <argument>$(WASNodeName)</argument>
+                            <argument>$(WASApplicationServerName)</argument>
+                            <argument>$(MaximoInstallLocation)/deployment/default/maximo.ear</argument>
+                            <argument>$(WASVirtualHost)</argument>
+                            <argument>$(WASWebServerName)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Deploy_EAR.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Deploy_EAR.err</std_error_file>
+                    <working_dir>$(CCMDBInstallLocation)/jacl/solutions</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+     
+    <!-- The next command will be to the WAS thin client to deploy     -->
+    <!-- the updated EAR (in $(MaximoHomeDirectory)/deployment/default -->
+    <!-- to the WAS server.      -->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRedeployActions)' = 'true' and '$(ApplicationServerVendor)' = 'WebSphere')">
+        <actions>
+            <executeExternalCommand actionId="Deploy_Maximo_Help_EAR">
+                <displayName>
+                    <defaultLineText key="MAXIMO_DEPLOY_HELP_EAR">Deploy Maximo Help EAR with WAS Thin Client</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Create">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(CCMDBInstallLocation)/jacl/solutions/DeployApplication.$(shExtWinBatUnixSh)</argument>
+                            <argument>$(WASAdminUserName)</argument>
+                            <argument>$(WASAdminPassword)</argument>
+                            <argument>MAXIMOIEHS</argument>
+                            <argument>$(WASNodeName)</argument>
+                            <argument>$(WASApplicationServerName)</argument>
+                            <argument>$(MaximoInstallLocation)/deployment/default/maximoiehs.ear</argument>
+                            <argument>$(WASVirtualHost)</argument>
+                            <argument>$(WASWebServerName)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Deploy_Help_EAR.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Deploy_Help_EAR.err</std_error_file>
+                    <working_dir>$(CCMDBInstallLocation)/jacl/solutions</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+     
+    <!-- The next command will be to the WAS thin client to deploy     -->
+    <!-- the updated EAR (in $(MaximoHomeDirectory)/deployment/default -->
+    <!-- to the WAS server.      -->
+    <actionGroup xsi:type="osac:OsActionGroup" condition="('$(RunMaximoJDBCActions)' = 'true' and '$(RunMaxEARRedeployActions)' = 'true' and '$(ApplicationServerVendor)' = 'WebSphere')">
+        <actions>
+            <executeExternalCommand actionId="Deploy_Maximo_Help_EAR_Upd">
+                <displayName>
+                    <defaultLineText key="MAXIMO_DEPLOY_HELP_EAR">Deploy Maximo Help EAR with WAS Thin Client</defaultLineText>
+                </displayName>
+                <action keep_std_error_file="true" keep_std_output_file="true" operation="Update">
+                    <invocation_string>
+                        <command>$(CCMDBInstallLocation)/bin/wrapper.$(shExt)</command>
+                        <arguments>
+                            <argument>$(CCMDBInstallLocation)/jacl/solutions/DeployApplication.$(shExtWinBatUnixSh)</argument>
+                            <argument>$(WASAdminUserName)</argument>
+                            <argument>$(WASAdminPassword)</argument>
+                            <argument>MAXIMOIEHS</argument>
+                            <argument>$(WASNodeName)</argument>
+                            <argument>$(WASApplicationServerName)</argument>
+                            <argument>$(MaximoInstallLocation)/deployment/default/maximoiehs.ear</argument>
+                            <argument>$(WASVirtualHost)</argument>
+                            <argument>$(WASWebServerName)</argument>
+                        </arguments>
+                    </invocation_string>
+                    <completion_block>
+                        <return_code from="0" to="0">
+                            <severity>SUCCESS</severity>
+                        </return_code>
+                        <return_code from="1" to="9999">
+                            <severity>FAILURE</severity>
+                        </return_code>
+                    </completion_block>
+                    <std_output_file>$(PkgLogDirectory)/Deploy_Help_EAR_upd.out</std_output_file>
+                    <std_error_file>$(PkgLogDirectory)/Deploy_Help_EAR_upd.err</std_error_file>
+                    <working_dir>$(CCMDBInstallLocation)/jacl/solutions</working_dir>
+                </action>
+            </executeExternalCommand>
+        </actions>
+    </actionGroup>
+     
+</action:artifact>
+     
+     
+     
+     
+     
