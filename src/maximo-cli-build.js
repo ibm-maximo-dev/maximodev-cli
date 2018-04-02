@@ -12,7 +12,7 @@ const dbcscripts = require('./lib/dbcscripts');
 
 const schema = {
   _version: '0.0.1',
-  _description: 'Build the current Maximo artifact',
+  _description: 'Build the current Maximo artifacts',
   properties: {}
 };
 
@@ -36,14 +36,16 @@ function build(result) {
     gradle.build();
   }
 
-  // rebuild the presentation mxs files
-  presentations.diffAllForAddon();
+  if (env.isValidMaximoHome()) {
+    // rebuild the presentation mxs files
+    presentations.diffAllForAddon();
+  } else {
+    log.warn("Skipping to build presentations (if any) because MAXIMO_HOME is not set to a valid Maximo Home directory");
+  }
 
   // Update product.xml when necessary.
   productxml.updateVersion(env.productXmlIn(), env.scriptDir());
   log.info("product xml updated with the latest version");
-
-
 
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.
   log.log();

@@ -133,4 +133,11 @@ describe('dist', function() {
     const buildFolder = path.join(shell.env['PWD'], 'test');
     expect(dist.canBuild(buildFolder)).to.be.true;
   });
+
+
+  it('should transform path correctly', function() {
+    expect(dist.transformPaths("/a/b/c/d.txt")).to.be.equal("/a/b/c/d.txt");
+    expect(dist.transformPaths("/a/b/webclient/miniapps/d.txt")).to.be.equal("/a/b/webclient/javascript/miniapps/d.txt");
+  });
+
 });

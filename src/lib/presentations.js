@@ -84,12 +84,24 @@ presentations.diffAll = function(baseDir, newDir, outdbc) {
   tmpNew.removeCallback();
 };
 
+/**
+ * Returns # of presentation xmls in your dev area.  Can be used to check if thre are any presentations.
+ *
+ * @param dir
+ * @returns {number}
+ */
+presentations.haveAny = function(dir) {
+  let count=0;
+  shell.ls('-R', path.join(dir,'*.xml')).forEach(()=>count++);
+  return count;
+};
+
 presentations.diffAllForAddon = function(baseDir, newDir, outdbc) {
   baseDir = baseDir || 'BASE';
   newDir = newDir || env.addonDir('resources/presentations/');
   outdbc = outdbc || dbcscripts.getMxsScript();
 
-  if (fs.existsSync(newDir)) {
+  if (fs.existsSync(newDir) && presentations.haveAny(newDir)) {
     log.info("Creating Presentation Delta File: " + outdbc);
     presentations.diffAll(baseDir, newDir, outdbc);
   }

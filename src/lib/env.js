@@ -88,6 +88,26 @@ env.addonDir = function(extraPath) {
   return env.ensureDir(base);
 };
 
+/**
+ * Return a Java Package prefixed with the base addon java package
+ *
+ * @param extraPath
+ */
+env.javaPackage = function(extraPath) {
+  var base = env.get('java_package','demo');
+  if (extraPath) {
+    base = base + "." + extraPath;
+  }
+  return base;
+};
+
+/**
+ * Return true if java is configured
+ */
+env.isJavaInstalled = function() {
+  return env.get('java_package', null);
+};
+
 env.REL_DIR_MAXIMO_APPLICATIONS = 'applications/maximo';
 env.REL_DIR_BUSINESS_OBJECTS = path.join(env.REL_DIR_MAXIMO_APPLICATIONS, 'businessobjects');
 
@@ -296,6 +316,15 @@ env.maximoToolsHome = function() {
 };
 
 /**
+ * Returns the location of the maximo properties in the MAXIMO_HOME
+ * @returns {*}
+ */
+env.maximoProperties = function(dir) {
+  dir = dir || env.maximoHome();
+  return path.resolve(path.join(dir, 'applications/maximo/properties/maximo.properties'));
+};
+
+/**
  * Runs a Maximo Java Tool from the Maximo Home Tools area.
  *
  * @param toolClass
@@ -305,6 +334,10 @@ env.maximoToolsHome = function() {
  * @param onError
  */
 env.runMaximoTool = function(toolClass, args, workingDir, onSuccess, onError) {
+  if (!env.isValidMaximoHome()) {
+    log.error("Unable to run %s because a MAXIMO_HOME is required.", toolClass)
+  }
+
   var classpath = env.resolveMaximoPath([
     'tools/maximo/classes',
     'applications/maximo/businessobjects/classes',
@@ -325,7 +358,7 @@ env.runMaximoTool = function(toolClass, args, workingDir, onSuccess, onError) {
     if (onError)
       onError(cmd, proc);
     else
-      log.error("command failed with code: %d", proc.code);
+      log.error("command %s failed with code: %d", toolClass, proc.code);
   } else {
     if (onSuccess)
       onSuccess(cmd, proc);
@@ -342,7 +375,8 @@ env.runMaximoTool = function(toolClass, args, workingDir, onSuccess, onError) {
  * @returns {*}
  */
 env.isValidMaximoHome = function(dir) {
-  return fs.existsSync(dir) && fs.existsSync(path.join(dir, 'tools/maximo/en/script/'));
+  dir=dir || env.maximoHome();
+  return fs.existsSync(dir) && fs.existsSync(path.join(dir, 'tools/maximo/en/script/') && env.maximoProperties(dir));
 };
 
 /**
