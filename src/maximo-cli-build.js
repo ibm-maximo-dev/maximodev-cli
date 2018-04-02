@@ -53,6 +53,4 @@ function build(result) {
   log.log(`Creating output folder: ${dist.BUILD_FOLDER_NAME}`);
 
   dist.build(buildDir);
-
-
 }

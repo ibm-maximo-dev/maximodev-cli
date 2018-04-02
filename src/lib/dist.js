@@ -121,6 +121,11 @@ dist.canBuild = function(buildDir) {
   return false;
 };
 
+dist.exists = function(rootDir) {
+  const destFolder = path.join(rootDir, this.BUILD_FOLDER_NAME);
+  return fs.existsSync(destFolder);
+}
+
 dist.build = function(rootDir, userExcludes) {
 
   const excludes = userExcludes || defaultExcludes;
@@ -131,7 +136,7 @@ dist.build = function(rootDir, userExcludes) {
   if(!fs.existsSync(destFolder)) {
     shell.mkdir('-p',destFolder);
   }
-  shell.rm('-Rf',`${destFolder}/*`);
+  shell.rm('-Rf',`${destFolder}${path.sep}*`);
 
   this.parseDir(rootDir, excludes);
 };
