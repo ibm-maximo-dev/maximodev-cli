@@ -39,7 +39,24 @@ define([
       this.domNode.innerHTML = '<div>Loading....</div>';
 
       var me = this;
-      // note: cmd will get passed as an arg to the async_get_data MXEvent defined in {{miniapp_java_class_name}} class
+      // load google charting apis dynamically
+      this.loadLibrary(function() {
+        try {
+          if (google.charts.load != null) {
+            log.debug("Google Chart APIs are loaded.");
+            return true;
+          }
+        } catch(e) {
+          log.debug("Waiting for Google Charts API to load...");
+        }
+        return false;
+      }, "https://www.gstatic.com/charts/loader.js", function() {me.startupAfterScriptsAreLoaded()});
+    },
+
+
+    startupAfterScriptsAreLoaded: function() {
+      var me = this;
+      // note: cmd will get passed as an arg to the async_get_data MXEvent defined in MyMiniAppBean class
       this.fetch("async_get_data", {cmd: 'hello world'}).then(function (data) {
         me.updateUI(data);
       }, function (err) {
@@ -47,12 +64,54 @@ define([
       });
     },
 
-    updateUI: function (data) {
-      data = data || {name: 'Unknown'};
-      log.debug("Our Data From the Server", data);
+    updateUI: function (chartData) {
+      chartData = chartData || {error: 'No Data From Server'};
+      log.debug("Our Data From the Server", chartData);
+
       // this.domNode is the main UI node for your widget, build on it.
       // you can use whatever approach you need/want to build out the html for your miniapp
-      this.domNode.innerHTML = '<div class="hello">Hello ' + data.name + '</div>';
+      // eg, you can simply use innerHTML to add elements, such as
+      //this.domNode.innerHTML = '<div class="hello">Hello World</div>';
+      // or you an do something more complex, like add a charting widget, etc.
+
+
+      if (chartData.error) {
+        this.domNode.innerHTML = '<div class="error">'+chartData.error+'</div>';
+        return;
+      }
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // keep a reference to ourself...
+      var me = this;
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Cost Type');
+        data.addColumn('number', 'Amount');
+
+        log.debug("dataSet", chartData.dataSet);
+
+        data.addRows(chartData.dataSet);
+
+        // Set chart options
+        var options = {'title': chartData.title,
+          'width': 500,
+          'height':400};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.BarChart(me.domNode);
+        chart.draw(data, options);
+      }
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
 
       // hide our progress indicator
       topic.publish('miniapp.hideprogress', this.domid);
@@ -82,7 +141,7 @@ define([
      * measure your widget to setup it's size dynamically
      */
     onMeasure: function () {
-      return {w: 500, h: 500};
+      return {w: 504, h: 404};
     }
   });
 });

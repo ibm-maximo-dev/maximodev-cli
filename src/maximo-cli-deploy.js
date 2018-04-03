@@ -18,7 +18,7 @@ const schema = {
       _cli: 'dir',
     }
   }
-}
+};
 
 cli.process(schema, process.argv, deploy);
 
@@ -42,4 +42,5 @@ function deploy(result) {
   }
   log.log(`Deploying ${SOURCE_FOLDER} to ${DEST_FOLDER}`);
   shell.cp('-Rf', `${SOURCE_FOLDER}${path.sep}*`, DEST_FOLDER);
+  log.log(`Deployed to ${DEST_FOLDER}`);
 }

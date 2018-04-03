@@ -17,6 +17,7 @@
 package {{{java_package}}};
 
 import com.ibm.json.java.JSONObject;
+import com.ibm.json.java.JSONArray;
 import com.ibm.tivoli.maximo.miniapps.control.CssFilterable;
 import com.ibm.tivoli.maximo.miniapps.control.HasOptions;
 import com.ibm.tivoli.maximo.miniapps.control.MiniAppControl;
@@ -180,11 +181,36 @@ public class {{{miniapp_java_class_name}}} extends DataBean
      * @return
      */
     @MXEvent("async_get_data")
-    public Map<String, String> getMyData(@MXEventParam("cmd") String command) {
-        Map<String, String> data = new HashMap<>();
-        data.put("name", "Bill");
-        data.put("age", "33");
-        data.put("command", command);
+    public JSONObject getMyData(@MXEventParam("cmd") String command) {
+        // we are ignoreing cmd here, and as a demo, just returning some data
+        // that the sample will use to plot in it's chart widget
+        // In a real app, you can query mbos, etc, and access any required Maximo objects that you need
+
+        JSONObject data = new JSONObject();
+        data.put("title", "Asset Costs");
+        JSONArray dataSet = new JSONArray();
+        data.put("dataSet", dataSet);
+
+        JSONArray d = new JSONArray();
+        d.add("Purchase");
+        d.add(1500);
+        dataSet.add(d);
+
+        d = new JSONArray();
+        d.add("Budgeted");
+        d.add(1500);
+        dataSet.add(d);
+
+        d = new JSONArray();
+        d.add("YTD");
+        d.add(100);
+        dataSet.add(d);
+
+        d = new JSONArray();
+        d.add("Total");
+        d.add(1200);
+        dataSet.add(d);
+
         return data;
     }
 }
