@@ -38,7 +38,7 @@
                     <defaultLineText key="CREATE_TEMP_LICENSE_DIR">Create Temporary License Directory</defaultLineText>
                 </displayName>
                 <directory temporary="true">
-                    <name>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</name>
+                    <name>$({{package_name}})/temp/license_$(PkgShortName)</name>
                     <source>
                         <source_archive format="zip">
                             <fileIdRef>LicenseZip</fileIdRef>
@@ -53,21 +53,21 @@
                 <action operation="Create">
                     <class_name>com.ibm.tivoli.ccmdb.install.ps.si.actions.common.ManageLAP</class_name>
                     <classpath>
-                        <path>$(CCMDBInstallLocation)/lib/CTGPSIDeploymentServices.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/CTGInstallResources.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/CTGInstallCommon.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/icl.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/Lapapp.jar</path>
+                        <path>$({{package_name}})/lib/CTGPSIDeploymentServices.jar</path>
+                        <path>$({{package_name}})/lib/CTGInstallResources.jar</path>
+                        <path>$({{package_name}})/lib/CTGInstallCommon.jar</path>
+                        <path>$({{package_name}})/lib/icl.jar</path>
+                        <path>$({{package_name}})/lib/Lapapp.jar</path>
                     </classpath>
                     <bean_properties>
                         <property name="LapSource">
-                            <setter>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</setter>
+                            <setter>$({{package_name}})/temp/license_$(PkgShortName)</setter>
                         </property>
                         <property name="LapDest">
                             <setter>$(ModuleInstallDir)</setter>
                         </property>
                         <property name="CCMDBHomeDirectory">
-                            <setter>$(CCMDBInstallLocation)</setter>
+                            <setter>$({{package_name}})</setter>
                         </property>
                         <property name="AcceptLicense">
                             <setter>$(AcceptLicense)</setter>
@@ -85,7 +85,7 @@
                     <defaultLineText key="CREATE_TEMP_LICENSE_DIR">Create Temporary License Directory</defaultLineText>
                 </displayName>
                 <directory temporary="true">
-                    <name>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</name>
+                    <name>$({{package_name}})/temp/license_$(PkgShortName)</name>
                     <source>
                         <source_archive format="zip">
                             <fileIdRef>LicenseZip</fileIdRef>
@@ -100,21 +100,21 @@
                 <action operation="Update">
                     <class_name>com.ibm.tivoli.ccmdb.install.ps.si.actions.common.ManageLAP</class_name>
                     <classpath>
-                        <path>$(CCMDBInstallLocation)/lib/CTGPSIDeploymentServices.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/CTGInstallResources.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/CTGInstallCommon.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/icl.jar</path>
-                        <path>$(CCMDBInstallLocation)/lib/Lapapp.jar</path>
+                        <path>$({{package_name}})/lib/CTGPSIDeploymentServices.jar</path>
+                        <path>$({{package_name}})/lib/CTGInstallResources.jar</path>
+                        <path>$({{package_name}})/lib/CTGInstallCommon.jar</path>
+                        <path>$({{package_name}})/lib/icl.jar</path>
+                        <path>$({{package_name}})/lib/Lapapp.jar</path>
                     </classpath>
                     <bean_properties>
                         <property name="LapSource">
-                            <setter>$(CCMDBInstallLocation)/temp/license_$(PkgShortName)</setter>
+                            <setter>$({{package_name}})/temp/license_$(PkgShortName)</setter>
                         </property>
                         <property name="LapDest">
                             <setter>$(ModuleInstallDir)</setter>
                         </property>
                         <property name="CCMDBHomeDirectory">
-                            <setter>$(CCMDBInstallLocation)</setter>
+                            <setter>$(package_name)</setter>
                         </property>
                         <property name="AcceptLicense">
                             <setter>$(AcceptLicense)</setter>
@@ -168,7 +168,7 @@
                     <defaultLineText key="UNPACK_SWGCOMPTAGS">Unpack the Component Software Group Files files</defaultLineText>
                 </displayName>
                 <directory temporary="false">
-                    <name>$(CCMDBInstallLocation)</name>
+                    <name>$({{package_name}})</name>
                     <source>
                         <source_archive format="zip">
                             <fileIdRef>SWGCOMPTAGS</fileIdRef>
