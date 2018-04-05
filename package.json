@@ -16,7 +16,7 @@
     "test1": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties mocha $1"
   },
   "author": "sls@ca.ibm.com",
-  "license": "ISC",
+  "license": "MIT",
   "repository": "ibm-maximo-dev/maximo-cli",
   "dependencies": {
     "commander": "^2.14.1",
