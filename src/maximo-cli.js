@@ -27,4 +27,3 @@ program
   .command('deploy', 'publish a build to an artifact server').alias('d')
   //.command('test', 'run all tests for the add-on').alias('d')
   .parse(process.argv);
-

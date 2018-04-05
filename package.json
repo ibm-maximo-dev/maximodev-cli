@@ -1,6 +1,6 @@
 {
   "name": "maximo-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Maximo command line tools",
   "main": "src/maximo-cli.js",
   "bin": {

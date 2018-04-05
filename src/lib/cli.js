@@ -42,6 +42,7 @@ cli.process = function(schema, argv, cb) {
     prompt.get(schema, function (err, result) {
       printCommandLine(schema, program, result);
       cb(result);
+      prompt.stop();
     });
   }
 };

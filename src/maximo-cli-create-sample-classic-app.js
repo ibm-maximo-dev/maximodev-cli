@@ -40,4 +40,5 @@ function create_app(result) {
     process.exit(1);
   }
   installer.installTemplateApp("newsampleclassicapp", env.addonDir(), args);
+  //process.exit(0);
 }

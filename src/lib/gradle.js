@@ -26,8 +26,14 @@ gradle.exists = function(gradlePath) {
 };
 
 gradle.runTasks = function(tasks) {
-  if (shell.exec(`/bin/bash ${gradleFilename} ${tasks}`).code !== 0) {
-    process.exit(1);
+  if (IS_WIN) {
+    if (shell.exec(`${gradleFilename} ${tasks}`).code !== 0) {
+      process.exit(1);
+    }    
+  } else {
+    if (shell.exec(`/bin/bash ${gradleFilename} ${tasks}`).code !== 0) {
+      process.exit(1);
+    }
   }
 };
 
