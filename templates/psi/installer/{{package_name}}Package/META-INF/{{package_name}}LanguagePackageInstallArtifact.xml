@@ -3,7 +3,7 @@
 <!--
      Begin Standard Header
      
-     File:     MAM SERVICE PROVIDER PSI UI/META-INF/SERVICEPROVIDERLanguagePackageInstallArtifact.xml
+     File:     MAM {{package_name}} PSI UI/META-INF/{{package_name}}LanguagePackageInstallArtifact.xml
      Version:  1.0
      Modified: 11/07/09
      

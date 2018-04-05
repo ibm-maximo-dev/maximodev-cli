@@ -4,6 +4,7 @@ var templates = require('./templates');
 var dbcscripts = require('./dbcscripts');
 var env = require('./env');
 var path = require('path');
+var fs = require('fs');
 var util = require('util');
 var shell = require('shelljs');
 var log = require("./logger");
@@ -28,10 +29,6 @@ psi.installTemplatePSI = function(template, dir, templateArgs) {
   dir = dir || env.addonDir() || '.';
   env.ensureDir(dir);
 
-  if (!templateArgs.mbo_name_lower) {
-     templateArgs.mbo_name_lower = templateArgs.mbo_name.toLowerCase();
-  }
-
   if (!templateArgs.java_package_dir) {
      templateArgs.java_package_dir = path.join(...templateArgs.java_package.split('.'));
   }
@@ -41,7 +38,7 @@ psi.installTemplatePSI = function(template, dir, templateArgs) {
   var tdir = templates.resolveName(template);
   shell.ls("-R", tdir).forEach(function(f) {
     if (!fs.lstatSync(path.join(tdir, f)).isDirectory()) {
-      psi.installTemplateMboFile(path.resolve(tdir, f), dir, f, templateArgs);
+      psi.installTemplatePSIFile(path.resolve(tdir, f), dir, f, templateArgs);
     }
   });
 };
@@ -74,4 +71,39 @@ psi.installTemplatePSIFile = function(template, outBaseDir, filePath, templateAr
 function pkgToDir(pkg) {
   pkg = pkg.replace(/\./g, '/');
   return pkg;
+};
+
+var copyFileSync = function( source, target ) {
+
+    var targetFile = target;
+    //if target is a directory a new file with the same name will be created
+    if ( fs.existsSync( target ) ) {
+        if ( fs.lstatSync( target ).isDirectory() ) {
+            targetFile = path.join( target, path.basename( source ) );
+        }
+    }
+    fs.writeFileSync(targetFile, fs.readFileSync(source));
 }
+
+var copyFolderRecursiveSync = function( source, target ) {
+    var files = [];
+
+    //check if folder needs to be created or integrated
+    var targetFolder = path.join( target, path.basename( source ) );
+    if ( !fs.existsSync( targetFolder ) ) {
+        fs.mkdirSync( targetFolder );
+    }
+
+    //copy
+    if ( fs.lstatSync( source ).isDirectory() ) {
+        files = fs.readdirSync( source );
+        files.forEach( function ( file ) {
+            var curSource = path.join( source, file );
+            if ( fs.lstatSync( curSource ).isDirectory() ) {
+                copyFolderRecursiveSync( curSource, targetFolder );
+            } else {
+                copyFileSync( curSource, targetFolder );
+            }
+        } );
+    }
+};
