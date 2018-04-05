@@ -3,7 +3,7 @@
 
 The `maximo-cli` is a set of command line tools for developing with Maximo Asset Management, which accelerates tasks, such as creating add-ons, MBOs, field validations, etc.  
 
-`maximo-cli` requires that [NodeJS](https://nodejs.org/en/) be installed.  If you do not have NodeJS installed, then install it first.
+`maximo-cli` requires that [NodeJS](https://nodejs.org/en/) **version 8+** be installed.  If you do not have NodeJS **version 8** installed, then install/upgrade it first.
 
 The vision for `maximo-cli` is to provide a set of lifecycle tools for the developer, allowing them to create, build, test, deploy, and package an add-on, while offering other additional tools are useful in the development lifecycle of Maximo Asset Management.
 
