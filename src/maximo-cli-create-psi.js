@@ -4,6 +4,8 @@ var log = require('./lib/logger');
 var env = require('./lib/env');
 var cli = require('./lib/cli');
 var mbo = require('./lib/mbos');
+const shell = require('shelljs');
+var dist = require('./lib/dist');
 
 var schema = {
   _version: '0.0.1',
@@ -30,23 +32,12 @@ function create_mbo(result) {
   /**
    * Add psi packacdeUI
    */
-  mbo.installTemplateMbo("mbos/dbc", env.addonDir(), args);
+  mbo.installTemplateMbo("psi", env.addonDir(), args);
 
   /**
-   * Add service support on create 
+   * Copy Files from dist
+   * 
    */
-
-  var service_name = result.service_name;
-  log.info("Setting up "+service_name+" service.");
-
-  if(service_name!='ASSET'){
-    mbo.installTemplateMbo("mbos/service", env.addonDir(), args);
-  }
-  
-  //Will create the new Mbo service 
-  
-  
-  //Will create the java files
-  mbo.installTemplateMbo("mbos/java", env.addonDir(), args);
+   shell.cp('-Rf','./dis/*','./'+schema.package_name+'/FILES')
 }
 
