@@ -15,8 +15,8 @@ const IS_WIN = process.platform === "win32";
 
 let gradleFilename = "gradlew";
 if (IS_WIN) {
-  gradleFilename = gradleFilename.append(".bat");
-};
+  gradleFilename = gradleFilename + ".bat";
+}
 
 gradle.exists = function(gradlePath) {
   if(!gradlePath) {

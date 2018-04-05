@@ -1,6 +1,6 @@
 {
   "name": "maximo-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Maximo command line tools",
   "main": "src/maximo-cli.js",
   "bin": {
@@ -17,6 +17,7 @@
   },
   "author": "sls@ca.ibm.com",
   "license": "ISC",
+  "repository": "ibm-maximo-dev/maximo-cli",
   "dependencies": {
     "commander": "^2.14.1",
     "dateformat": "^3.0.3",
