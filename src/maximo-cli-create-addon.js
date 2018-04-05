@@ -61,19 +61,19 @@ var schema = {
       _cli: 'ver',
       default: '1.0.0.0'
     },
-    add_sample_app: {
-      description: "Add classic UI sample app?",
-      required: true,
-      _cli: 'classic_ui_app',
-      _yesno: true,
-      default: 'n'
-    },
+    // add_sample_app: {
+    //   description: "Add classic UI sample app?",
+    //   required: true,
+    //   _cli: 'classic_ui_app',
+    //   _yesno: true,
+    //   default: 'n'
+    // },
     add_java_support: {
       description: "Add Java support?",
       required: true,
       _cli: 'java_support',
       _yesno: true,
-      default: 'n'
+      default: 'y'
     },
     java_package: {
       description: "Default Java Package",
@@ -96,29 +96,29 @@ var schema = {
       _cli: 'maximo_home',
       _depends: 'add_java_support'
     },
-    add_sample_java_mbo: {
-      description: "Add sample Java Mbo?",
-      required: true,
-      _cli: 'java_mbo',
-      _yesno: true,
-      default: 'n',
-      _depends: 'add_java_support'
-    },
-    add_sample_java_validator: {
-      description: "Add sample Java Field Validator?",
-      required: true,
-      _cli: 'java_field_validator',
-      _yesno: true,
-      default: 'n',
-      _depends: 'add_java_support'
-    },
-    add_sample_autoscript: {
-      description: "Add sample autoscript field validator?",
-      required: true,
-      _cli: 'autoscript',
-      _yesno: true,
-      default: 'n'
-    },
+    // add_sample_java_mbo: {
+    //   description: "Add sample Java Mbo?",
+    //   required: true,
+    //   _cli: 'java_mbo',
+    //   _yesno: true,
+    //   default: 'n',
+    //   _depends: 'add_java_support'
+    // },
+    // add_sample_java_validator: {
+    //   description: "Add sample Java Field Validator?",
+    //   required: true,
+    //   _cli: 'java_field_validator',
+    //   _yesno: true,
+    //   default: 'n',
+    //   _depends: 'add_java_support'
+    // },
+    // add_sample_autoscript: {
+    //   description: "Add sample autoscript field validator?",
+    //   required: true,
+    //   _cli: 'autoscript',
+    //   _yesno: true,
+    //   default: 'n'
+    // },
     output_directory: {
       description: "Create addon in directory",
       required: true,
@@ -174,11 +174,13 @@ function create_addon(result) {
   log.info("Creating script dir");
   env.ensureDir(env.scriptDir());
 
-  log.info("Addon created in %s", env.addonDir());
-
   if (env.bool(result.add_java_support) && env.bool(result.eclipse)) {
     log.log("Configuring Eclipse Projects...");
     gradle.runTasks('cleanEclipse eclipse')
     log.log("");
   }
+
+  log.info("Addon created in %s", env.addonDir());
+  log.log("cd %s", env.addonDir());
+  log.log("explore other maximo-cli commands such as 'create sample-classic-app'");
 }
