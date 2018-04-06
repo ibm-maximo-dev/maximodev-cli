@@ -20,6 +20,7 @@ var schema = {
       default: 'default'
     },
     uuid:{
+      _prompt: false,
       _cli: 'uuid',
       require: false,
       default: psi.getUUID()
