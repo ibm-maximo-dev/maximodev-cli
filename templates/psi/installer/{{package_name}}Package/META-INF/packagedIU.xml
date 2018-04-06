@@ -21,21 +21,21 @@
      
      End Standard Header
 -->
-<iudd:rootIU IUName="{{package_name}}" language_bundle="{{package_name}}" xmlns:J2EERT="http://www.ibm.com/namespaces/autonomic/J2EE_RT" xmlns:OSRT="http://www.ibm.com/namespaces/autonomic/OS_componentTypes" xmlns:RDBRT="http://www.ibm.com/namespaces/autonomic/RDB_RT" xmlns:base="http://www.ibm.com/namespaces/autonomic/solutioninstall/BASE" xmlns:iudd="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD" xmlns:res="http://www.ibm.com/namespaces/autonomic/solutioninstall/Resources" xmlns:rtype="http://www.ibm.com/namespaces/autonomic/solutioninstall/ResourceTypes" xmlns:siu="http://www.ibm.com/namespaces/autonomic/solutioninstall/SIU" xmlns:vsn="http://www.ibm.com/namespaces/autonomic/common/version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD C:\PROGRA~1\IBM\common\acsi\schema\level_a\iudd.xsd">
+<iudd:rootIU IUName="{{package_name}}PackagePackage" language_bundle="{{package_name}}PackagePackage" xmlns:J2EERT="http://www.ibm.com/namespaces/autonomic/J2EE_RT" xmlns:OSRT="http://www.ibm.com/namespaces/autonomic/OS_componentTypes" xmlns:RDBRT="http://www.ibm.com/namespaces/autonomic/RDB_RT" xmlns:base="http://www.ibm.com/namespaces/autonomic/solutioninstall/BASE" xmlns:iudd="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD" xmlns:res="http://www.ibm.com/namespaces/autonomic/solutioninstall/Resources" xmlns:rtype="http://www.ibm.com/namespaces/autonomic/solutioninstall/ResourceTypes" xmlns:siu="http://www.ibm.com/namespaces/autonomic/solutioninstall/SIU" xmlns:vsn="http://www.ibm.com/namespaces/autonomic/common/version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD C:\PROGRA~1\IBM\common\acsi\schema\level_a\iudd.xsd">
     <identity>
-        <name>MAM71SERVICEPROVIDER</name>
-        <UUID>e2d309d326af439a8c1a7fa467a706de</UUID>
+        <name>MAM7{{package_name}}PackagePackage</name>
+        <UUID>{{uuid}}</UUID>
         <displayName>
-            <defaultLineText key="ROOT_IU_DISPLAY_NAME">Maximo Asset Management Service Provider Package </defaultLineText>
+            <defaultLineText key="ROOT_IU_DISPLAY_NAME">Maximo Asset Management {{package_name}}Package Package </defaultLineText>
         </displayName>
         <buildID>ProcessModule</buildID>
         <full>
             <upgradeBase>
-                <minVersion>7.1.0</minVersion>
-                <maxVersion>7.5.2.99</maxVersion>
+                <minVersion>{{addon_version}}</minVersion>
+                <maxVersion>{{addon_version}}</maxVersion>
             </upgradeBase>
         </full>
-        <version>7.5.3.0</version>
+        <version>{{addon_version}}</version>
     </identity>
      
     <variables>
@@ -202,7 +202,7 @@
         <!-- for use in dynamically created files or directories (such as log -->
         <!-- files or other output)                                           -->
         <variable name="PkgShortName">
-            <parameter defaultValue="SERVICEPROVIDER_753Package"/>
+            <parameter defaultValue="S{{package_name}}Package_753Package"/>
         </variable>
          
          
@@ -214,7 +214,7 @@
         <!-- files or code. This may or may not be used depending on the      -->
         <!-- specific package.                                                -->
         <variable name="ModuleInstallDir">
-            <parameter defaultValue="$({{package_name}})/solutions/installedApps/$(PkgShortName)"/>
+            <parameter defaultValue="$({{package_name}}Package)/solutions/installedApps/$(PkgShortName)"/>
         </variable>
          
          
@@ -222,7 +222,7 @@
         <!-- package. This is used if the package install writes to its own    -->
         <!-- specific install logs.                                            -->
         <variable name="PkgLogDirectory">
-            <parameter defaultValue="$({{package_name}})/solutions/logs/$(PkgShortName)"/>
+            <parameter defaultValue="$({{package_name}}Package)/solutions/logs/$(PkgShortName)"/>
         </variable>
          
         <!-- WAS variables -->
@@ -231,7 +231,7 @@
         <!-- deploy EAR files (Namely, the rebuilt Maximo EAR) to a remote WAS -->
         <!-- server.                                                           -->
         <variable name="WASThinClientInstallLocation">
-            <parameter defaultValue="C:\IBM\ccmdb\wasclient"/>
+            <parameter defaultValue="$(MaximoInstallLocation)"/>
         </variable>
          
         <!-- This variable holds the hostname/IP address of the WAS server to  -->
@@ -250,7 +250,7 @@
          
         <!-- This node of the WAS server the package is being installed to.    -->
         <variable name="WASNodeName">
-            <parameter defaultValue="ccmdb01"/>
+            <parameter defaultValue="maximo"/>
         </variable>
          
         <!-- This cell of the WAS server the package is being installed to     -->
@@ -299,7 +299,7 @@
          
         <!--  The RXA password credential for remote machine access. -->
         <variable name="WASRemoteAccessPassword">
-            <parameter defaultValue="n0fg5ztome"/>
+            <parameter defaultValue="maximo"/>
         </variable>
          
         <!-- This variable controls whether or not to install the Langauge    -->
@@ -310,9 +310,9 @@
          
     </variables>
     <installableUnit targetRef="tOS">
-        <SIU IUName="MAM71_SERVICEPROVIDER_Package_IU" hostingEnvType="OSRT:Operating_System">
+        <SIU IUName="MAM_{{package_name}}_Package_IU" hostingEnvType="OSRT:Operating_System">
             <identity>
-                <name>{{package_name}}_maximo-cli_{{timestamp}}</name>
+                <name>{{package_name}}Package_maximo-cli_{{timestamp}}</name>
                 <UUID>{{uuid}}</UUID>
                 <displayName>
                     <defaultLineText key="SIU_DISPLAY_NAME">Maximo Asset Management Service Provider Package  Installable Unit</defaultLineText>
@@ -320,11 +320,11 @@
                 <buildID>ProcessModule</buildID>
                 <full>
                     <upgradeBase>
-                        <minVersion>7.1.0</minVersion>
-                        <maxVersion>7.5.2.99</maxVersion>
+                        <minVersion>{{addon_versio}}</minVersion>
+                        <maxVersion>{{addon_versio}}</maxVersion>
                     </upgradeBase>
                 </full>
-                <version>7.5.3.0</version>
+                <version>{{addon_versio}}</version>
             </identity>
              
             <requirements>
@@ -356,7 +356,7 @@
             <unit>
                 <installArtifacts>
                     <installArtifact undoable="true">
-                        <fileIdRef>SPPackageInstallArtifact</fileIdRef>
+                        <fileIdRef>{{package_name}}ackageInstallArtifact</fileIdRef>
                         <!-- Parametermaps make the variables visible to the install -->
                         <!-- and uninstall artifacts.                                -->
                         <parameterMaps>
@@ -781,9 +781,9 @@
      
     <selectableContent>
         <installableUnit targetRef="tOS">
-            <SIU IUName="MAM71_SERVICEPROVIDER_LANG_Package_IU">
+            <SIU IUName="MAM71_S{{package_name}}Package_LANG_Package_IU">
                 <identity>
-                    <name>MAM71_SERVICEPROVIDER_LANG_Package_IU</name>
+                    <name>MAM71_S{{package_name}}Package_LANG_Package_IU</name>
                     <UUID>28095e59d815476bad188820664cd7f6</UUID>
                     <displayName>
                         <defaultLineText key="LANG_SUPT_FEATURE">Maximo Asset Management Service Provider Language Support</defaultLineText>
@@ -799,7 +799,7 @@
                 <unit>
                     <installArtifacts>
                         <installArtifact featureAddSupport="true" featureRemoveSupport="true">
-                            <fileIdRef>SERVICEPROVIDERLanguagePackageInstallArtifact</fileIdRef>
+                            <fileIdRef>S{{package_name}}PackageLanguagePackageInstallArtifact</fileIdRef>
                             <parameterMaps>
                                  
                                 <map>
@@ -1014,7 +1014,7 @@
                     <defaultLineText key="LANG_SUPT_FEATURE">Maximo Asset Management Service Provider Language Support</defaultLineText>
                 </displayName>
             </identity>
-            <IUNameRef>MAM71_SERVICEPROVIDER_LANG_Package_IU</IUNameRef>
+            <IUNameRef>MAM71_S{{package_name}}Package_LANG_Package_IU</IUNameRef>
         </feature>
     </features>
      
@@ -1054,8 +1054,8 @@
         <!-- This variable identifies the Install Artifact, that is, the XML file -->
         <!-- that contains the sequential instructions that are executed to       -->
         <!-- install a package.                                                   -->
-        <file id="SPPackageInstallArtifact">
-            <pathname>SPPackageInstallArtifact.xml</pathname>
+        <file id="{{package_name}}ackageInstallArtifact">
+            <pathname>{{package_name}}ackageInstallArtifact.xml</pathname>
             <length>0</length>
             <checksum type="MD5">abc</checksum>
         </file>
@@ -1063,8 +1063,8 @@
         <!-- This variable identifies the Install Artifact, that is, the XML file -->
         <!-- that contains the sequential instructions that are executed to       -->
         <!-- install a package.                                                   -->
-        <file id="SERVICEPROVIDERLanguagePackageInstallArtifact">
-            <pathname>SERVICEPROVIDERLanguagePackageInstallArtifact.xml</pathname>
+        <file id="S{{package_name}}PackageLanguagePackageInstallArtifact">
+            <pathname>S{{package_name}}PackageLanguagePackageInstallArtifact.xml</pathname>
             <length>0</length>
             <checksum type="MD5">abc</checksum>
         </file>
@@ -1081,62 +1081,21 @@
         <!-- what files will be referenced by variables during the install       -->
         <!-- process.                                                            -->
          
-        <!-- SERVICE PROVIDER FILES FOR MAXIMO ASSET MANAGEMENT 7.5.3-->
-        <file id="MAMSERVICEPROVIDER">
-            <pathname>../FILES/serviceprovider.zip</pathname>
+        <!-- {{package_name}} Package FILES FOR MAXIMO ASSET MANAGEMENT 7.5.3-->
+        <file id="MAM{{package_name}}Package">
+            <pathname>../FILES/{{package_name}}Package.zip</pathname>
             <length>0</length>
             <checksum type="MD5">abc</checksum>
         </file>
-         
-         
-        <!-- SWG TAGS -->
-        <file id="SWGTAGS">
-            <pathname>../FILES/swgtags.zip</pathname>
-            <length>0</length>
-            <checksum type="MD5">abc</checksum>
-        </file>
-         
-        <!-- SWG TAGS -->
-        <file id="SWGCOMPTAGS">
-            <pathname>../FILES/swgcomptags.zip</pathname>
-            <length>0</length>
-            <checksum type="MD5">abc</checksum>
-        </file>
-         
-         
-        <!-- HELP PLUGIN  -->
-        <file id="HELPPLUGIN">
-            <pathname>../FILES/HelpPlugin.zip</pathname>
-            <length>0</length>
-            <checksum type="MD5">abc</checksum>
-        </file>
-         
-         
-        <!-- SERVICE PROVIDER XLIFF FILES FOR MAXIMO ASSET MANAGEMENT -->
-        <file id="MAMSERVICEPROVIDERXLIFF">
-            <pathname>../FILES/xliff.zip</pathname>
-            <length>0</length>
-            <checksum type="MD5">abc</checksum>
-        </file>
-         
-        <!-- These files will enable the Service Provider functionality. They will be      -->
-        <!-- deployed to the server.                                             -->
-        <file id="ENABLEMENTKEYZIPFILE">
-            <pathname>../FILES/EnablementKeys.zip</pathname>
-            <length>0</length>
-            <checksum type="MD5">abc</checksum>
-        </file>
-         
-         
-         
+
          
         <!-- This is a .ZIP file containing license agreements in various        -->
         <!-- langauges. -->
-        <file id="LicenseZip">
-            <pathname>../FILES/LicenseAgreement.zip</pathname>
+        <!-- file id="LicenseZip">
+            <pathname>../FILES/{{package_name}}PackageAgreement.zip</pathname>
             <length>0</length>
             <checksum type="MD5">abc</checksum>
-        </file>
+        </file -->
     </files>
 </iudd:rootIU>
      

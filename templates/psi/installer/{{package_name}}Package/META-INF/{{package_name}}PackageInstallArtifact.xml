@@ -2,7 +2,7 @@
 <!--
      Begin Standard Header
      
-     File:     SPPackageInstallArtifact.xml
+     File:     {{package_name}}PackagePackageInstallArtifact.xml
      Version: SP 7.5.3
      Created 7.5 installation.
      Created by: Tara Ventura
@@ -25,7 +25,7 @@
 -->
 <action:artifact xmlns:iudd="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD" xmlns:osac="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions" language_bundle="InstallPackage" xmlns:action="http://www.ibm.com/namespaces/autonomic/solutioninstall/action" xmlns:base="http://www.ibm.com/namespaces/autonomic/solutioninstall/BASE" xmlns:command="http://www.ibm.com/namespaces/autonomic/solutioninstall/command" xmlns:rtype="http://www.ibm.com/namespaces/autonomic/solutioninstall/ResourceTypes" xmlns:sigt="http://www.ibm.com/namespaces/autonomic/solutioninstall/Signatures" xmlns:vsn="http://www.ibm.com/namespaces/autonomic/common/version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions osActions.xsd">
     <artifactType>Install</artifactType>
-    <artifactSchemaVersion>1.2.1</artifactSchemaVersion>
+    <artifactSchemaVersion>1.0.0</artifactSchemaVersion>
      
     <!-- This group of actions unpacks the license agreement files and then  -->
     <!-- executes the "LAP Tool" which prompts the user for acceptance of    -->
@@ -38,7 +38,7 @@
                     <defaultLineText key="CREATE_TEMP_LICENSE_DIR">Create Temporary License Directory</defaultLineText>
                 </displayName>
                 <directory temporary="true">
-                    <name>$({{package_name}})/temp/license_$(PkgShortName)</name>
+                    <name>$({{package_name}}Package)/temp/license_$(PkgShortName)</name>
                     <source>
                         <source_archive format="zip">
                             <fileIdRef>LicenseZip</fileIdRef>
@@ -53,21 +53,21 @@
                 <action operation="Create">
                     <class_name>com.ibm.tivoli.ccmdb.install.ps.si.actions.common.ManageLAP</class_name>
                     <classpath>
-                        <path>$({{package_name}})/lib/CTGPSIDeploymentServices.jar</path>
-                        <path>$({{package_name}})/lib/CTGInstallResources.jar</path>
-                        <path>$({{package_name}})/lib/CTGInstallCommon.jar</path>
-                        <path>$({{package_name}})/lib/icl.jar</path>
-                        <path>$({{package_name}})/lib/Lapapp.jar</path>
+                        <path>$({{package_name}}Package)/lib/CTGPSIDeploymentServices.jar</path>
+                        <path>$({{package_name}}Package)/lib/CTGInstallResources.jar</path>
+                        <path>$({{package_name}}Package)/lib/CTGInstallCommon.jar</path>
+                        <path>$({{package_name}}Package)/lib/icl.jar</path>
+                        <path>$({{package_name}}Package)/lib/Lapapp.jar</path>
                     </classpath>
                     <bean_properties>
                         <property name="LapSource">
-                            <setter>$({{package_name}})/temp/license_$(PkgShortName)</setter>
+                            <setter>$({{package_name}}Package)/temp/license_$(PkgShortName)</setter>
                         </property>
                         <property name="LapDest">
                             <setter>$(ModuleInstallDir)</setter>
                         </property>
                         <property name="CCMDBHomeDirectory">
-                            <setter>$({{package_name}})</setter>
+                            <setter>$({{package_name}}Package)</setter>
                         </property>
                         <property name="AcceptLicense">
                             <setter>$(AcceptLicense)</setter>
@@ -85,7 +85,7 @@
                     <defaultLineText key="CREATE_TEMP_LICENSE_DIR">Create Temporary License Directory</defaultLineText>
                 </displayName>
                 <directory temporary="true">
-                    <name>$({{package_name}})/temp/license_$(PkgShortName)</name>
+                    <name>$({{package_name}}Package)/temp/license_$(PkgShortName)</name>
                     <source>
                         <source_archive format="zip">
                             <fileIdRef>LicenseZip</fileIdRef>
@@ -100,21 +100,21 @@
                 <action operation="Update">
                     <class_name>com.ibm.tivoli.ccmdb.install.ps.si.actions.common.ManageLAP</class_name>
                     <classpath>
-                        <path>$({{package_name}})/lib/CTGPSIDeploymentServices.jar</path>
-                        <path>$({{package_name}})/lib/CTGInstallResources.jar</path>
-                        <path>$({{package_name}})/lib/CTGInstallCommon.jar</path>
-                        <path>$({{package_name}})/lib/icl.jar</path>
-                        <path>$({{package_name}})/lib/Lapapp.jar</path>
+                        <path>$({{package_name}}Package)/lib/CTGPSIDeploymentServices.jar</path>
+                        <path>$({{package_name}}Package)/lib/CTGInstallResources.jar</path>
+                        <path>$({{package_name}}Package)/lib/CTGInstallCommon.jar</path>
+                        <path>$({{package_name}}Package)/lib/icl.jar</path>
+                        <path>$({{package_name}}Package)/lib/Lapapp.jar</path>
                     </classpath>
                     <bean_properties>
                         <property name="LapSource">
-                            <setter>$({{package_name}})/temp/license_$(PkgShortName)</setter>
+                            <setter>$({{package_name}}Package)/temp/license_$(PkgShortName)</setter>
                         </property>
                         <property name="LapDest">
                             <setter>$(ModuleInstallDir)</setter>
                         </property>
                         <property name="CCMDBHomeDirectory">
-                            <setter>$(package_name)</setter>
+                            <setter>$({{package_name}}Package)</setter>
                         </property>
                         <property name="AcceptLicense">
                             <setter>$(AcceptLicense)</setter>
@@ -168,7 +168,7 @@
                     <defaultLineText key="UNPACK_SWGCOMPTAGS">Unpack the Component Software Group Files files</defaultLineText>
                 </displayName>
                 <directory temporary="false">
-                    <name>$({{package_name}})</name>
+                    <name>$({{package_name}}Package)</name>
                     <source>
                         <source_archive format="zip">
                             <fileIdRef>SWGCOMPTAGS</fileIdRef>
@@ -211,7 +211,7 @@
             <!-- Note that this is unpacked to the Maximo Home Directory.     -->
             <addDirectory>
                 <displayName>
-                    <defaultLineText key="ADD_ENABLEMENT_KEYS">Unpack the Maximo Asset Management Service Provider Key to Maximo Directory</defaultLineText>
+                    <defaultLineText key="ADD_ENABLEMENT_KEYS">Unpack the Maximo Asset Management {{package_name}} Package to Maximo Directory</defaultLineText>
                 </displayName>
                 <directory temporary="false">
                     <name>$(MaximoInstallLocation)/tools/maximo</name>
@@ -232,7 +232,7 @@
                     <name>$(MaximoInstallLocation)</name>
                     <source>
                         <source_archive format="zip">
-                            <fileIdRef>MAMSERVICEPROVIDERXLIFF</fileIdRef>
+                            <fileIdRef>MAM{{package_name}}Package</fileIdRef>
                         </source_archive>
                     </source>
                 </directory>
@@ -304,13 +304,13 @@
         <actions>
             <addDirectory>
                 <displayName>
-                    <defaultLineText key="UNPACK_MAMSERVICEPROVIDER">Unpack the Maximo Asset Management Service Provider Component</defaultLineText>
+                    <defaultLineText key="UNPACK_MAMSERVICEPROVIDER">Unpack the Maximo Asset Management {{package_name}}Package Component</defaultLineText>
                 </displayName>
                 <directory temporary="false">
                     <name>$(MaximoInstallLocation)</name>
                     <source>
                         <source_archive format="zip">
-                            <fileIdRef>MAMSERVICEPROVIDER</fileIdRef>
+                            <fileIdRef>MAM{{package_name}}Package</fileIdRef>
                         </source_archive>
                     </source>
                 </directory>
