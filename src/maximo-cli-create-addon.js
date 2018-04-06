@@ -129,6 +129,7 @@ var schema = {
     // },
     output_directory: {
       description: "Create addon in directory",
+      _prompt: false, // you can specify this from the command but we don't prompt for it.
       required: true,
       _cli: 'output_directory',
       default: '.'

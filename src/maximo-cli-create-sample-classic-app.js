@@ -21,7 +21,7 @@ var schema = {
       description: "Add classic UI sample app?",
       required: true,
       _cli: 'add_sample',
-      _yesno: 'n',
+      _yesno: 'y',
     }
   }
 };

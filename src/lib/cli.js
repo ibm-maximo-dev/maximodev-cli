@@ -146,6 +146,17 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
         return env.bool(prompt.history(dep).value);
       };
     }
+
+    if (o._prompt === false) {
+      // no prompting
+      o.ask = function () {
+        // don't prompt, but conform it
+        if (o.conform) {
+          o.conform(def)
+        }
+        return false;
+      }
+    }
   });
 
   return schema;

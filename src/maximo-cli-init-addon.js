@@ -92,6 +92,7 @@ var schema = {
       _yesno: 'y'
     },
     output_directory: {
+      _prompt: false,
       description: "Initialize in the given directory",
       required: true,
       _cli: 'dir',
