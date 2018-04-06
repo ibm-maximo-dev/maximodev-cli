@@ -17,6 +17,8 @@
   "author": "sls@ca.ibm.com",
   "license": "ISC",
   "dependencies": {
+    "archive": "0.0.2",
+    "archiver": "2.1.1",
     "commander": "^2.14.1",
     "dateformat": "^3.0.3",
     "fs-extra": "^5.0.0",
@@ -27,7 +29,8 @@
     "shelljs": "^0.8.1",
     "uuid": "^3.2.1",
     "xml2js": "^0.4.19",
-    "xmldom": "^0.1.27"
+    "xmldom": "^0.1.27",
+    "zip": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

@@ -18,24 +18,46 @@ var schema = {
       required: true,
       _cli: 'package_name',
       default: 'default'
+    },
+    uuid:{
+      _cli: 'uuid',
+      require: false,
+      default: psi.getUUID()
     }
     //TODO: Define the prompt.
 
   }//Ending properties.
 };
 
+//var uuid  = ;
+
+//schema.properties['uuid'] = {_prop: 'uuid',required: true, default: uuid};
+
+
+
 cli.process(schema, process.argv, create_package);
 
 function create_package(result) {
   
   var args = Object.assign({}, env.props, result);
+
   
+
+  //schema.properties['uuid'] = {_cli: 'uuid',_prop: 'uuid',required: true, default: uuid};
+
+  //define the uuid property
+  //result['uuid'] =  uuid;
+  
+
+  console.log("Package UUID: "+ result.uuid);
   //Install templates 
   psi.installTemplatePSI("psi", env.addonDir(), args);
   //Create Files Directory
   psi.createFILES(result.package_name);
   //Copy files into the FILES directories
   psi.copyFolderRecursiveSync('./dist/.', './installer/'+result.package_name+'Package/FILES/');
+  //Zip the content from a package int a file to be installed.
+  psi.zipFolderContent('./installer/'+result.package_name+'Package/FILES/',result.package_name);
    
 };
 

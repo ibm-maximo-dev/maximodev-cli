@@ -1054,8 +1054,8 @@
         <!-- This variable identifies the Install Artifact, that is, the XML file -->
         <!-- that contains the sequential instructions that are executed to       -->
         <!-- install a package.                                                   -->
-        <file id="{{package_name}}ackageInstallArtifact">
-            <pathname>{{package_name}}ackageInstallArtifact.xml</pathname>
+        <file id="{{package_name}}PackageInstallArtifact">
+            <pathname>{{package_name}}PackageInstallArtifact.xml</pathname>
             <length>0</length>
             <checksum type="MD5">abc</checksum>
         </file>
@@ -1063,8 +1063,8 @@
         <!-- This variable identifies the Install Artifact, that is, the XML file -->
         <!-- that contains the sequential instructions that are executed to       -->
         <!-- install a package.                                                   -->
-        <file id="S{{package_name}}PackageLanguagePackageInstallArtifact">
-            <pathname>S{{package_name}}PackageLanguagePackageInstallArtifact.xml</pathname>
+        <file id="{{package_name}}LanguagePackageInstallArtifact">
+            <pathname>S{{package_name}}LanguagePackageInstallArtifact.xml</pathname>
             <length>0</length>
             <checksum type="MD5">abc</checksum>
         </file>

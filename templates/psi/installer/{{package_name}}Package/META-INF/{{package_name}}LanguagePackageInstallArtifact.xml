@@ -3,7 +3,7 @@
 <!--
      Begin Standard Header
      
-     File:     MAM {{package_name}} PSI UI/META-INF/{{package_name}}LanguagePackageInstallArtifact.xml
+     File:     MAM {{package_name}}Package PSI UI/META-INF/{{package_name}}LanguagePackageInstallArtifact.xml
      Version:  1.0
      Modified: 11/07/09
      
@@ -42,7 +42,7 @@
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions osActions.xsd">
     <artifactType>Install</artifactType>
-    <artifactSchemaVersion>1.2.1</artifactSchemaVersion>
+    <artifactSchemaVersion>1.0.0</artifactSchemaVersion>
     <variables>
         <variable name="selectedFeatures"/>
     </variables>

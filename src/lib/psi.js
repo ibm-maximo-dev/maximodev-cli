@@ -8,16 +8,24 @@ var fs = require('fs');
 var util = require('util');
 var shell = require('shelljs');
 var log = require("./logger");
+var archiver = require('archiver');
+var zipArchive = archiver('zip');
 
 /** 
  * The uuid v4 will be used to replace the uuid property in order to generate the unique id for this PSI package. 
  * TODO: Replace the variable in the right place.
  */
 const uuidv4 = require('uuid/v4'); 
-uuidv4();
+
+
 
 
 var psi = module.exports = Object.create({});
+
+
+psi.getUUID = function(){
+    return uuidv4();
+};
 
 /**
  * Install and verify the variable from MBO.
@@ -126,4 +134,24 @@ psi.copyFolderRecursiveSync= function ( source, target ) {
             }
         } );
     }
+};
+
+/**
+ * Zip the content from FILES into a package
+ */
+psi.zipFolderContent = function (destDir, package_name){
+
+  var output = fs.createWriteStream(path.join(destDir+'/'+package_name+'Package.zip'));
+  // pipe archive data to the output file
+  zipArchive.pipe(output);
+  
+    //zipArchive.bulk([{src: [path.join(destDir, '*.*')],  expand: true}]);
+    zipArchive.directory(destDir,package_name+'Package.zip');
+    zipArchive.finalize(function(err, bytes) {
+      if (err)
+          throw err;
+
+    console.log('Package zip done:', base, bytes);
+  });
+  
 };
