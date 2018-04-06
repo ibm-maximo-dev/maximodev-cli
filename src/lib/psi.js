@@ -68,12 +68,16 @@ psi.installTemplatePSIFile = function(template, outBaseDir, filePath, templateAr
 };
 
 
-function pkgToDir(pkg) {
+psi.pkgToDir = function (pkg){
   pkg = pkg.replace(/\./g, '/');
   return pkg;
 };
+/**
+ * Copy from target files
+ * 
+ */
 
-var copyFileSync = function( source, target ) {
+psi.copyFileSync = function ( source, target ) {
 
     var targetFile = target;
     //if target is a directory a new file with the same name will be created
@@ -82,10 +86,26 @@ var copyFileSync = function( source, target ) {
             targetFile = path.join( target, path.basename( source ) );
         }
     }
+    //target file will be read
     fs.writeFileSync(targetFile, fs.readFileSync(source));
-}
+};
 
-var copyFolderRecursiveSync = function( source, target ) {
+/**
+ * Needs create the FILE storage folder
+ * @param {*} projectName 
+ */
+psi.createFILES = function (projectName){
+    var filesPath = './installer/'+projectName+'Package/FILES';
+    if ( !fs.existsSync( filesPath ) ) {
+      fs.mkdirSync( filesPath );
+  }
+};
+/**
+ *  Copy folder recursively.
+ * @param {*} source 
+ * @param {*} target 
+ */
+psi.copyFolderRecursiveSync= function ( source, target ) {
     var files = [];
 
     //check if folder needs to be created or integrated
@@ -100,9 +120,9 @@ var copyFolderRecursiveSync = function( source, target ) {
         files.forEach( function ( file ) {
             var curSource = path.join( source, file );
             if ( fs.lstatSync( curSource ).isDirectory() ) {
-                copyFolderRecursiveSync( curSource, targetFolder );
+                psi.copyFolderRecursiveSync( curSource, targetFolder );
             } else {
-                copyFileSync( curSource, targetFolder );
+                psi.copyFileSync( curSource, targetFolder );
             }
         } );
     }

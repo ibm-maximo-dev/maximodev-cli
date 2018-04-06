@@ -29,15 +29,13 @@ cli.process(schema, process.argv, create_package);
 function create_package(result) {
   
   var args = Object.assign({}, env.props, result);
-  /**
-   * Add psi packacdeUI
-   */
+  
+  //Install templates 
   psi.installTemplatePSI("psi", env.addonDir(), args);
-
-  /**
-   * Copy Files from dist
-   */
-  psi.copyFolderRecursiveSync('/dist', '/installer/'+result.package_name+'Package/FILES/');
+  //Create Files Directory
+  psi.createFILES(result.package_name);
+  //Copy files into the FILES directories
+  psi.copyFolderRecursiveSync('./dist/.', './installer/'+result.package_name+'Package/FILES/');
    
-}
+};
 
