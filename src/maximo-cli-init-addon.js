@@ -106,7 +106,7 @@ cli.process(schema, process.argv, init_addon);
 function init_addon(result) {
   var baseDir = env.ensureDir(result.output_directory);
 
-  // create properites
+  // create properties
   env.initProperties(path.join(baseDir, 'addon.properties'), result);
 
   // reload env so that we rooted against our new addon directory

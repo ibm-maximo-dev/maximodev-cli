@@ -428,7 +428,16 @@ env.askYesNo = function(question, def, handler) {
  */
 function makeClassPath(items) {
   return items.join(path.delimiter);
-}
+};
+
+/**
+ * check if addon.properties exists
+ * @returns {boolean}
+ */
+env.addOnPropsExists = function() {
+  var addOnPropsFile = env.get("MAXIMO_ADDON_PROPERTIES", "./addon.properties");
+  return fs.existsSync(addOnPropsFile);
+};
 
 // reload an initialize the env
 env.reload();

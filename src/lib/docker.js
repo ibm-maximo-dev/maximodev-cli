@@ -20,9 +20,9 @@ docker.exists = () => {
 }
 
 docker.deploy = (containerName, distFolder) => {
-  let proc = docker.cp(containerName, distFolder);
+  let proc = docker.copyTo(containerName, distFolder);
   if(proc.code !== 0) {
-    log.error(`Could not copy ${distFolder} to ${containerName}`);
+    log.error(`Could not deploy Maximo from ${containerName}: ${proc.stderr}`);
     return;
   }
 
@@ -50,8 +50,14 @@ docker.listContainers = () => {
   return shell.exec(CMD, {silent:true}).stdout.split('\n').filter(item => { return item.trim().length > 0});
 }
 
-docker.cp = (name, source) => {
-  const PARSED_FOLDER = path.parse(source); 
-  const CMD = `docker cp ${source} ${name}:/`;
+docker.copyTo = (name, source) => {
+  const PARSED_FOLDER = path.normalize(source); 
+  const CMD = `docker cp ${PARSED_FOLDER}/. ${name}:/maximo`;
+  return shell.exec(CMD, {silent:true});
+}
+
+docker.ejectMaximo = (name, destFolder) => {
+  const PARSED_FOLDER = path.normalize(destFolder); 
+  const CMD = `docker cp ${name}:/maximo ${PARSED_FOLDER}`;
   return shell.exec(CMD, {silent:true});
 }
