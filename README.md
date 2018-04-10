@@ -21,6 +21,24 @@ If you are enhancing `maximo-cli`, you can check out the sources, and then insta
 npm install file:~/git/maximo-cli -g
 ```
 
+## Quick Start
+The following commands illustrate how to create a new add-on, with java support, and creating the sample classic app in your project, build, it and deploy it into a local Maximo environment.
+
+When prompted, enter `BPAAA` for the prefix, and `bpaaa_myproduct` for the product.  Be sure to also select `y` for `Java Support` and `y` for `Initialize eclipse projects`.  You also need to enter the full location to where your local Maximo installation folder exists (when prompted for `maximo home`).
+
+```bash
+$ npm install maximo-cli -g
+$ maximo-cli create addon
+$ cd bpaa_myproduct
+$ maximo-cli create sample-classic-app
+$ maximo-cli build
+$ maximo-cli dist
+$ maximo-cli deploy
+```
+
+After this process, a new add-on is created in the `dist` folder and deployed into your local Maximo environment.  If you navigate to your local Maximo and run `updatedb` it will process the scripts for your add-on, and add the `Music` demo application to Maximo.
+
+
 ## Commands
 If you run `maximo-cli` without any parameters, a list of top level commands that can be run is shown, such as `create`, `init`, `update`, `build`, `package`, `deploy`, etc.  Each of those top level action have sub commands as well.  For each level, you can pass `--help` to get help on a command or sub-command.  While every command can take a number of `--` args, these commands also prompt and guide you.  So, you can call a command without any args and you are prompted for responses.
 
@@ -81,23 +99,6 @@ If you enabled Java support, then, you will have a `build.gradle` file in your p
 The `cleanEclipse` task removes any existing eclipse projects.   The `eclipse` task creates projects that can be imported into `Eclipse`.
 
 To import the projects, create an Eclipse workspace, select the **File->Import->Existing Projects Into Workspace** action, click **Next**, and then navigate to the root of your project.  It should list five projects; `businessobjects`, `maximouiweb`, `properties`, `resources`, and `tools`.  Click **Finish**. 
-
-## Example
-The following commands illustrate how to create a new add-on, with java support, and creating the sample classic app in your project.
-
-```bash
-$ maximo-cli create addon
-```
-When prompted, enter `BPAAA` for the prefix, and `bpaaa_myproduct` for the product.  Be sure to also select `y` for `Java Support` and `y` for `Initialize eclipse projects`.  You also need to enter the full location to where your local Maximo installation folder exists.
-
-```bash
-$ cd bpaa_myproduct
-$ maximo-cli create sample-classic-app
-$ maximo-cli build
-```
-
-After this process, a new add-on is created in the `dist` folder.  You can not deploy this to your local maximo.
-
 
 ## Links to references
 For more information on developing add-ons and using dbc scripts, see the [Database Configuration Scripts](https://developer.ibm.com/static/site-id/155/maximodev/dbcguide/) document.
