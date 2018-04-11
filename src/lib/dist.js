@@ -1,8 +1,15 @@
+/*
+ * Copyright (c) 2018-present, IBM CORP.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 "use strict";
 
 const fs = require('fs-extra');
 const shell = require('shelljs');
 const log = require('./logger');
+const env = require('./env');
 const path = require('path');
 
 const defaultExcludes = [
@@ -53,7 +60,21 @@ const defaultExcludes = [
   { 
     name: 'Node.js-related files',
     patterns: [/^node_modules$/],
-  },
+  }
+];
+
+
+const pathTransformers = [
+  {
+    /*
+     * MiniApps are developed in /webclient/miniapps/ but they need to be built and placed in the
+     * /javascript/miniapps/ directory so that the standard maximo build process can package them in the
+     * maximouiweb war correctly
+     */
+    from: '/webclient/miniapps/',
+    to: '/webclient/javascript/miniapps/',
+    exclude_if: 'DEV_BUILD'
+  }
 ];
 
 const dist = module.exports = Object.create({
@@ -70,13 +91,13 @@ dist.canCopy = function(name, excludes) {
     for(let j = 0; j < exclude.patterns.length;j++) {
       const pattern = exclude.patterns[j];
       if(name.match(pattern)) {
-        log.info(`${name} ignored: ${exclude.name}`)
+        log.info(`${name} ignored: ${exclude.name}`);
         return false;
       }
     }
   }
   return true;
-}
+};
 
 dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
   const currentFolder = path.join(rootFolder, relativePath);
@@ -91,19 +112,24 @@ dist.parseDir = function(rootFolder, excludes, relativePath = ".") {
       }
     } else {
       if(this.canCopy(file, excludes)) {
-        const destFolder = path.join(rootFolder, this.BUILD_FOLDER_NAME, relativePath);
+        const destFolder = path.join(rootFolder, this.BUILD_FOLDER_NAME, this.transformPaths(relativePath));
         shell.mkdir('-p',destFolder);
         shell.cp(filePath, destFolder);
       }
     }
   }
-}
+};
 
 dist.canBuild = function(buildDir) {
   if(fs.existsSync(path.join(buildDir,'applications'))) {
     return true;
   }
   return false;
+};
+
+dist.exists = function(rootDir) {
+  const destFolder = path.join(rootDir, this.BUILD_FOLDER_NAME);
+  return fs.existsSync(destFolder);
 }
 
 dist.build = function(rootDir, userExcludes) {
@@ -116,7 +142,28 @@ dist.build = function(rootDir, userExcludes) {
   if(!fs.existsSync(destFolder)) {
     shell.mkdir('-p',destFolder);
   }
-  shell.rm('-Rf',`${destFolder}/*`);
+  shell.rm('-Rf',`${destFolder}${path.sep}*`);
 
   this.parseDir(rootDir, excludes);
+};
+
+dist.transformPaths = function(fullPath) {
+  for (var trans of pathTransformers) {
+    // skip any transforms that should be skipped in a dev build
+    if (trans.exclude_if && env.get('DEV_BUILD', false)) continue;
+    fullPath = transformPath(fullPath, trans.from, trans.to);
+  }
+  return fullPath;
+};
+
+
+function transformPath(fullPath, match, replace) {
+  if (fullPath.indexOf(match)>-1) {
+    let parts = fullPath.split(match);
+    if (parts && parts.length===2) {
+      fullPath = path.join(parts[0], replace, parts[1]);
+    }
+  }
+  return fullPath;
 }
+

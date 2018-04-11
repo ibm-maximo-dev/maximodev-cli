@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018-present, IBM CORP.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 var fs = require('fs-extra');
 var path = require('path');
 var shell = require('shelljs');

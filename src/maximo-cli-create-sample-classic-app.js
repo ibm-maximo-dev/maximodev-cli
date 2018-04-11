@@ -1,5 +1,11 @@
 #! /usr/bin/env node
 
+/*
+ * Copyright (c) 2018-present, IBM CORP.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 var dbcscripts = require('./lib/dbcscripts');
 var log = require('./lib/logger');
 var env = require('./lib/env');
@@ -15,7 +21,7 @@ var schema = {
       description: "Add classic UI sample app?",
       required: true,
       _cli: 'add_sample',
-      _yesno: 'n',
+      _yesno: 'y',
     }
   }
 };
@@ -34,4 +40,5 @@ function create_app(result) {
     process.exit(1);
   }
   installer.installTemplateApp("newsampleclassicapp", env.addonDir(), args);
+  //process.exit(0);
 }

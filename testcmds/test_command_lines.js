@@ -15,7 +15,7 @@ var env = require('../src/lib/env');
 
 describe('test_command_lines', function() {
   it('create addon should not fail', function() {
-    shelljs.exec('node src/maximo-cli.js create addon --addon_prefix "BPAAA"  --addon_name "bpaaa_prod1"  --author "bpaaa"  --desc ""  --ver "1.0.0.0"   --java_support --java_package "bpaaa_prod1"  --maximo_home "."   --java_field_validator  --output_directory "build/testaddon/"');
+    shelljs.exec('node src/maximo-cli.js create addon --addon_prefix "BPAAA"  --addon_name "bpaaa_prod1"  --author "bpaaa"  --desc ""  --ver "1.0.0.0"   --java_support --java_package "bpaaa_prod1"  --maximo_home "." --output_directory "build/testaddon/"');
     if (shelljs.error()) {
       assert.fail(0,1, "create addon failed")
     }

@@ -7,7 +7,7 @@
 
 	<!--  Treinamento Lookups -->
 	
-	<table id="trartist" inputmode="readonly" selectmode="single"  >
+	<table id="trartist123" inputmode="readonly" selectmode="single"  >
     	<tablebody id="trartist_lookup_tablebody" filterexpanded="true" filterable="true" displayrowsperpage="20" >
       		<tablecol id="trartist_lookup_tablebody_col_1" dataattribute="artistnum" mxevent_desc="Go To %1" mxevent="selectrecord" sortable="true" type="link" />
       		<tablecol id="trartist_lookup_tablebody_col_2" dataattribute="name" mxevent_desc="Go To %1" mxevent="selectrecord" sortable="true" type="link" />

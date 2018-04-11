@@ -1,0 +1,15 @@
+/**
+ * This .css is automatically included with your miniapp control
+ **/
+
+#{{{miniappid}}} {
+  border: 2px solid black!important;
+}
+
+#{{{miniappid}}} .hello {
+  font-size: large;
+  padding: 10px;
+  display: inline-block;
+  text-align: center;
+}
+
