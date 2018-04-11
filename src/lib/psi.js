@@ -52,6 +52,30 @@ psi.installTemplatePSI = function(template, dir, templateArgs) {
 };
 
 /**
+ * Install and verify the variable from MBO.
+ * @param {*} template Template's source folder.
+ * @param {*} dir Target directory.
+ * @param {*} templateArgs Template's arguments.
+ */
+psi.installTemplateZIP = function(template, dir, templateArgs) {
+    dir = dir || env.addonDir() || '.';
+    env.ensureDir(dir);
+  
+    if (!templateArgs.java_package_dir) {
+       templateArgs.java_package_dir = path.join(...templateArgs.java_package.split('.'));
+    }
+  
+  
+    log.info("Install %s into %s", template, dir);
+    var tdir = templates.resolveName(template);
+    shell.ls("-R", tdir).forEach(function(f) {
+      if (!fs.lstatSync(path.join(tdir, f)).isDirectory()) {
+        psi.installTemplateZIPFile(path.resolve(tdir, f), dir, f, templateArgs);
+      }
+    });
+  };
+
+/**
  * Handle the PSI template files. 
  * @param {*} template Source folder of template files.
  * @param {*} outBaseDir Output folder name.
@@ -66,13 +90,32 @@ psi.installTemplatePSIFile = function(template, outBaseDir, filePath, templateAr
   if (script) {
     var destScript = dbcscripts.nextScript(path.join(outBaseDir, path.dirname(destPath)), script.ext);
     destPath = path.join(path.dirname(destPath), destScript);
-    log.info("Installing DBC File for psi: %s", destPath);
+    log.info("Installing ZIP  folfer for psi: %s", destPath);
     templates.renderToFile(template, templateArgs, path.join(outBaseDir, destPath));
     return;
   } //Ending DBC installing process for psi
 
   log.info("PSI structure installing at: %s", destPath);
   templates.renderToFile(template, templateArgs, path.join(outBaseDir, destPath));
+};
+
+/**
+ * Handle the ZIP template files. 
+ * @param {*} template Source folder of template files.
+ * @param {*} outBaseDir Output folder name.
+ * @param {*} filePath Full path of rendered files.
+ * @param {*} templateArgs Template arguments.
+ */
+psi.installTemplateZIPFile = function(template, outBaseDir, filePath, templateArgs) {
+
+    return new Promise(function(resolve,reject){
+        var destPath = templates.render(filePath, templateArgs);
+        log.info("ZIP structure installing at: %s", destPath);
+        templates.renderToFile(template, templateArgs, path.join(outBaseDir, destPath));
+        resolve(templates);
+       }).catch(function(err){
+        reject(err);
+    });
 };
 
 
@@ -118,9 +161,9 @@ psi.copyFolderRecursiveSync= function ( source, target ) {
 
     //check if folder needs to be created or integrated
     var targetFolder = path.join( target, path.basename( source ) );
-    if ( !fs.existsSync( targetFolder ) ) {
-        fs.mkdirSync( targetFolder );
-    }
+    // if ( !fs.existsSync( targetFolder ) ) {
+    //     fs.mkdirSync( targetFolder );
+    // }
 
     //copy
     if ( fs.lstatSync( source ).isDirectory() ) {
@@ -141,17 +184,21 @@ psi.copyFolderRecursiveSync= function ( source, target ) {
  */
 psi.zipFolderContent = function (destDir, package_name){
 
-  var output = fs.createWriteStream(path.join(destDir+'/'+package_name+'Package.zip'));
-  // pipe archive data to the output file
-  zipArchive.pipe(output);
-  
-    //zipArchive.bulk([{src: [path.join(destDir, '*.*')],  expand: true}]);
-    zipArchive.directory(destDir,package_name+'Package.zip');
-    zipArchive.finalize(function(err, bytes) {
-      if (err)
-          throw err;
-
-    console.log('Package zip done:', base, bytes);
+    return new Promise (function(resolve,reject){
+        var output = fs.createWriteStream(path.join(destDir+'/'+package_name+'Package.zip'));
+        // pipe archive data to the output file
+        zipArchive.pipe(output);
+    
+        //zipArchive.bulk([{src: [path.join(destDir, '*.*')],  expand: true}]);
+        zipArchive.directory(destDir,package_name+'Package');
+        zipArchive.finalize(function(err, bytes) {
+        if (err)
+            throw err;
+                console.log('Package zip done:', base, bytes);
+                resolve(base);
+        }).catch(function(err){
+            reject (err);
+        });
   });
   
 };
