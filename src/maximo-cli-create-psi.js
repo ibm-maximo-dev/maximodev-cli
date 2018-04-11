@@ -9,10 +9,10 @@ var dist = require('./lib/dist');
 
 var schema = {
   _version: '0.0.1',
-  _description: 'Create a PSI structure for an new installation ',
+  _description: 'Create a ZIP package structure for an new installation ',
   properties: {
      package_name: {
-      description: "Package Name",
+      description: "ZIP Package Name",
       pattern: /^[a-zA-Z0-9]+$/,
       message: 'Must only contain letters and numbers (i.e hotfix7960)',
       required: true,
@@ -60,7 +60,7 @@ function create_package(result) {
   //Copy files into the FILES directories
   psi.copyFolderRecursiveSync('./dist/.', './zip/'+result.package_name+'Package/');
   //Zip the content from a package int a file to be installed.
-  psi.zipFolderContent('./zip/'+result.package_name+'Package/',result.package_name).then(function(base){
+  psi.zipFolderContent('./zip/',result.package_name).then(function(base){
     console.log("Your package were created into the zip folder of this project. Unzip the package into MAXIMO's installation folder and then run the updatedb command to install it");
   });
 
