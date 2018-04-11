@@ -1,3 +1,6 @@
 test
 testcmds
 *.log
+.travis.yml
+.editorconfig
+

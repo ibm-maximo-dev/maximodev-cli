@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018-present, IBM CORP.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 var env = require('./env');
 var prompt = require('prompt');
 var program = require('commander');
@@ -36,6 +42,7 @@ cli.process = function(schema, argv, cb) {
     prompt.get(schema, function (err, result) {
       printCommandLine(schema, program, result);
       cb(result);
+      prompt.stop();
     });
   }
 };
@@ -110,6 +117,13 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
       def = program[(o._cli)];
       // adjust for boolean commandline args
       if (def===true) def = 'y';
+      if (def) {
+        o.ask = function() {
+          // don't prompt, but conform it
+          if (o.conform) {o.conform(def)}
+          return false;
+        }
+      }
     }
 
     // no default from command line, check the props
@@ -131,6 +145,17 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
         // todo: we are always assuming depends relies on boolean properites
         return env.bool(prompt.history(dep).value);
       };
+    }
+
+    if (o._prompt === false) {
+      // no prompting
+      o.ask = function () {
+        // don't prompt, but conform it
+        if (o.conform) {
+          o.conform(def)
+        }
+        return false;
+      }
     }
   });
 

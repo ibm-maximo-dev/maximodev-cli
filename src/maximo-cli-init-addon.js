@@ -1,5 +1,12 @@
 #! /usr/bin/env node
 
+/*
+ * Copyright (c) 2018-present, IBM CORP.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
 var productxml = require('./lib/productxml');
 var log = require('./lib/logger');
 var env = require('./lib/env');
@@ -85,6 +92,7 @@ var schema = {
       _yesno: 'y'
     },
     output_directory: {
+      _prompt: false,
       description: "Initialize in the given directory",
       required: true,
       _cli: 'dir',
@@ -98,7 +106,7 @@ cli.process(schema, process.argv, init_addon);
 function init_addon(result) {
   var baseDir = env.ensureDir(result.output_directory);
 
-  // create properites
+  // create properties
   env.initProperties(path.join(baseDir, 'addon.properties'), result);
 
   // reload env so that we rooted against our new addon directory

@@ -1,0 +1,18 @@
+<!--
+    See the miniapps-control-registry for a full list of attributes
+    NOTE: appid is the same as the directory name in 'webmodule/webclient/miniapps' directory
+    NOTE: Set the mxe.miniapp.development System Property to 1 for miniapp development
+
+    This fragment simply shows how you need to embed this MiniApp into a Maximo Presentation Xml File
+
+    NOTE: options can be used from the presentation xml file to pass options to javascript portion of your MiniApp.
+    options should be json formatted string, like "arg1: 1, arg2: 'arg2 value'"
+-->
+<miniapp id="{{miniappid}}"
+         appid="{{miniappid}}"
+         mainclass="{{miniapp_jsclass_name}}"
+         beanclass="{{java_package}}.{{miniapp_java_class_name}}"
+         options=""
+         width="500"
+         heigh="500"
+/>
