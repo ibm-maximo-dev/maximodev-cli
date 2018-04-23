@@ -1,10 +1,10 @@
 {
-  "name": "maximo-cli",
+  "name": "maximodev-cli",
   "version": "1.0.3",
-  "description": "Maximo command line tools",
-  "main": "src/maximo-cli.js",
+  "description": "Maximo developer command line tools",
+  "main": "src/maximodev-cli.js",
   "bin": {
-    "maximo-cli": "src/maximo-cli.js"
+    "maximodev-cli": "src/maximodev-cli.js"
   },
   "scripts": {
     "clean": "rm -rf build",
@@ -17,7 +17,7 @@
   },
   "author": "sls@ca.ibm.com",
   "license": "MIT",
-  "repository": "ibm-maximo-dev/maximo-cli",
+  "repository": "ibm-maximo-dev/maximodev-cli",
   "dependencies": {
     "commander": "^2.14.1",
     "dateformat": "^3.0.3",
