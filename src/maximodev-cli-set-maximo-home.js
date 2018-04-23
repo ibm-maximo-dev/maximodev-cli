@@ -38,5 +38,10 @@ var schema = {
 
 cli.process(schema, process.argv, function (results) {
   results.maximo_home=results.dir;
+  if (result.maximo_home) {
+    // backslashes will get interpreted as escapes, so let's using forward slashes... fortunately
+    // java, javascript, etc, understand this.
+    result.maximo_home = result.maximo_home.replace(/\\/g,'/');
+  }  
   env.saveProperties(results, results.global);
 });
