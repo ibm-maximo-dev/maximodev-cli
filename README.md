@@ -107,6 +107,9 @@ To import the projects, create an Eclipse workspace, select the **File->Import->
 ## Links to references
 For more information on developing add-ons and using dbc scripts, see the [Database Configuration Scripts](https://developer.ibm.com/static/site-id/155/maximodev/dbcguide/) document.
 
+## Issues and Suggestions
+This tool is open source, which means that you are free to extend it.  You can even submit Pull Requests if you add a feature, or fix a bug.  If you want to submit issues or suggestions, you can use the [Github Issues tab](https://github.com/ibm-maximo-dev/maximodev-cli/issues).
+
 <!--
 These are ideas for other cli tools
 
