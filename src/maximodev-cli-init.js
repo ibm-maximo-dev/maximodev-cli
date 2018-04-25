@@ -15,3 +15,8 @@ program
   .command('addon', 'initialize add-on properties in the current directory').alias('a')
   .command('java', 'install gradle and enable java builds').alias('j')
   .parse(process.argv);
+
+// check if the user passed a command
+if (!program.commands.map(cmd => cmd._name).includes(program.args[0])) {
+  console.log("Invalid command: " + program.args[0]);
+}
