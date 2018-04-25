@@ -60,11 +60,13 @@ If you run `maximodev-cli` without any parameters, a list of top level commands 
 ### maximodev-cli create dbc-script
 `create dbc-script` looks in your product's script directory, and creates a new script with a number that is the next number in in your script sequence.  For example, if your last script was `V7601_22.dbc`, then this command would create `V7601_23.dbc`.  The new script is an XML script stub where you can later edit it and add your statements.
 
+<!--
 ### maximodev-cli create java-field-validator
 `create java-field-validator` creates a simple Java field validation class and corresponding dbc file, and updates the product XML.  The goal here is to show how to build a field validation class and how to register it.  You may need to tweak the output scripts to register it to the correct object, field, etc.
 
 ### maximodev-cli create script-field-validator
 `create script-field-validator`, like the `java-field-valiator`, creates a field validator and registers it to an object and field.  The difference being that this field valiator uses the `automation scripting` framework and does not require Java.
+-->
 
 ### maximodev-cli create sample-classic-app
 `create sample-classic-app` prompts you for some information and creates a new sample application in your add-on location.  This sample app is mainly used to help you scaffold a new application, or for you to see how to build a complete working sample application within your add-on.  By using `create sample-classic-app`, dbc scripts and Java files are added, and creates a fully working application.  You can then `build` and `deploy` your add-on to see the application working within your Maximo environment.
