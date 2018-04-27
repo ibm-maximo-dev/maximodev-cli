@@ -23,6 +23,11 @@
 		<!-- Artist Application -->
 		<create_app app="{{addon_prefix}}ARTIST" description="Artist ({{addon_prefix}})" maintbname="{{addon_prefix}}ARTIST" />
 		
+		<freeform description="Set MAXAPPs">
+			<sql target="all">
+				update maxapps set originalapp='CUSTAPP' where app='{{addon_prefix}}ARTIST'
+			</sql>
+		</freeform>
 		<!-- Artist Main Sigoptions -->
 		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="INSERT" description="New Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
