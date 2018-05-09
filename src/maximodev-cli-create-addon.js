@@ -145,6 +145,12 @@ function create_addon(result) {
   log.info("Creating addon in directory %s", baseDir);
   fs.ensureDirSync(baseDir);
 
+  if (result.maximo_home) {
+    // backslashes will get interpreted as escapes, so let's using forward slashes... fortunately
+    // java, javascript, etc, understand this.
+    result.maximo_home = result.maximo_home.replace(/\\/g,'/');
+  }
+
   // create properites
   env.initProperties(path.join(baseDir, 'addon.properties'), result);
 
