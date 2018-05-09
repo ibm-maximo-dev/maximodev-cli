@@ -1,0 +1,1101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Begin Standard Header
+     
+     File:     packageIU.xml
+     Version:  7.5.3
+     Modified: 02/10/11
+     Created by: Tara Ventura
+     Reason for modification: Added Unix support
+     
+     Licensed Materials - Property of IBM
+     
+     Restricted Materials of IBM
+     
+     5724-M19
+     
+     (C) COPYRIGHT IBM CORP. 2010, 2014.  All Rights Reserved.
+     
+     US Government Users Restricted Rights - Use, duplication or
+     disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+     
+     End Standard Header
+-->
+<iudd:rootIU IUName="{{package_name}}PackagePackage" language_bundle="{{package_name}}PackagePackage" xmlns:J2EERT="http://www.ibm.com/namespaces/autonomic/J2EE_RT" xmlns:OSRT="http://www.ibm.com/namespaces/autonomic/OS_componentTypes" xmlns:RDBRT="http://www.ibm.com/namespaces/autonomic/RDB_RT" xmlns:base="http://www.ibm.com/namespaces/autonomic/solutioninstall/BASE" xmlns:iudd="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD" xmlns:res="http://www.ibm.com/namespaces/autonomic/solutioninstall/Resources" xmlns:rtype="http://www.ibm.com/namespaces/autonomic/solutioninstall/ResourceTypes" xmlns:siu="http://www.ibm.com/namespaces/autonomic/solutioninstall/SIU" xmlns:vsn="http://www.ibm.com/namespaces/autonomic/common/version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD C:\PROGRA~1\IBM\common\acsi\schema\level_a\iudd.xsd">
+    <identity>
+        <name>MAM7{{package_name}}PackagePackage</name>
+        <UUID>{{uuid}}</UUID>
+        <displayName>
+            <defaultLineText key="ROOT_IU_DISPLAY_NAME">Maximo Asset Management {{package_name}}Package Package </defaultLineText>
+        </displayName>
+        <buildID>ProcessModule</buildID>
+        <full>
+            <upgradeBase>
+                <minVersion>{{addon_version}}</minVersion>
+                <maxVersion>{{addon_version}}</maxVersion>
+            </upgradeBase>
+        </full>
+        <version>{{addon_version}}</version>
+    </identity>
+     
+    <variables>
+         
+        <!-- The AcceptLicense variable should be overridden with a value of      -->
+        <!-- "true" to indicate that the installer has presented the end user     -->
+        <!--  with the bundled license agreement, and that the end-user has       -->
+        <!--  accepted.                                                           -->
+        <variable name="AcceptLicense">
+            <parameter defaultValue="true"/>
+        </variable>
+         
+        <!-- General Variables -->
+         
+        <!-- Start of Variables for Multi Operating System Support -->
+         
+        <!--  true if Admin Workstation is running under Windows-->
+        <variable name="AdminWorkstationIsWindows">
+            <parameter defaultValue="true"/>
+        </variable>
+         
+        <!--  true if Admin Workstation is running under Unix -->
+        <variable name="AdminWorkstationIsUnix">
+            <parameter defaultValue="false"/>
+        </variable>
+         
+        <!--  Command extension helper variable used for scripts that are implemented as Windows BAT files and Unix Shell Scripts -->
+        <variable name="shExt">
+            <parameter defaultValue="bat"/>
+        </variable>
+         
+        <!--  Command extension helper variable used for scripts that are implemented as Windows BAT files and Unix Shell Scripts -->
+        <variable name="shExtWinBatUnixSh">
+            <parameter defaultValue="bat"/>
+        </variable>
+         
+        <variable name="UninstallSupportLevel">
+            <parameter defaultValue="Partial"/>
+        </variable>
+         
+         
+         
+        <!--  Command extension helper variable used for scripts that are implemented as Windows CMD files and Unix Shell Scripts -->
+        <variable name="shExtWinCmdUnixSh">
+            <parameter defaultValue="cmd"/>
+        </variable>
+         
+        <variable name="argDelim">
+            <parameter defaultValue="&quot;"/>
+        </variable>
+         
+         
+        <!-- The language selection varible defines the default language used by   -->
+        <!-- The Maximo. It is useful in deciding between imports and localized     -->
+        <!-- Files.                                                                -->
+        <variable name="LanguageSelection">
+            <parameter defaultValue="en"/>
+        </variable>
+         
+         
+        <!-- The ApplicationServerVendor variable stores the value that     -->
+        <!-- identifies the AS as either WebLogic or WebSphere.  -->
+        <variable name="ApplicationServerVendor">
+            <parameter defaultValue="WebSphere"/>
+        </variable>
+         
+         
+        <!-- The SkipJ2EEConfig is a boolean value to indicate whether to     -->
+        <!-- rebuild the Maximo ear (false) or not (true).                    -->
+        <variable name="SkipJ2EEConfig">
+            <parameter defaultValue="false"/>
+        </variable>
+        <variable name="SkipDbConfig">
+            <parameter defaultValue="false"/>
+        </variable>
+         
+        <!--  Action Condition Variable used to condition WAS Admin actions -->
+        <variable name="RunWASAdminActions">
+            <parameter/>
+        </variable>
+         
+        <!--  Action Condition Variable used to condition Maximo DB JDBC actions -->
+        <variable name="RunMaximoJDBCActions">
+            <parameter/>
+        </variable>
+         
+        <!--  Action Condition Variable used to condition actions that rebuild Maximo EARs -->
+        <variable name="RunMaxEARRebuildActions">
+            <parameter/>
+        </variable>
+         
+        <!--  Action Condition Variable used to condition actions that redeploy Maximo EARs -->
+        <variable name="RunMaxEARRedeployActions">
+            <parameter/>
+        </variable>
+         
+        <variable name="mxedbschemaowner">
+            <parameter/>
+        </variable>
+         
+         
+        <!-- This variable identifies the vendor of the database used for a    -->
+        <!-- particular base services install. Possible values are:                    -->
+        <!-- * DB2                                                             -->
+        <!-- * Oracle                                                          -->
+        <!-- * SQLServer                                                       -->
+        <!-- Presently, this value is needed because the TDToolkit application -->
+        <!-- is not functional for database types other than Oracle. This will -->
+        <!-- change after Driver 4.                                            -->
+        <variable name="DatabaseVendor">
+            <parameter defaultValue="Oracle"/>
+        </variable>
+         
+        <!-- These variables are the username and password for the Maximo      -->
+        <!-- database. These are needed to work around an error wherein the    -->
+        <!-- MRO-supplied "updateDB" script does not issue a failing return    -->
+        <!-- code when it cannot connect to the database. Therefore, these     -->
+        <!-- variables are declared to enforce explicit passing of these       -->
+        <!-- variables to the package, whereupon the PSI back end will verify  -->
+        <!-- both their correctness and that the database connection itself is -->
+        <!-- possible.                                                         -->
+        <variable name="mxedbuser">
+            <parameter/>
+        </variable>
+         
+        <!-- Password associated with the "mxedbuser" variable.                -->
+        <variable name="mxedbpassword">
+            <parameter/>
+        </variable>
+         
+        <!-- Connection information for the Maximo database.                   -->
+        <variable name="mxedburl">
+            <parameter/>
+        </variable>
+         
+        <!-- Database driver information for the Maximo Database.              -->
+        <variable name="mxedbdriver">
+            <parameter/>
+        </variable>
+         
+        <!-- Maximo Variables -->
+         
+        <!-- This location is distinct from "MaximoInstallLocation". It contains  -->
+        <!-- All PSI/Foundation provided scripts and JACL distrinct from the      -->
+        <!-- Maximo install.                                                      -->
+        <variable name="CCMDBInstallLocation">
+            <parameter defaultValue="C:\IBM\ccmdb"/>
+        </variable>
+         
+        <!-- Maximo install location.                                             -->
+        <variable name="MaximoInstallLocation">
+            <parameter defaultValue="{{maximo_location}}"/>
+        </variable>
+         
+        <!-- General Package Variables -->
+         
+        <!-- The UUID is a 128-bit hexadecimal number that serves as a unique -->
+        <!-- identifier for this package. Created using the UUID utility.     -->
+        <variable name="PkgUUID">
+            <parameter defaultValue="{{uuid}}"/>
+        </variable>
+         
+        <!-- PkgShortName is used as a short identifier of the package name, -->
+        <!-- for use in dynamically created files or directories (such as log -->
+        <!-- files or other output)                                           -->
+        <variable name="PkgShortName">
+            <parameter defaultValue="S{{package_name}}Package_753Package"/>
+        </variable>
+         
+         
+        <!-- This variable stores the location of any module/package specific -->
+        <!-- files or code. This may or may not be used depending on the      -->
+        <!-- specific package.                                                -->
+         
+        <!-- This variable stores the location of any module/package specific -->
+        <!-- files or code. This may or may not be used depending on the      -->
+        <!-- specific package.                                                -->
+        <variable name="ModuleInstallDir">
+            <parameter defaultValue="$({{package_name}}Package)/solutions/installedApps/$(PkgShortName)"/>
+        </variable>
+         
+         
+        <!-- The path to the directory the contains the logs for this specific -->
+        <!-- package. This is used if the package install writes to its own    -->
+        <!-- specific install logs.                                            -->
+        <variable name="PkgLogDirectory">
+            <parameter defaultValue="$({{package_name}}Package)/solutions/logs/$(PkgShortName)"/>
+        </variable>
+         
+        <!-- WAS variables -->
+         
+        <!-- This install location of the WAS Thin Client. This is utilized to -->
+        <!-- deploy EAR files (Namely, the rebuilt Maximo EAR) to a remote WAS -->
+        <!-- server.                                                           -->
+        <variable name="WASThinClientInstallLocation">
+            <parameter defaultValue="$(MaximoInstallLocation)"/>
+        </variable>
+         
+        <!-- This variable holds the hostname/IP address of the WAS server to  -->
+        <!-- which the package is to be installed. This is needed for          -->
+        <!-- invocation of the WAS thin client (described above)               -->
+        <variable name="WASDeploymentManagerHostName">
+            <parameter defaultValue="yellowlv"/>
+        </variable>
+         
+        <!-- The install location of the Websphere Application server. This is -->
+        <!-- Not as likely to be used as the thin client/hostname pair above,  -->
+        <!-- but is included for completeness.                                 -->
+        <variable name="WASInstallLocation">
+            <parameter defaultValue="C:\IBM\WebSphere\AppServer"/>
+        </variable>
+         
+        <!-- This node of the WAS server the package is being installed to.    -->
+        <variable name="WASNodeName">
+            <parameter defaultValue="maximo"/>
+        </variable>
+         
+        <!-- This cell of the WAS server the package is being installed to     -->
+        <variable name="WASCellName">
+            <parameter defaultValue="default_cell"/>
+        </variable>
+         
+        <!-- The server name (i.e. "server1" that the EAR file is being        -->
+        <!-- installed to. Note this is distinct from the                      -->
+        <!-- "WASDeploymentManagerHostName" variable.                          -->
+        <variable name="WASApplicationServerName">
+            <parameter defaultValue="server1"/>
+        </variable>
+         
+        <!-- The WAS profile name used to install the EAR file.                -->
+        <variable name="WASServerProfileName">
+            <parameter defaultValue="AppSrv01"/>
+        </variable>
+         
+        <!-- The virtual host name associated with the Maximo application.     -->
+        <variable name="WASVirtualHost">
+            <parameter defaultValue="maxserver_host"/>
+        </variable>
+         
+        <!-- Specifies the web server associated with the Maximo application.  -->
+        <variable name="WASWebServerName">
+            <parameter defaultValue="webserver1"/>
+        </variable>
+         
+        <!-- the userID of the administrative user being used to authenticate  -->
+        <!-- to the WAS server.                                                -->
+        <variable name="WASAdminUserName" transient="true">
+            <parameter defaultValue="wasadmin"/>
+        </variable>
+         
+        <!-- The password of the WAS user described by the "WASAdminUserName" -->
+        <!-- variable.                                                        -->
+        <variable name="WASAdminPassword" transient="true">
+            <parameter defaultValue="wasadmin"/>
+        </variable>
+         
+        <!-- The RXA user id credential for remote machine access. -->
+        <variable name ="WASRemoteAccessUserName">
+            <parameter defaultValue="Administrator"/>
+        </variable>
+         
+        <!--  The RXA password credential for remote machine access. -->
+        <variable name="WASRemoteAccessPassword">
+            <parameter defaultValue="maximo"/>
+        </variable>
+         
+        <!-- This variable controls whether or not to install the Langauge    -->
+        <!-- support for the Configuration Management PMP.                    -->
+        <variable name="selectedFeatures" transient="true">
+            <parameter defaultValue=""/>
+        </variable>
+         
+    </variables>
+    <installableUnit targetRef="tOS">
+        <SIU IUName="MAM_{{package_name}}_Package_IU" hostingEnvType="OSRT:Operating_System">
+            <identity>
+                <name>{{package_name}}Package_maximo-cli_{{timestamp}}</name>
+                <UUID>{{uuid}}</UUID>
+                <displayName>
+                    <defaultLineText key="SIU_DISPLAY_NAME">Maximo Asset Management Service Provider Package  Installable Unit</defaultLineText>
+                </displayName>
+                <buildID>ProcessModule</buildID>
+                <full>
+                    <upgradeBase>
+                        <minVersion>{{addon_versio}}</minVersion>
+                        <maxVersion>{{addon_versio}}</maxVersion>
+                    </upgradeBase>
+                </full>
+                <version>{{addon_versio}}</version>
+            </identity>
+             
+            <requirements>
+                <requirement name="Requires_process_automation_engine">
+                    <description>
+                        <defaultLineText key="PREREQ_PKG_REQT">process automation engine Package Requirement</defaultLineText>
+                    </description>
+                    <alternative name="Alternative_Base_Services_Package_Installed">
+                        <description>
+                            <defaultLineText key="PREREQ_PKG_REQT">process automation engine Package</defaultLineText>
+                        </description>
+                        <inlineCheck>
+                            <iu checkId="Check_Base_Services_Package_Installed">
+                                <description>
+                                    <defaultLineText key="PREREQ_CHECK">Requires process automation engine Package</defaultLineText>
+                                </description>
+                                <UUID>56cb9e49c593486bbe0b140fc9796034</UUID>
+                                <name>LTA_WAR_Package</name>
+                                <minVersion>7.5.0.5</minVersion>
+                                <maxVersion>7.5.99.99</maxVersion>
+                            </iu>
+                        </inlineCheck>
+                    </alternative>
+                </requirement>
+            </requirements>
+             
+             
+             
+            <unit>
+                <installArtifacts>
+                    <installArtifact undoable="true">
+                        <fileIdRef>{{package_name}}ackageInstallArtifact</fileIdRef>
+                        <!-- Parametermaps make the variables visible to the install -->
+                        <!-- and uninstall artifacts.                                -->
+                        <parameterMaps>
+                             
+                            <map>
+                                <internalName>AcceptLicense</internalName>
+                                <externalName>AcceptLicense</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>ApplicationServerVendor</internalName>
+                                <externalName>ApplicationServerVendor</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>selectedFeatures</internalName>
+                                <externalName>selectedFeatures</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>CCMDBInstallLocation</internalName>
+                                <externalName>CCMDBInstallLocation</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>MaximoInstallLocation</internalName>
+                                <externalName>MaximoInstallLocation</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>mxedbuser</internalName>
+                                <externalName>mxedbuser</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedbpassword</internalName>
+                                <externalName>mxedbpassword</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedburl</internalName>
+                                <externalName>mxedburl</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedbdriver</internalName>
+                                <externalName>mxedbdriver</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedbschemaowner</internalName>
+                                <externalName>mxedbschemaowner</externalName>
+                            </map>
+                            <map>
+                                <internalName>shExt</internalName>
+                                <externalName>shExt</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>argDelim</internalName>
+                                <externalName>argDelim</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>AdminWorkstationIsWindows</internalName>
+                                <externalName>AdminWorkstationIsWindows</externalName>
+                                 
+                            </map>
+                             
+                            <map>
+                                <internalName>AdminWorkstationIsUnix</internalName>
+                                <externalName>AdminWorkstationIsUnix</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>shExtWinCmdUnixSh</internalName>
+                                <externalName>shExtWinCmdUnixSh</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>shExtWinBatUnixSh</internalName>
+                                <externalName>shExtWinBatUnixSh</externalName>
+                            </map>
+                             
+                             
+                             
+                            <map>
+                                <internalName>LanguageSelection</internalName>
+                                <externalName>LanguageSelection</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>PkgUUID</internalName>
+                                <externalName>PkgUUID</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>PkgShortName</internalName>
+                                <externalName>PkgShortName</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>PkgLogDirectory</internalName>
+                                <externalName>PkgLogDirectory</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>ModuleInstallDir</internalName>
+                                <externalName>ModuleInstallDir</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>SkipJ2EEConfig</internalName>
+                                <externalName>SkipJ2EEConfig</externalName>
+                            </map>
+                             
+                             
+                            <map>
+                                <internalName>SkipDbConfig</internalName>
+                                <externalName>SkipDbConfig</externalName>
+                            </map>
+                             
+                             
+                            <map>
+                                <internalName>RunWASAdminActions</internalName>
+                                <externalName>RunWASAdminActions</externalName>
+                            </map>
+                             
+                             
+                            <map>
+                                <internalName>RunMaximoJDBCActions</internalName>
+                                <externalName>RunMaximoJDBCActions</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>RunMaxEARRebuildActions</internalName>
+                                <externalName>RunMaxEARRebuildActions</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>RunMaxEARRedeployActions</internalName>
+                                <externalName>RunMaxEARRedeployActions</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>DatabaseVendor</internalName>
+                                <externalName>DatabaseVendor</externalName>
+                            </map>
+                             
+                            <!-- Platform Check variables -->
+                            <map>
+                                <internalName>windows_TypeCheck</internalName>
+                                <externalName>windows_TypeCheck</externalName>
+                            </map>
+                            <!-- WAS required variables -->
+                            <map>
+                                <internalName>WASThinClientInstallLocation</internalName>
+                                <externalName>WASThinClientInstallLocation</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASDeploymentManagerHostName</internalName>
+                                <externalName>WASDeploymentManagerHostName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASInstallLocation</internalName>
+                                <externalName>WASInstallLocation</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASNodeName</internalName>
+                                <externalName>WASNodeName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASApplicationServerName</internalName>
+                                <externalName>WASApplicationServerName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASServerProfileName</internalName>
+                                <externalName>WASServerProfileName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASCellName</internalName>
+                                <externalName>WASCellName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASVirtualHost</internalName>
+                                <externalName>WASVirtualHost</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASWebServerName</internalName>
+                                <externalName>WASWebServerName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASAdminUserName</internalName>
+                                <externalName>WASAdminUserName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASAdminPassword</internalName>
+                                <externalName>WASAdminPassword</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASRemoteAccessUserName</internalName>
+                                <externalName>WASRemoteAccessUserName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASRemoteAccessPassword</internalName>
+                                <externalName>WASRemoteAccessPassword</externalName>
+                            </map>
+                        </parameterMaps>
+                    </installArtifact>
+                     
+                    <uninstallArtifact>
+                        <fileIdRef>UninstallArtifactXML</fileIdRef>
+                        <!-- Parametermaps make the variables visible to the install -->
+                        <!-- and uninstall artifacts.                                -->
+                        <parameterMaps>
+                             
+                            <map>
+                                <internalName>AcceptLicense</internalName>
+                                <externalName>AcceptLicense</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>ApplicationServerVendor</internalName>
+                                <externalName>ApplicationServerVendor</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>selectedFeatures</internalName>
+                                <externalName>selectedFeatures</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>CCMDBInstallLocation</internalName>
+                                <externalName>CCMDBInstallLocation</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>MaximoInstallLocation</internalName>
+                                <externalName>MaximoInstallLocation</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>mxedbuser</internalName>
+                                <externalName>mxedbuser</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedbpassword</internalName>
+                                <externalName>mxedbpassword</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>mxedbschemaowner</internalName>
+                                <externalName>mxedbschemaowner</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedburl</internalName>
+                                <externalName>mxedburl</externalName>
+                            </map>
+                            <map>
+                                <internalName>mxedbdriver</internalName>
+                                <externalName>mxedbdriver</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>shExt</internalName>
+                                <externalName>shExt</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>argDelim</internalName>
+                                <externalName>argDelim</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>AdminWorkstationIsWindows</internalName>
+                                <externalName>AdminWorkstationIsWindows</externalName>
+                                 
+                            </map>
+                             
+                            <map>
+                                <internalName>AdminWorkstationIsUnix</internalName>
+                                <externalName>AdminWorkstationIsUnix</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>shExtWinCmdUnixSh</internalName>
+                                <externalName>shExtWinCmdUnixSh</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>shExtWinBatUnixSh</internalName>
+                                <externalName>shExtWinBatUnixSh</externalName>
+                            </map>
+                             
+                             
+                             
+                            <map>
+                                <internalName>LanguageSelection</internalName>
+                                <externalName>LanguageSelection</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>PkgUUID</internalName>
+                                <externalName>PkgUUID</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>PkgShortName</internalName>
+                                <externalName>PkgShortName</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>PkgLogDirectory</internalName>
+                                <externalName>PkgLogDirectory</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>ModuleInstallDir</internalName>
+                                <externalName>ModuleInstallDir</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>SkipJ2EEConfig</internalName>
+                                <externalName>SkipJ2EEConfig</externalName>
+                            </map>
+                             
+                             
+                            <map>
+                                <internalName>SkipDbConfig</internalName>
+                                <externalName>SkipDbConfig</externalName>
+                            </map>
+                             
+                             
+                            <map>
+                                <internalName>RunWASAdminActions</internalName>
+                                <externalName>RunWASAdminActions</externalName>
+                            </map>
+                             
+                             
+                            <map>
+                                <internalName>RunMaximoJDBCActions</internalName>
+                                <externalName>RunMaximoJDBCActions</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>RunMaxEARRebuildActions</internalName>
+                                <externalName>RunMaxEARRebuildActions</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>RunMaxEARRedeployActions</internalName>
+                                <externalName>RunMaxEARRedeployActions</externalName>
+                            </map>
+                             
+                            <map>
+                                <internalName>DatabaseVendor</internalName>
+                                <externalName>DatabaseVendor</externalName>
+                            </map>
+                             
+                            <!-- Platform Check variables -->
+                            <map>
+                                <internalName>windows_TypeCheck</internalName>
+                                <externalName>windows_TypeCheck</externalName>
+                            </map>
+                            <!-- WAS required variables -->
+                            <map>
+                                <internalName>WASThinClientInstallLocation</internalName>
+                                <externalName>WASThinClientInstallLocation</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASDeploymentManagerHostName</internalName>
+                                <externalName>WASDeploymentManagerHostName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASInstallLocation</internalName>
+                                <externalName>WASInstallLocation</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASNodeName</internalName>
+                                <externalName>WASNodeName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASApplicationServerName</internalName>
+                                <externalName>WASApplicationServerName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASServerProfileName</internalName>
+                                <externalName>WASServerProfileName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASCellName</internalName>
+                                <externalName>WASCellName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASVirtualHost</internalName>
+                                <externalName>WASVirtualHost</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASWebServerName</internalName>
+                                <externalName>WASWebServerName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASAdminUserName</internalName>
+                                <externalName>WASAdminUserName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASAdminPassword</internalName>
+                                <externalName>WASAdminPassword</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASRemoteAccessUserName</internalName>
+                                <externalName>WASRemoteAccessUserName</externalName>
+                            </map>
+                            <map>
+                                <internalName>WASRemoteAccessPassword</internalName>
+                                <externalName>WASRemoteAccessPassword</externalName>
+                            </map>
+                        </parameterMaps>
+                    </uninstallArtifact>
+                     
+                </installArtifacts>
+            </unit>
+        </SIU>
+    </installableUnit>
+     
+     
+    <selectableContent>
+        <installableUnit targetRef="tOS">
+            <SIU IUName="MAM71_S{{package_name}}Package_LANG_Package_IU">
+                <identity>
+                    <name>MAM71_S{{package_name}}Package_LANG_Package_IU</name>
+                    <UUID>28095e59d815476bad188820664cd7f6</UUID>
+                    <displayName>
+                        <defaultLineText key="LANG_SUPT_FEATURE">Maximo Asset Management Service Provider Language Support</defaultLineText>
+                    </displayName>
+                    <full>
+                        <upgradeBase>
+                            <minVersion>7.1.0</minVersion>
+                            <maxVersion>7.5.2.99</maxVersion>
+                        </upgradeBase>
+                    </full>
+                    <version>7.5.3.0</version>
+                </identity>
+                <unit>
+                    <installArtifacts>
+                        <installArtifact featureAddSupport="true" featureRemoveSupport="true">
+                            <fileIdRef>S{{package_name}}PackageLanguagePackageInstallArtifact</fileIdRef>
+                            <parameterMaps>
+                                 
+                                <map>
+                                    <internalName>AcceptLicense</internalName>
+                                    <externalName>AcceptLicense</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>ApplicationServerVendor</internalName>
+                                    <externalName>ApplicationServerVendor</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>selectedFeatures</internalName>
+                                    <externalName>selectedFeatures</externalName>
+                                </map>
+                                <map>
+                                    <internalName>CCMDBInstallLocation</internalName>
+                                    <externalName>CCMDBInstallLocation</externalName>
+                                </map>
+                                <map>
+                                    <internalName>MaximoInstallLocation</internalName>
+                                    <externalName>MaximoInstallLocation</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>mxedbuser</internalName>
+                                    <externalName>mxedbuser</externalName>
+                                </map>
+                                <map>
+                                    <internalName>mxedbpassword</internalName>
+                                    <externalName>mxedbpassword</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>mxedbschemaowner</internalName>
+                                    <externalName>mxedbschemaowner</externalName>
+                                </map>
+                                 
+                                 
+                                <map>
+                                    <internalName>mxedburl</internalName>
+                                    <externalName>mxedburl</externalName>
+                                </map>
+                                <map>
+                                    <internalName>mxedbdriver</internalName>
+                                    <externalName>mxedbdriver</externalName>
+                                </map>
+                                 
+                                 
+                                <map>
+                                    <internalName>LanguageSelection</internalName>
+                                    <externalName>LanguageSelection</externalName>
+                                </map>
+                                <map>
+                                    <internalName>PkgUUID</internalName>
+                                    <externalName>PkgUUID</externalName>
+                                </map>
+                                <map>
+                                    <internalName>PkgShortName</internalName>
+                                    <externalName>PkgShortName</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>PkgLogDirectory</internalName>
+                                    <externalName>PkgLogDirectory</externalName>
+                                </map>
+                                <map>
+                                    <internalName>ModuleInstallDir</internalName>
+                                    <externalName>ModuleInstallDir</externalName>
+                                </map>
+                                <map>
+                                    <internalName>SkipJ2EEConfig</internalName>
+                                    <externalName>SkipJ2EEConfig</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>RunWASAdminActions</internalName>
+                                    <externalName>RunWASAdminActions</externalName>
+                                </map>
+                                 
+                                 
+                                <map>
+                                    <internalName>RunMaximoJDBCActions</internalName>
+                                    <externalName>RunMaximoJDBCActions</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>RunMaxEARRebuildActions</internalName>
+                                    <externalName>RunMaxEARRebuildActions</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>RunMaxEARRedeployActions</internalName>
+                                    <externalName>RunMaxEARRedeployActions</externalName>
+                                </map>
+                                <!-- Platform Check variables -->
+                                <map>
+                                    <internalName>windows_TypeCheck</internalName>
+                                    <externalName>windows_TypeCheck</externalName>
+                                </map>
+                                <!-- WAS required variables -->
+                                <map>
+                                    <internalName>WASThinClientInstallLocation</internalName>
+                                    <externalName>WASThinClientInstallLocation</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASDeploymentManagerHostName</internalName>
+                                    <externalName>WASDeploymentManagerHostName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASInstallLocation</internalName>
+                                    <externalName>WASInstallLocation</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASNodeName</internalName>
+                                    <externalName>WASNodeName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASApplicationServerName</internalName>
+                                    <externalName>WASApplicationServerName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASServerProfileName</internalName>
+                                    <externalName>WASServerProfileName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASVirtualHost</internalName>
+                                    <externalName>WASVirtualHost</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASWebServerName</internalName>
+                                    <externalName>WASWebServerName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASCellName</internalName>
+                                    <externalName>WASCellName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASAdminUserName</internalName>
+                                    <externalName>WASAdminUserName</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASAdminPassword</internalName>
+                                    <externalName>WASAdminPassword</externalName>
+                                </map>
+                                <map>
+                                    <internalName>WASRemoteAccessUserName</internalName>
+                                    <externalName>WASRemoteAccessUserName</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>WASRemoteAccessPassword</internalName>
+                                    <externalName>WASRemoteAccessPassword</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>DatabaseVendor</internalName>
+                                    <externalName>DatabaseVendor</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>shExt</internalName>
+                                    <externalName>shExt</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>argDelim</internalName>
+                                    <externalName>argDelim</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>AdminWorkstationIsWindows</internalName>
+                                    <externalName>AdminWorkstationIsWindows</externalName>
+                                     
+                                </map>
+                                 
+                                <map>
+                                    <internalName>AdminWorkstationIsUnix</internalName>
+                                    <externalName>AdminWorkstationIsUnix</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>shExtWinCmdUnixSh</internalName>
+                                    <externalName>shExtWinCmdUnixSh</externalName>
+                                </map>
+                                 
+                                <map>
+                                    <internalName>shExtWinBatUnixSh</internalName>
+                                    <externalName>shExtWinBatUnixSh</externalName>
+                                </map>
+                                 
+                                 
+                                 
+                            </parameterMaps>
+                        </installArtifact>
+                    </installArtifacts>
+                </unit>
+            </SIU>
+        </installableUnit>
+    </selectableContent>
+     
+    <!--                      IMPORTANT INFORMATION HERE!                      -->
+    <!-- Note that the following featureID must not be changed. In order for   -->
+    <!-- the PSI Backend to successfully tell DE to install the feature, you   -->
+    <!-- must use this featureID                                               -->
+    <features>
+        <feature featureID="LANG_SUPT_FEATURE" type="Language">
+            <identity>
+                <name>Maximo Asset Management Service Provider Language Support Feature</name>
+                <displayName>
+                    <defaultLineText key="LANG_SUPT_FEATURE">Maximo Asset Management Service Provider Language Support</defaultLineText>
+                </displayName>
+            </identity>
+            <IUNameRef>MAM71_S{{package_name}}Package_LANG_Package_IU</IUNameRef>
+        </feature>
+    </features>
+     
+     
+    <rootInfo>
+        <schemaVersion>1.2.1</schemaVersion>
+        <build>42</build>
+        <size>1</size>
+    </rootInfo>
+     
+    <topology>
+        <target id="tOS" type="OSRT:Operating_System">
+            <checks>
+                <property checkId="windows_TypeCheck">
+                    <propertyName>OSType</propertyName>
+                    <pattern>Windows.*</pattern>
+                </property>
+            </checks>
+        </target>
+    </topology>
+    <files>
+         
+         
+        <!-- Install/Uninstall artifacts. -->
+         
+        <!-- This variable identifies the Uninstall Artifact. This is the same as -->
+        <!-- the install artifact, but contains instructions for uninstall.       -->
+        <!-- Due to Maximo's unique install/update method, uninstall is not       -->
+        <!-- currently supported. This file is included for completeness only.    -->
+         
+        <file id="UninstallArtifactXML">
+            <pathname>UninstallArtifact.xml</pathname>
+            <length>0</length>
+            <checksum type="MD5">abc</checksum>
+        </file>
+         
+        <!-- This variable identifies the Install Artifact, that is, the XML file -->
+        <!-- that contains the sequential instructions that are executed to       -->
+        <!-- install a package.                                                   -->
+        <file id="{{package_name}}PackageInstallArtifact">
+            <pathname>{{package_name}}PackageInstallArtifact.xml</pathname>
+            <length>0</length>
+            <checksum type="MD5">abc</checksum>
+        </file>
+         
+        <!-- This variable identifies the Install Artifact, that is, the XML file -->
+        <!-- that contains the sequential instructions that are executed to       -->
+        <!-- install a package.                                                   -->
+        <file id="{{package_name}}LanguagePackageInstallArtifact">
+            <pathname>S{{package_name}}LanguagePackageInstallArtifact.xml</pathname>
+            <length>0</length>
+            <checksum type="MD5">abc</checksum>
+        </file>
+         
+        <!-- This variable identifies the Uninstall Artifact. This is the same as -->
+        <!-- the install artifact, but contains instructions for uninstall.       -->
+        <!-- Due to Maximo's unique install/update method, uninstall is not       -->
+        <!-- currently supported. This file is included for completeness only.    -->
+         
+        <!-- Payload(s) -->
+         
+        <!-- There can be any number of payloads. these are simply identified    -->
+        <!-- here as a sort of manifest, to allow the SI runtime knowledge of    -->
+        <!-- what files will be referenced by variables during the install       -->
+        <!-- process.                                                            -->
+         
+        <!-- {{package_name}} Package FILES FOR MAXIMO ASSET MANAGEMENT 7.5.3-->
+        <file id="MAM{{package_name}}Package">
+            <pathname>../FILES/{{package_name}}Package.zip</pathname>
+            <length>0</length>
+            <checksum type="MD5">abc</checksum>
+        </file>
+
+         
+        <!-- This is a .ZIP file containing license agreements in various        -->
+        <!-- langauges. -->
+        <!-- file id="LicenseZip">
+            <pathname>../FILES/{{package_name}}PackageAgreement.zip</pathname>
+            <length>0</length>
+            <checksum type="MD5">abc</checksum>
+        </file -->
+    </files>
+</iudd:rootIU>
+     
