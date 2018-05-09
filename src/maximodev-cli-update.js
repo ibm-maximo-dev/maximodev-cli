@@ -11,7 +11,11 @@ var program = require('commander');
 
 program
   .version('0.0.1')
-  .description('initialize maximo build tools and configurations')
-  .command('addon', 'initialize add-on properties in the current directory').alias('a')
-  .command('java', 'install gradle and enable java builds').alias('j')
+  .description('Update a maximo artifact')
+  .command('product-xml', 'update version in product xml').alias('pv')
   .parse(process.argv);
+
+// check if the user passed a command
+if (!program.commands.map(cmd => cmd._name).includes(program.args[0])) {
+  console.log("Invalid command: " + program.args[0]);
+}
