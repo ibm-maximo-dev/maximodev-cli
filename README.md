@@ -1,5 +1,7 @@
 # Command Line Tools for Development with IBM Maximo Asset Mangement
+<!--
 [![Build Status](https://travis.ibm.com/maximo-ohio/maximodev-cli.svg?token=yJyC5zQ7wEuSAyYtDC53&branch=master)](https://travis.ibm.com/maximo-ohio/maximodev-cli)
+-->
 
 The `maximodev-cli` is a set of command line tools for developing with Maximo Asset Management that accelerates tasks, such as creating add-ons, MBOs, field validations, etc.  
 
