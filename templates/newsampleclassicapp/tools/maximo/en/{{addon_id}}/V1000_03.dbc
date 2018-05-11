@@ -23,6 +23,7 @@
 		<!-- Artist Application -->
 		<create_app app="{{addon_prefix}}ARTIST" description="Artist ({{addon_prefix}})" maintbname="{{addon_prefix}}ARTIST" />
 		
+
 		<!-- Allow the applicaiton to be show at the UI without licenses -->
 
 		<freeform description="Set MAXAPPs">
@@ -31,8 +32,7 @@
 			</sql>
 		</freeform>
 
-
-		<!-- Artist Main Sigoptions -->
+  <!-- Artist Main Sigoptions -->
 		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="INSERT" description="New Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{addon_prefix}}ARTIST" optionname="SAVE" description="Save Artist" grantapp="{{addon_prefix}}ARTIST" grantoption="READ" esigenabled="false" langcode="EN" />
