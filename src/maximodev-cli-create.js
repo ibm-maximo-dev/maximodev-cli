@@ -18,8 +18,8 @@ program
   .command('java-field-validator', 'create Java field validation class').alias('jfv')
   //.command('script-field-validator', 'create Script field validation').alias('sfv')
   .command('sample-classic-app', 'create a sample maximo classic application').alias('sca')
-  .command('psi', 'create a new process solution install - PSI ').alias('si')
   .command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp')
+  .command('psi', 'create a new process solution install - PSI ').alias('si')
   .command('java-mbo', 'create a java MBO (Maximo Business Object) structure for Maximo development ').alias('mbo')
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
   .parse(process.argv);
