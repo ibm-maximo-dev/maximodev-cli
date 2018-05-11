@@ -312,7 +312,7 @@
     <installableUnit targetRef="tOS">
         <SIU IUName="MAM_{{package_name}}_Package_IU" hostingEnvType="OSRT:Operating_System">
             <identity>
-                <name>{{package_name}}Package_maximo-cli_{{timestamp}}</name>
+                <name>{{package_name}}Package_maximodev-cli_{{timestamp}}</name>
                 <UUID>{{uuid}}</UUID>
                 <displayName>
                     <defaultLineText key="SIU_DISPLAY_NAME">Maximo Asset Management Service Provider Package  Installable Unit</defaultLineText>
