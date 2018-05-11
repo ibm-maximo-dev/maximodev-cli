@@ -1,10 +1,10 @@
 {
-  "name": "maximo-cli",
+  "name": "maximodev-cli",
   "version": "1.0.3",
   "description": "Maximo command line tools",
-  "main": "src/maximo-cli.js",
+  "main": "src/maximodev-cli.js",
   "bin": {
-    "maximo-cli": "src/maximo-cli.js"
+    "maximo-cli": "src/maximodev-cli.js"
   },
   "scripts": {
     "clean": "rm -rf build",
