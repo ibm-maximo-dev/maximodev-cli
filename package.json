@@ -1,7 +1,7 @@
 {
   "name": "maximodev-cli",
-  "version": "1.0.6",
-  "description": "Maximo command line tools",
+  "version": "1.0.7",
+  "description": "Maximo developer command line tools",
   "main": "src/maximodev-cli.js",
   "bin": {
     "maximodev-cli": "src/maximodev-cli.js"
