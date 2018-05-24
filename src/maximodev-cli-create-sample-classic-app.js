@@ -36,7 +36,7 @@ function create_app(result) {
 
   var args = Object.assign({}, env.props, result);
   if (!args.java_package) {
-    log.error("This addon is not configured for Java support.  You need to install java support first using 'maximo-cli init java'");
+    log.error("This addon is not configured for Java support.  You need to install java support first using 'maximodev-cli init java'");
     process.exit(1);
   }
   installer.installTemplateApp("newsampleclassicapp", env.addonDir(), args);

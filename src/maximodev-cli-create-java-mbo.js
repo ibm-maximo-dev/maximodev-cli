@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
 var log = require('./lib/logger');
 var env = require('./lib/env');
 var cli = require('./lib/cli');
