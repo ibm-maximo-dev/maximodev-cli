@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+     
+<!--
+     Begin Standard Header
+     
+     File:     MAM {{package_name}}Package PSI UI/META-INF/{{package_name}}LanguagePackageInstallArtifact.xml
+     Version:  1.0
+     Modified: 11/07/09
+     
+     
+     Licensed Materials - Property of IBM
+     
+     Restricted Materials of IBM
+     
+     5724-M19
+     
+     (C) COPYRIGHT IBM CORP. 2010, 2014.  All Rights Reserved.
+     
+     US Government Users Restricted Rights - Use, duplication or
+     disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+     
+     End Standard Header
+-->
+     
+<!--
+     Defect   Name       Date      Description
+     =======  =========  ========  ===============================================
+     
+     End Change History
+-->
+     
+<action:artifact
+     language_bundle="InstallPackage"
+     xmlns:iudd="http://www.ibm.com/namespaces/autonomic/solutioninstall/IUDD"
+     xmlns:osac="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions"
+     xmlns:action="http://www.ibm.com/namespaces/autonomic/solutioninstall/action"
+     xmlns:base="http://www.ibm.com/namespaces/autonomic/solutioninstall/BASE"
+     xmlns:command="http://www.ibm.com/namespaces/autonomic/solutioninstall/command"
+     xmlns:rtype="http://www.ibm.com/namespaces/autonomic/solutioninstall/ResourceTypes"
+     xmlns:sigt="http://www.ibm.com/namespaces/autonomic/solutioninstall/Signatures"
+     xmlns:vsn="http://www.ibm.com/namespaces/autonomic/common/version"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.ibm.com/namespaces/autonomic/solutioninstall/OsActions osActions.xsd">
+    <artifactType>Install</artifactType>
+    <artifactSchemaVersion>1.0.0</artifactSchemaVersion>
+    <variables>
+        <variable name="selectedFeatures"/>
+    </variables>
+     
+     
+     
+     
+     
+</action:artifact>
+     

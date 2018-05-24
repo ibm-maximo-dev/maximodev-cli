@@ -197,5 +197,5 @@ function create_addon(result) {
 
   log.info("Addon created in %s", env.addonDir());
   log.log("cd %s", env.addonDir());
-  log.log("explore other maximo-cli commands such as 'create sample-classic-app'");
+  log.log("explore other maximodev-cli commands such as 'create sample-classic-app'");
 }

@@ -15,10 +15,13 @@ var prog = program
   .command('dbc-script', 'create an empty dbc in the product\'s script directory').alias('dbc')
   .command('product-xml', 'create product xml file in products directory').alias('prod')
   .command('presentation-diff', 'compare two presentation xml files and create a diff dbc script').alias('pd')
+  .command('java-field-validator', 'create Java field validation class').alias('jfv')
+  //.command('script-field-validator', 'create Script field validation').alias('sfv')
   .command('sample-classic-app', 'create a sample maximo classic application').alias('sca')
   .command('java-mbo', 'create a java MBO (Maximo Business Object) structure for Maximo development ').alias('mbo');
 
 if (process.env["MAXIMODEV_CLI_BETA"]) {
+  prog.command('psi', 'create a new process solution install - PSI ').alias('psi');
   prog.command('java-field-validator', 'create Java field validation class').alias('jfv');
   prog.command('script-field-validator', 'create Script field validation').alias('sfv');
   prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp')

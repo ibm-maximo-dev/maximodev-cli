@@ -33,6 +33,11 @@
 		<!-- Music Application -->
 		<create_app app="{{addon_prefix}}MUSIC" description="Music ({{addon_prefix}})" maintbname="{{addon_prefix}}MUSIC" />
 		
+		<freeform description="Set MAXAPPs">
+			<sql target="all">
+				update maxapps set originalapp='CUSTAPP' where app='{{addon_prefix}}MUSIC'
+			</sql>
+		</freeform>
 		<!-- Music Main Sigoptions -->
 		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{addon_prefix}}MUSIC" optionname="INSERT" description="New Music" grantapp="{{addon_prefix}}MUSIC" grantoption="READ" esigenabled="false" langcode="EN" />
