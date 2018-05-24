@@ -73,7 +73,7 @@ const pathTransformers = [
      */
     from: '/webclient/miniapps/',
     to: '/webclient/javascript/miniapps/',
-    exclude_if: 'DEV_BUILD'
+    exclude_if: 'MAXIMODEV_CLI_DEVBUILD'
   }
 ];
 
@@ -150,7 +150,7 @@ dist.build = function(rootDir, userExcludes) {
 dist.transformPaths = function(fullPath) {
   for (var trans of pathTransformers) {
     // skip any transforms that should be skipped in a dev build
-    if (trans.exclude_if && env.get('DEV_BUILD', false)) continue;
+    if (trans.exclude_if && env.get(trans.exclude_if, false)) continue;
     fullPath = transformPath(fullPath, trans.from, trans.to);
   }
   return fullPath;
