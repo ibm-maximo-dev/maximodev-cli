@@ -21,7 +21,7 @@ var prog = program
   .command('java-mbo', 'create a java MBO (Maximo Business Object) structure for Maximo development ').alias('mbo');
 
 if (process.env["MAXIMODEV_CLI_BETA"]) {
-  prog.command('psi', 'create a new process solution install - PSI ').alias('psi');
+  prog.command('psi', 'create a new process solution install - PSI ').alias('zip');
   prog.command('java-field-validator', 'create Java field validation class').alias('jfv');
   prog.command('script-field-validator', 'create Script field validation').alias('sfv');
   prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp')
