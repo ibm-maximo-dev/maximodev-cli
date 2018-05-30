@@ -142,6 +142,13 @@ psi.copyFileSync = function ( source, target ) {
 };
 
 /**
+ * Checks if the directory exists
+ */
+psi.ensureDir=function(dir){
+    return fs.existsSync(dir);
+}
+
+/**
  * Needs create the FILE storage folder
  * @param {*} projectName 
  */
@@ -161,9 +168,9 @@ psi.copyFolderRecursiveSync= function ( source, target ) {
 
     //check if folder needs to be created or integrated
     var targetFolder = path.join( target, path.basename( source ) );
-    // if ( !fs.existsSync( targetFolder ) ) {
-    //     fs.mkdirSync( targetFolder );
-    // }
+    if ( !fs.existsSync( targetFolder ) ) {
+         fs.mkdirSync( targetFolder );
+    }
 
     //copy
     if ( fs.lstatSync( source ).isDirectory() ) {
@@ -185,10 +192,10 @@ psi.copyFolderRecursiveSync= function ( source, target ) {
 psi.zipFolderContent = function (destDir, package_name){
 
     return new Promise (function(resolve,reject){
-        var output = fs.createWriteStream(path.join(destDir+'/'+package_name+'Package.zip'));
+        var output = fs.createWriteStream(path.join(destDir+'/'+package_name+'Package.zip/.'));
         // pipe archive data to the output file
         zipArchive.pipe(output);
-    
+        //Deprecated function
         //zipArchive.bulk([{src: [path.join(destDir, '*.*')],  expand: true}]);
         zipArchive.directory(destDir,package_name+'Package');
         zipArchive.finalize(function(err, bytes) {

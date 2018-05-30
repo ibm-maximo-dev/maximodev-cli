@@ -41,32 +41,25 @@ cli.process(schema, process.argv, create_package);
 function create_package(result) {
   
   var args = Object.assign({}, env.props, result);
-
-  //schema.properties['uuid'] = {_cli: 'uuid',_prop: 'uuid',required: true, default: uuid};
-
-  //define the uuid property
-  //result['uuid'] =  uuid;
-  
-
-  //console.log("Package UUID: "+ result.uuid);
-
   /**
    * For future versions the installation will be able to be done by the IBM Installation Manager or solutionintaller. 
    */
-  //Install templates 
-  psi.installTemplateZIP("zip", env.addonDir(), args);
-  //Create Files Directory
-  //psi.createFILES(result.package_name);
-  //Copy files into the FILES directories
-  psi.copyFolderRecursiveSync('./dist/.', './zip/'+result.package_name+'Package/');
-  //Zip the content from a package int a file to be installed.
-  psi.zipFolderContent('./zip/',result.package_name).then(function(base){
-    console.log("Your package were created into the zip folder of this project. Unzip the package into MAXIMO's installation folder and then run the updatedb command to install it");
-  });
+  var build_dir = 'dist/.';
+  if(psi.ensureDir(build_dir)){
 
-  
+    //Install templates 
+    psi.installTemplateZIP("zip", env.addonDir(), args);
 
-  
+    //Copy folders recursively 
+    psi.copyFolderRecursiveSync(build_dir, 'zip/'+result.package_name+'Package/');
+    
+    //Zip the content from a package int a file to be installed.
+    psi.zipFolderContent('./zip/'+result.package_name+'Package/',result.package_name).then(function(base){
+      console.log("Your package were created into the zip folder of this project. Unzip the package into MAXIMO's installation folder and then run the updatedb command to install it");
+    });
+  }else{
+    console.log('Package is note ready, please build the package before zip it (i.e. run maximodev build)');
+  }//End ensure dir
    
 };
 
