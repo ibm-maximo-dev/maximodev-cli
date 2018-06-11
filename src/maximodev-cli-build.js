@@ -12,6 +12,7 @@ const gradle = require('./lib/gradle');
 const cli = require('./lib/cli');
 const dist = require('./lib/dist');
 const env = require('./lib/env');
+const sfv = require('./lib/sfv');
 const productxml = require('./lib/productxml');
 const presentations = require('./lib/presentations');
 const dbcscripts = require('./lib/dbcscripts');
@@ -26,7 +27,6 @@ cli.process(schema, process.argv, build);
 
 function build(result) {
   const buildDir = shell.env['PWD'];
-
   // Identify that it is a valid a folder structure created by create addon or create sample-add commands.
   if(!dist.canBuild(buildDir)) {
     log.error(`${buildDir} does not appear to be a valid Maximo home directory, exiting...`);
@@ -48,6 +48,10 @@ function build(result) {
   } else {
     log.warn("Skipping to build presentations (if any) because MAXIMO_HOME is not set to a valid Maximo Home directory");
   }
+
+  //update script field validation when necessary
+  sfv.updateScrips(env.scriptDir());
+  log.info("Checking for Automation Scripting addition");
 
   // Update product.xml when necessary.
   productxml.updateVersion(env.productXmlIn(), env.scriptDir());

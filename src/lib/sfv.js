@@ -12,12 +12,12 @@ var env = require('./env');
 var path = require('path');
 var util = require('util');
 var shell = require('shelljs');
-var log = require("./logger");
 var mustache = require('mustache');
+var scriptv = require('./scriptv/scriptv');
 
 var sfv = module.exports = Object.create({});
 
-var templateArgs; 
+var templateArgs;
 
 /**
  * Install and verify the variable from SFV.
@@ -25,31 +25,20 @@ var templateArgs;
  * @param {*} dir Target directory.
  * @param {*} templateArgs Template's arguments.
  */
-sfv.installTemplateSFV = function(template, dir, templateArgs) {
+sfv.installTemplateSFV = function (template, dir, templateArgs) {
   dir = dir || env.addonDir() || '.';
   env.ensureDir(dir);
   //Shadowing ?
   this.templateArgs = templateArgs;
-  //Validate SFV template name - never used
-  if (!templateArgs.SFV_name_lower) {
-    if (templateArgs.SFV_name!==undefined){
-     templateArgs.SFV_name_lower = templateArgs.SFV_name.toLowerCase();
-    }
-  }
-
-  //Validate java package dir - never used
-  if (!templateArgs.java_package_dir) {
-    if (templateArgs.java_package_dir!==undefined){
-     templateArgs.java_package_dir = path.join(...templateArgs.java_package.split('.'));
-    }
-  }
-
 
   log.info("Install %s into %s", template, dir);
   var tdir = templates.resolveName(template);
-  shell.ls("-R", tdir).forEach(function(f) {
+  shell.ls("-R", tdir).forEach(function (f) {
     if (!fs.lstatSync(path.join(tdir, f)).isDirectory()) {
-      sfv.installTemplateSFVFile(path.resolve(tdir, f), dir, f, templateArgs);
+      //If templates ends with the user choice, it will be copied, otherwise, it will be skipped.
+      if (f.endsWith(templateArgs.file_extension) || f.endsWith("in")) {
+        sfv.installTemplateSFVFile(path.resolve(tdir, f), dir, f, templateArgs);
+      }//END Check file extentions
     }
   });
 };
@@ -61,9 +50,9 @@ sfv.installTemplateSFV = function(template, dir, templateArgs) {
  * @param {*} filePath Full path of rendered files.
  * @param {*} templateArgs Template arguments.
  */
-sfv.installTemplateSFVFile = function(template, outBaseDir, filePath, templateArgs) {
+sfv.installTemplateSFVFile = function (template, outBaseDir, filePath, templateArgs) {
   var destPath = templates.render(filePath, templateArgs);
- 
+
   // handle dbc scripts
   var script = dbcscripts.script(path.basename(template));
   if (script) {
@@ -75,45 +64,42 @@ sfv.installTemplateSFVFile = function(template, outBaseDir, filePath, templateAr
   } //Ending DBC installing process for sfv
 
   log.info("SFV structure installing at: %s", destPath);
-  templateArgs.code_py = "{{code_py}}";
+  templateArgs.code_script = "{{code_script}}";
   templates.renderToFile(template, templateArgs, path.join(outBaseDir, destPath));
 };
-
-
 
 /**
  * Update scripts for automation scripts (Build)
  * @param {*} fdir Script .in complete file's path
  */
 sfv.updateScrips = function (fdir) {
-  shell.ls("-R", fdir).forEach(function(f) {
+  shell.ls("-R", fdir).forEach(function (f) {
     //list all files into the script directory
-    
+
     var complete_path = path.join(fdir, f);
-    
+
     //find the .in scripts
-    if (complete_path.endsWith(".in")){
-      console.log("File:"+f);
-      console.log("File path:"+complete_path);
+    if (complete_path.endsWith(".in")) {
+      console.log("File:" + f);
+      console.log("File path:" + complete_path);
       //Check if this file exists
       if (fs.existsSync(complete_path)) {
         //rename it to read the code script related to .in file
         //log.info("Before:"+complete_path);
-        var codeScript = complete_path.substring(0,complete_path.length -3);
+
+        var codeScript = complete_path.substring(0, complete_path.length - 3);
         //log.info("After:"+codeScript);
-        codeScript += ('.'+this.templateArgs.file_extension);
-        log.info("Extension change:"+codeScript);
+        var script_extension = sfv.getScriptExtension(f.substring(0, f.length - 7), fdir);
+        codeScript += script_extension
+        //log.info("Extension change:" + codeScript);
         //read the content of .py file.
         codeScript = sfv.readFile(codeScript);
         //Read in script content
         scriptFile = sfv.readFile(complete_path);
         //create the args for templates. 
         var args = {
-          code_py: sfv.validateCode(codeScript),
+          code_script: sfv.validateCode(script_extension, codeScript),
         };
-        //Log info for content.
-        //log.info("Arguments:"+args.code_py);
-        //log.info("File .in content:"+scriptFile);
         /**
           * After read the content, the script will render the updated script into the .in file  
           */
@@ -121,7 +107,7 @@ sfv.updateScrips = function (fdir) {
         //log.info("Content Loaded:"+rendered);
         if (rendered) {
           //Rename and clean up the stubs. 
-          sfv.renameInFileName(complete_path,rendered);
+          sfv.renameInFileName(complete_path, rendered);
         }
       }
     }
@@ -135,43 +121,22 @@ sfv.updateScrips = function (fdir) {
  * @param {*} inFilePath Location of .in file. 
  * @param {*} rendered Content rendered by mustache to be recorded.
  */
-sfv.renameInFileName= function (inFilePath,rendered){
-  
-  var newName = inFilePath.substring(0,inFilePath.length - 3);
-  //define path for script file
-  //var scriptFile = inFilePath.substring(0,inFilePath.length - 3)+'.'+this.templateArgs.file_extension;
-  
+sfv.renameInFileName = function (inFilePath, rendered) {
+  var newName = inFilePath.substring(0, inFilePath.length - 3);
   //log.info("Content Rendered:"+rendered);
-  //Ensure dir path
-  //fs.ensureDirSync(path.dirname(inFilePath));
   fs.writeFileSync(newName, rendered, "utf8");
-  
-  //copy instead of rename.
- // fs.createReadStream(inFilePath).pipe(fs.createWriteStream(newName));
-  //Rename fi
-  // fs.rename(inFilePath,newName,function(err){
-  //   if (err){
-  //     console.log("ERROR:"+err);
-  //   }
-  // });
-  //Remove Py file.
-  // fs.remove(scriptFile,function(err){
-  //   if (err){
-  //     console.log("ERROR:"+err);
-  //   }
-  // });
 }
 /**
  * Read the content of a python class in order to treat it. 
  * @param {*} codeScriptPath Path where the .py script is.
  */
-sfv.readFile = function(codeScriptPath){
+sfv.readFile = function (codeScriptPath) {
   //log.info("Reading file:"+codeScriptPath);
-  var result = fs.readFileSync(codeScriptPath,"utf8",function(err,data){
-    if(err){
+  var result = fs.readFileSync(codeScriptPath, "utf8", function (err, data) {
+    if (err) {
       return console.log(err);
     }
-    console.log(data);
+    //console.log(data);
   });
   //log.info("Content:"+result);
   return result;
@@ -180,33 +145,37 @@ sfv.readFile = function(codeScriptPath){
  * Validate Python script in order to have the result of this process injected into a DBC file.
  * @param {*} codeScript Content of a python script file
  */
-sfv.validateCode= function (codeScript){
-  
-  var map = new Map();
-  //Define map entries.
-  map.set("<","&lt;");
-  map.set("&","&amp;");
-  map.set(">","&gt;");
-  map.set("\"","&quot;");
-  map.set("'","&apos;");
+sfv.validateCode = function (file_extension, codeScript) {
+  return scriptv.validate(file_extension, codeScript);
+}
 
-  for (var entry of map.entries()){
-    var key = entry[0];
-    var value = entry[1];
-    while(codeScript.indexOf(key) > -1){
-      codeScript = codeScript.replace(key, value);
+/**
+ * Mustache function to replace templates within values.
+ * @param {*} codeContent String representing the entire file. 
+ * @param {*} args Arguments coming from the readline command.
+ */
+sfv.render = function (codeContent, args) {
+  return mustache.render(codeContent, args);
+}
+
+/**
+ * List the code injection file into the script files folder to get the right script languge
+ * @param {*} pattern File name to search the script injection file.
+ * @param {*} fdir Directory of DBC templates.
+ */
+sfv.getScriptExtension = function (pattern, fdir) {
+  var result;
+  pattern = pattern + ".*";
+  shell.cd(fdir);
+  shell.ls(pattern).forEach(function (f) {
+    var complete_path = path.join(fdir, f);
+    //find the .in scripts
+    if (complete_path.endsWith(".py")) {
+      result = '.py';
+    } else {
+      result = '.js';
     }
-  }
-  return codeScript;
-}
-
-
-sfv.render = function (codeContent,args){
- return mustache.render(codeContent,args);
-}
-
-
-function pkgToDir(pkg) {
-  pkg = pkg.replace(/\./g, '/');
-  return pkg;
+  });
+  //Ends with ls for scripting.
+  return result;
 }

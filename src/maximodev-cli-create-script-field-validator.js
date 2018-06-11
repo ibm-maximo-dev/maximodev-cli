@@ -24,30 +24,30 @@ var schema = {
   _version: '0.0.1',
   _description: 'Maximo create new automation script as a mbo field validator',
   properties: {
-    file_extension:{
+    file_extension: {
       description: "Script type. Choose between python (py) and JavaScript (js)",
       pattern: /^.*\b(py|js)\b.*$/,
       message: "Please, define the script type for python or javascript (i.g. py or js)",
       required: true,
       default: 'py',
       _cli: 'file_extension',
-      conform: function(v){
-        if(v==='py'){
+      conform: function (v) {
+        if (v === 'py') {
           schema.properties.script_language.default = 'python';
-        }else{
+        } else {
           schema.properties.script_language.default = 'javascript';
-        }        
+        }
         return true;
       }
     },
-    script_language:{
+    script_language: {
       _prompt: false,
       pattern: /^.*\b(python|javascript)\b.*$/,
       message: "Script language must be python | javascript",
       required: true,
       _cli: 'script_language',
     },
-    launch_point_type:{
+    launch_point_type: {
       _prompt: false,
       description: "Launch point type",
       pattern: /^[a-zA-Z_0-9]+$/, //Implement the right 
@@ -56,21 +56,21 @@ var schema = {
       _cli: 'dir',
       default: 'ATTRIBUTE',
     },
-    script_description:{
+    script_description: {
       description: "Automation Script purpose's description ",
       pattern: /^[a-zA-Z_0-9 ]+$/,
       message: "Must provide a description about the automation scrip's purpose",
       required: true,
       _cli: 'script_description',
     },
-    object_name:{
+    object_name: {
       description: "Object's name",
       pattern: /^[A-Z]+$/,
       message: "The object name is alpha uppercase information about the MBO or Table will be target  ",
       required: true,
       _cli: 'object_name',
     },
-    attribute_name:{
+    attribute_name: {
       description: "Attribute's name",
       pattern: /^[A-Z]+$/,
       message: "The attribute name is alpha uppercase information about the field would be a target for this script",
@@ -84,8 +84,8 @@ var schema = {
       required: true,
       _cli: 'script_name',
       _cli_arg_value: '<NAME>',
-      default: next_script.substring(0,next_script.length -4),
-      conform: function(v){
+      default: next_script.substring(0, next_script.length - 4),
+      conform: function (v) {
         schema.properties.script_name_upper.default = v.toUpperCase();
         return true;
       }
@@ -108,7 +108,6 @@ function create_script(result) {
   var scriptDir = path.resolve(env.scriptDir());
   var nextScript = dbc.nextScript();
   log.info(`Creating new dbc script ${nextScript} in ${env.scriptDir()}`);
-  
   //populate results into the args value
   var args = Object.assign({}, env.props, result);
 

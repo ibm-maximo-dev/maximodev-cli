@@ -13,7 +13,7 @@
       <insertrow>
         <columnvalue column="AUTOSCRIPT" string="SCRIPT{{script_name_upper}}" />
         <columnvalue column="STATUS" string="Draft" />
-        <columnvalue column="SOURCE" string="{{code_py}}" />
+        <columnvalue column="SOURCE" string="{{code_script}}" />
         <columnvalue column="CREATEDDATE" date="sysdate" />
         <columnvalue column="STATUSDATE" date="sysdate" />
         <columnvalue column="CHANGEDATE" date="sysdate" />
@@ -48,7 +48,7 @@
       </insertrow>
     </insert>
     <freeform description="LAUNCHPOINTVARS">
-      <sql target="all">delete from c where autoscript = 'SCRIPT{{script_name_upper}}'</sql>
+      <sql target="all">delete from launchpointvars where autoscript = 'SCRIPT{{script_name_upper}}'</sql>
     </freeform>
   </statements>
 </script>

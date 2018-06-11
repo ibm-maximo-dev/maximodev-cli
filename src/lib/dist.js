@@ -30,6 +30,10 @@ const defaultExcludes = [
     patterns: [/.\.in$/],
   },
   { 
+    name: 'Script code stub files',
+    patterns: [/([a-z|A-Z|0-9].(py|js))$/],
+  },
+  { 
     name: 'Others',
     patterns: [/^mxdiff$/, /^addon.properties$/],
   },
