@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="maximo-cli" scriptname="Enable Conditional UI">
+  <description>{{script_description}}</description>
+  <statements>
+
+    <!-- system property to control conditional UI -->
+	<add_property 
+		name="mxe.webclient.{{app_name_lower}}.{{option_name_lower}}" 
+		description="{{script_description}}" 
+		maxtype="YORN" 
+		scope="global" 
+		secure_level="public" 
+		accesstype="3"
+		live_refresh="true" 
+		required="true" 
+		online_changes="true" 
+		user_defined="false" 
+		encrypted="false" 
+		value="1"
+        default_value="1"
+		masked="false" />
+      
+    <!-- Normal Condition -->
+  
+    <freeform description="{{script_description}}">
+      <sql target="all">
+      	delete from applicationauth where app = '{{app_name}}' and optionname = '{{option_name}}' and conditionnum = '{{option_name}}';
+      	      	
+      	delete from condition where conditionnum = '{{option_name}}';
+      </sql>
+    </freeform>     
+
+    <add_sigoption visible="false" app="{{app_name}}" optionname="{{option_name}}" description="Enable {{app_name}} conditional UI" grantapp="{{app_name}}" grantoption="READ" esigenabled="false" langcode="EN"/>
+    
+    <freeform description="Conditional display IDE">
+      <sql target="all">
+       insert into applicationauth (app, optionname, groupname, applicationauthid)
+       		values ('{{app_name}}', '{{option_name}}', (select varvalue from maxvars where varname='ALLUSERGROUP'),applicationauthseq.nextval);
+       		
+       update applicationauth set conditionnum='{{option_name}}' where optionname = '{{option_name}}' and app='{{app_name}}';
+       
+       insert into condition (conditionnum, type, expression, description, conditionid) 
+       		values ('{{option_name}}' , 'EXPRESSION', 'exists(select 1 from maxpropvalue where propname=''mxe.webclient.{{app_name_lower}}.{{option_name_lower}}'' and propvalue=''1'')', 'Condition to show UI for {{app_name}} application.', conditionseq.nextval);
+       		       			
+       insert into applicationauth (app, optionname, conditionnum, groupname, applicationauthid)
+	       select '{{app_name}}', '{{option_name}}', '{{option_name}}', varvalue, applicationauthseq.nextval from maxvars where varname = 'ALLUSERGROUP' and not exists 
+    		   (select 1 from applicationauth where app='{{app_name}}' and optionname='{{option_name}}' and conditionnum='{{option_name}}' and groupname in (select varvalue from maxvars where varname = 'ALLUSERGROUP'));
+      </sql>
+    </freeform>
+     
+    
+    <!-- Negated Condition -->
+    <freeform description="Clean out old configurations if they exists">
+      <sql target="all">
+      	delete from applicationauth where app = '{{app_name}}' and optionname = '{{negative_option_name}}' and conditionnum = '{{negative_option_name}}';
+      	
+      	delete from condition where conditionnum = '{{negative_option_name}}';
+      </sql>
+    </freeform>      
+
+    <add_sigoption visible="false" app="{{app_name}}" optionname="{{negative_option_name}}" description="Disable {{app_name}} conditional UI" grantapp="{{app_name}}" grantoption="READ" esigenabled="false" langcode="EN"/>
+    
+    <freeform description="Conditional hide IDE">
+      <sql target="all">
+       insert into applicationauth (app, optionname, groupname, applicationauthid)
+       		values ('{{app_name}}', '{{negative_option_name}}', (select varvalue from maxvars where varname='ALLUSERGROUP'),applicationauthseq.nextval);
+       		
+       update applicationauth set conditionnum='{{negative_option_name}}' where optionname = '{{negative_option_name}}' and app='{{app_name}}';
+       
+       insert into condition (conditionnum, type, expression, description, conditionid) 
+       		values ('{{negative_option_name}}' , 'EXPRESSION', 'exists(select 1 from maxpropvalue where propname=''mxe.webclient.{{app_name_lower}}.{{option_name_lower}}'' and propvalue=''0'')', 'Condition to show new Script IDE for {{app_name}} UI', conditionseq.nextval);
+       				
+       insert into applicationauth (app, optionname, conditionnum, groupname, applicationauthid)
+	       select '{{app_name}}', '{{negative_option_name}}', '{{negative_option_name}}', varvalue, applicationauthseq.nextval from maxvars where varname = 'ALLUSERGROUP' and not exists 
+    		   (select 1 from applicationauth where app='{{app_name}}' and optionname='{{negative_option_name}}' and conditionnum='{{negative_option_name}}' and groupname in (select varvalue from maxvars where varname = 'ALLUSERGROUP'));
+      </sql>
+    </freeform>    
+        
+  </statements>
+</script>

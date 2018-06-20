@@ -24,6 +24,7 @@ if (process.env["MAXIMODEV_CLI_BETA"]) {
   prog.command('psi', 'create a new process solution install - PSI ').alias('zip');
   prog.command('java-field-validator', 'create Java field validation class').alias('jfv');
   prog.command('script-field-validator', 'create Script field validation').alias('sfv');
+  prog.command('condition-ui', 'create Condition UI structure').alias('cui');
   prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp')
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
 }
