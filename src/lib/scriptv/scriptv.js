@@ -1,5 +1,6 @@
 //Find a way to inject it 
 var log = require("../logger");
+const xmlescape = require("xml-escape");
 
 var scriptv = module.exports = Object.create({});
 
@@ -16,27 +17,6 @@ scriptv.validate = function (script_extention, codeScript) {
     //Implement the validation script
     codeScript = v_obj.validate(codeScript)
 
-    return scriptv.defaultXMLValidation(codeScript);
-}
-/**
- * Its replaces the scpecial characters  into the code. 
- * @param {*} code_script 
- */
-scriptv.defaultXMLValidation = function(code_script){
-    var map = new Map();
-    //Define map entries.
-    map.set("&", "&amp;");
-    map.set("<", "&lt;");
-    map.set(">", "&gt;");
-    map.set("\"", "&quot;");
-    map.set("'", "&apos;");
-   
-    for (var entry of map.entries()) {
-        var key = entry[0];
-        var value = entry[1];
-        var regex = '(.*)^(\s)*('+key+').*(\n)?';
-        var mapRegex = new RegExp(regex, 'gim');
-        code_script = code_script.replace(mapRegex, value);
-    }
-    return code_script;
+    //Escape xml-validation
+    return xmlescape(codeScript);
 }

@@ -10,7 +10,7 @@ var scriptv_js = module.exports = Object.create({});
 scriptv_js.validate = function (codeScript) {
 
     var flags = 'gim';
-    var removeComments = '(.*)^(\s)*(\/\/).*(\n)?';
+    var removeComments = /(\/\*.*?\*\/|\/\/[^\r\n]*$)/gmi;
     var strFilterRegEx = new RegExp(removeComments, flags);
     removeComments = '[' + removeComments + ']';
     //Show pattern

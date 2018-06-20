@@ -77,18 +77,25 @@ var schema = {
       required: true,
       _cli: 'attribute_name',
     },
+    automation_script_name:{
+      description: "Automation Script name",
+      pattern: /^[a-zA-Z_0-9]+$/,
+      message: 'Must only contain letters, numbers, spaces and underscores',
+      required: true,
+      _cli: 'automation_script_name',
+      conform: function (v) {
+        schema.properties.script_name_upper.default = v.toUpperCase();
+        return true;
+      }
+    },
     script_name: {
-      description: "Automation Script Name",
+      description: "DBC Script to insert",
       pattern: /^[a-zA-Z_0-9]+$/,
       message: 'Must only contain letters, numbers, spaces and underscores',
       required: true,
       _cli: 'script_name',
       _cli_arg_value: '<NAME>',
-      default: next_script.substring(0, next_script.length - 4),
-      conform: function (v) {
-        schema.properties.script_name_upper.default = v.toUpperCase();
-        return true;
-      }
+      default: next_script.substring(0, next_script.length - 4)
     },
     script_name_upper: {
       _prompt: false,
@@ -107,7 +114,7 @@ function create_script(result) {
   env.validateAddonDir();
   var scriptDir = path.resolve(env.scriptDir());
   var nextScript = dbc.nextScript();
-  log.info(`Creating new dbc script ${nextScript} in ${env.scriptDir()}`);
+  log.info(`Creating new dbc stub scripts ${nextScript} in ${env.scriptDir()}`);
   //populate results into the args value
   var args = Object.assign({}, env.props, result);
 

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script SYSTEM "script.dtd">
 
-<script author="" scriptname="{{script_name}}">
-  <description>SCRIPT {{script_name}}</description>
+<script author="maximodev-cli" scriptname="{{script_name}}">
+  <description>{{script_description}}</description>
   <statements>
     
     <freeform description="AUTOSCRIPT">
-      <sql target="all">delete from autoscript where autoscript = 'SCRIPT{{script_name_upper}}'</sql>
+      <sql target="all">delete from autoscript where autoscript = '{{script_name_upper}}'</sql>
     </freeform>
 
     <insert table="AUTOSCRIPT" ignore_duplicates="true">
       <insertrow>
-        <columnvalue column="AUTOSCRIPT" string="SCRIPT{{script_name_upper}}" />
+        <columnvalue column="AUTOSCRIPT" string="{{script_name_upper}}" />
         <columnvalue column="STATUS" string="Draft" />
         <columnvalue column="SOURCE" string="{{code_script}}" />
         <columnvalue column="CREATEDDATE" date="sysdate" />
@@ -30,15 +30,15 @@
       </insertrow>
     </insert>
     <freeform description="AUTOSCRIPTVARS">
-      <sql target="all">delete from autoscriptvars where autoscript = 'SCRIPT{{script_name_upper}}'</sql>
+      <sql target="all">delete from autoscriptvars where autoscript = '{{script_name_upper}}'</sql>
     </freeform>
     <freeform description="SCRIPTLAUNCHPOINT">
-      <sql target="all">delete from scriptlaunchpoint where autoscript = 'SCRIPT{{script_name_upper}}'</sql>
+      <sql target="all">delete from scriptlaunchpoint where autoscript = '{{script_name_upper}}'</sql>
     </freeform>
     <insert table="SCRIPTLAUNCHPOINT" ignore_duplicates="true">
       <insertrow>
-        <columnvalue column="LAUNCHPOINTNAME" string="SCRIPT{{script_name_upper}}" />
-        <columnvalue column="AUTOSCRIPT" string="SCRIPT{{script_name_upper}}" />
+        <columnvalue column="LAUNCHPOINTNAME" string="{{script_name_upper}}" />
+        <columnvalue column="AUTOSCRIPT" string="{{script_name_upper}}" />
         <columnvalue column="DESCRIPTION" string="{{script_description}}" />
         <columnvalue column="LAUNCHPOINTTYPE" string="{{launch_point_type}}" />
         <columnvalue column="OBJECTNAME" string="{{object_name}}" />
@@ -48,7 +48,7 @@
       </insertrow>
     </insert>
     <freeform description="LAUNCHPOINTVARS">
-      <sql target="all">delete from launchpointvars where autoscript = 'SCRIPT{{script_name_upper}}'</sql>
+      <sql target="all">delete from launchpointvars where autoscript = '{{script_name_upper}}'</sql>
     </freeform>
   </statements>
 </script>
