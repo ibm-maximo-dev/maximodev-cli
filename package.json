@@ -9,10 +9,10 @@
   "scripts": {
     "clean": "rm -rf build",
     "pretest": "rm -rf build/test && mkdir -p build/test/ && cp test/addon.properties build/test/",
-    "test": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties mocha test/",
+    "test": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties MAXIMODEV_CLI_DEVBUILD=1 mocha test/",
     "posttest": "npm run testcmds",
     "pretestcmds": "rm -rf build/testcmds && mkdir -p build/testcmds/ && cp test/addon.properties build/testcmds/",
-    "testcmds": "MAXIMO_ADDON_PROPERTIES=build/testcmds/addon.properties MAXIMO_CLI_NO_PROMPT=Y mocha testcmds/",
+    "testcmds": "MAXIMO_ADDON_PROPERTIES=build/testcmds/addon.properties MAXIMO_CLI_NO_PROMPT=Y MAXIMODEV_CLI_DEVBUILD=1 mocha testcmds/",
     "test1": "MAXIMO_ADDON_PROPERTIES=build/test/addon.properties mocha $1"
   },
   "author": "sls@ca.ibm.com",

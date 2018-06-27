@@ -10,7 +10,7 @@
 var program = require('commander');
 
 var prog = program
-  .version('0.0.1')
+  .version('0.0.2')
   .description('Maximo command line tools')
   .command('create [options]', 'create a maximo artifact, such as mbo, add-on, etc').alias('cr')
   .command('build', 'build the current addon').alias('b')
@@ -20,9 +20,7 @@ var prog = program
   .command('run-dbc [options]', 'run a dbc script file').alias('r')
   .command('deploy', 'publish a build to an artifact server').alias('d');
 
-if (process.env["MAXIMODEV_CLI_BETA"]) {
   prog.command('docker [options]', 'run a commands against Docker images/containers').alias('dk');
-}
 
 // .command('deploy', 'deploy local maximo artifacts to a dev server').alias('d')
 // .command('package', 'package an add-on for distribution').alias('d')

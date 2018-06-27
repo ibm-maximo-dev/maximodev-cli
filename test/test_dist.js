@@ -135,9 +135,16 @@ describe('dist', function() {
   });
 
 
-  it('should transform path correctly', function() {
-    expect(dist.transformPaths("/a/b/c/d.txt")).to.be.equal("/a/b/c/d.txt");
-    expect(dist.transformPaths("/a/b/webclient/miniapps/d.txt")).to.be.equal("/a/b/webclient/javascript/miniapps/d.txt");
-  });
+  if (process.env['MAXIMODEV_CLI_DEVBUILD']=='0') {
+    it('should transform path correctly', function () {
+      expect(dist.transformPaths("/a/b/c/d.txt")).to.be.equal("/a/b/c/d.txt");
+      expect(dist.transformPaths("/a/b/webclient/miniapps/d.txt")).to.be.equal("/a/b/webclient/javascript/miniapps/d.txt");
+    });
+  } else {
+    it('should transform path correctly', function () {
+      expect(dist.transformPaths("/a/b/c/d.txt")).to.be.equal("/a/b/c/d.txt");
+      expect(dist.transformPaths("/a/b/webclient/miniapps/d.txt")).to.be.equal("/a/b/webclient/miniapps/d.txt");
+    });
+  }
 
 });

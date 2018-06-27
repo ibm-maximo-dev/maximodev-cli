@@ -4,3 +4,7 @@ node_js:
 cache:
   directories:
     - "node_modules"
+
+script:
+  - npm test
+  - npm install file:. -g && cd testcmds && ./smoke_test.sh

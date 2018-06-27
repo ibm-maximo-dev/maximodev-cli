@@ -12,11 +12,8 @@ var env = require('./lib/env');
 var cli = require('./lib/cli');
 var dbc = require('./lib/dbcscripts');
 var sfv = require('./lib/sfv');
-var templates = require('./lib/templates');
 
 var path = require('path');
-var fs = require('fs-extra');
-var shell = require('shelljs');
 
 var next_script = dbc.nextScript();
 
@@ -112,7 +109,6 @@ cli.process(schema, process.argv, create_script);
 
 function create_script(result) {
   env.validateAddonDir();
-  var scriptDir = path.resolve(env.scriptDir());
   var nextScript = dbc.nextScript();
   log.info(`Creating new dbc stub scripts ${nextScript} in ${env.scriptDir()}`);
   //populate results into the args value
