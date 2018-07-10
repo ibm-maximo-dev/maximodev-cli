@@ -12,6 +12,9 @@ var shelljs = require('shelljs');
 var dateformat = require('dateformat');
 var readline = require('readline-sync');
 var log = require('./logger');
+//Configure environment variables for commandline process
+const dotenv = require("dotenv");
+const { parsed } = dotenv.config();
 
 var env = module.exports = Object.create({});
 
@@ -142,6 +145,34 @@ env.productXml = function(id) {
 env.productXmlIn = function(id) {
   return env.ensureParent(path.resolve(env.get('addon_product_xml', path.join(env.addonDir('./applications/maximo/properties/product/'), (id||env.addonId())+".xml.in"))));
 };
+
+/**
+ * Return the unittestsuite xml file for this addon
+ * @param {string} full path to the xml file
+ */
+env.unittestXml = function(id) {
+  return env.ensureParent(
+    path.resolve(path.join(env.maximoHome(),'./applications/maximo/')+ "unittestsuite.xml")
+  );
+};
+
+env.unittestXmlIn = function(id) {
+  return env.ensureParent(
+    path.resolve(env.get('unittestsuite', path.join(env.addonDir('./applications/maximo/'), "unittestsuite.xml.in")))
+  );
+};
+
+env.unittestClientConfigXmlIn = function(id) {
+  return env.ensureParent(
+    path.resolve(env.get('unittestsuite', path.join(env.addonDir('./applications/maximo/businessobjects/src/psdi/unittest/'), "clientconfig.xml.in")))
+  );
+};
+env.unittestClientConfigXml = function(id) {
+  return env.ensureParent(
+    path.resolve(path.join(env.maximoHome(),'./applications/maximo/businessobjects/src/psdi/unittest/')+ "clientconfig.xml")
+  );
+};
+
 
 /**
  * Ensure the directory exists, and return it.

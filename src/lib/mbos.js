@@ -48,6 +48,9 @@ mbos.installTemplateMbo = function(template, dir, templateArgs) {
      templateArgs.java_package_dir = path.join(...templateArgs.java_package.split('.'));
   }
 
+  // if (!templateArgs.script || (templateArgs.script.trim()=='')){
+  //   templateArgs.script = dbcscripts.substr(0,dbcscripts.indexOf('.'));
+  // }
 
   log.info("Install %s into %s", template, dir);
   var tdir = templates.resolveName(template);

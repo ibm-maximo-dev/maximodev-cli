@@ -59,7 +59,6 @@ dbcscripts.nextScriptName = function(curName) {
  */
 dbcscripts.lastScript = function(dir) {
   dir=dir||env.scriptDir();
-  log.trace("last Script for Dir " + dir);
 
   if (!fs.existsSync(dir)) {
     log.error("Dir does exist: %s", dir);
@@ -71,7 +70,7 @@ dbcscripts.lastScript = function(dir) {
     || e.endsWith(".sql")
   ));
   files.sort(dbcscripts.compare);
-  log.trace(files);
+  log.trace(files);  
   if (files.length===0) return null;
   return files[files.length-1];
 };

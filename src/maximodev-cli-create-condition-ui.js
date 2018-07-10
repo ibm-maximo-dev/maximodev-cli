@@ -42,7 +42,7 @@ var schema = {
       message: 'Must only contain letters, numbers, spaces and underscores into UPPER case',
       description: "Script name uppercase",
       required: true,
-      _cli: 'script_name_upper',
+      _cli: 'option_name_lower',
     },
     negative_option_name: {
       _prompt: false,
@@ -50,13 +50,6 @@ var schema = {
       message: "Negative Signature Option's name",
       required: true,
       _cli: 'negative_option_name',
-    },
-    description: {
-      description: "Description about the conditional UI script",
-      pattern: /^[a-zA-Z_0-9]+$/,
-      message: "Provide a description about the conditional UI script",
-      required: true,
-      _cli: 'description',
     },
     app_name: {
       description: "Application's name",
@@ -75,7 +68,7 @@ var schema = {
       message: 'Must only contain letters, numbers, spaces and underscores into UPPER case',
       description: "Script name uppercase",
       required: true,
-      _cli: 'script_name_upper',
+      _cli: 'app_name_lower',
     },
     script_name: {
       description: "DBC Script to insert the condition UI",
@@ -85,14 +78,6 @@ var schema = {
       _cli: 'script_name',
       _cli_arg_value: '<NAME>',
       default: next_script.substring(0, next_script.length - 4)
-    },
-    script_name_upper: {
-      _prompt: false,
-      pattern: /^[A-Z_0-9]+$/,
-      message: 'Must only contain letters, numbers, spaces and underscores into UPPER case',
-      description: "Script name uppercase",
-      required: true,
-      _cli: 'script_name_upper',
     },
     script_description: {
       description: "Condition UI purpose's description ",

@@ -6,6 +6,7 @@
 
 var log = require('./logger');
 var fs = require('fs-extra');
+var convert = require('xml-js');
 var DOMParser = require('xmldom').DOMParser;
 var XMLSerializer = require('xmldom').XMLSerializer;
 
@@ -52,4 +53,14 @@ xml.hasNode = function(doc, nodeName, cb) {
       }
     }
     return false;
+};
+
+/**
+ * Convert a XML file to a Json text object
+ * @param {*} xmlPath 
+ */
+xml.convertXMLtoJSON = function(xmlPath){
+  var xml = fs.readFileSync(xmlPath, 'utf8');
+  var result = convert.xml2json(xml, {compact: false, spaces: 4, ignoreComment: false, alwaysChildren: true});
+  return result; 
 };

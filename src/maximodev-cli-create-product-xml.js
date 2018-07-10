@@ -69,6 +69,7 @@ var schema = {
     overwrite: {
       description: "overwrite existing file, if it exists?",
       required: true,
+      default: 'n',
       _cli: 'overwrite',
       _yesno: 'n'
     }

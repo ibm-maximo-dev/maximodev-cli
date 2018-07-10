@@ -11,9 +11,9 @@ var program = require('commander');
 
 program
   .version('0.0.1')
-  .description('Update a maximo artifact')
-  .command('product-xml', 'update version in product xml').alias('pv')
-  .command('unittest-xml', 'update unittest suite').alias('ut')
+  .description('Create Unit Tests')
+  .command('classic', 'Create classic Unit tests').alias('cut')
+  .command('client-config', 'Create Tests from client configurable file').alias('cct')
   .parse(process.argv);
 
 // check if the user passed a command

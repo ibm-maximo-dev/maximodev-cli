@@ -1,0 +1,8 @@
+<unittestsuite xmlns="http://www.ibm.com/utest" id="{{test_name_lower}}suite" run="" owneremail="email@maximo.com" ownername="maximodev-cli">
+	<unittest id="testresource" user="wilson" description="Basic test suite">
+			<junitclass name="{{test_java_package}}.{{test_name}}Test">
+				<property name="testExample">{{test_java_package}}.{{test_name}}Test.testExample</property>
+				<!-- Add here your new tests -->
+			</junitclass>
+	</unittest>
+</unittestsuite>

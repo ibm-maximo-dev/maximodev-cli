@@ -36,7 +36,11 @@ sfv.installTemplateSFV = function (template, dir, templateArgs) {
   shell.ls("-R", tdir).forEach(function (f) {
     if (!fs.lstatSync(path.join(tdir, f)).isDirectory()) {
       //If templates ends with the user choice, it will be copied, otherwise, it will be skipped.
-      if (f.endsWith(templateArgs.file_extension) || f.endsWith("in")) {
+      var file_extension = "py";
+      if(templateArgs.script_language === "javascript"){
+        file_extension = "js";
+      }
+      if (f.endsWith(file_extension) || f.endsWith("in")) {
         sfv.installTemplateSFVFile(path.resolve(tdir, f), dir, f, templateArgs);
       }//END Check file extentions
     }
@@ -132,6 +136,7 @@ sfv.renameInFileName = function (inFilePath, rendered) {
  */
 sfv.readFile = function (codeScriptPath) {
   //log.info("Reading file:"+codeScriptPath);
+  console.log("Reading file"+codeScriptPath);
   var result = fs.readFileSync(codeScriptPath, "utf8", function (err, data) {
     if (err) {
       return console.log(err);

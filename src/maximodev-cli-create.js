@@ -24,7 +24,7 @@ var prog = program
   prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp')
 
 if (process.env["MAXIMODEV_CLI_BETA"]) {
-  prog.command('psi', 'create a new process solution install - PSI ').alias('zip');
+  prog.command('zip', 'create a new process solution install - PSI ').alias('zip');
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
 }
 

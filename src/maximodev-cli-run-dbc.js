@@ -15,11 +15,12 @@ var fs = require('fs-extra');
 var path = require('path');
 
 
-var lastScript = null;
+var lastscript = dbcscripts.lastScript(env.scriptDir());
 
-try {
-  lastScript = dbcscripts.lastScript();
-} catch (e) {} // we might not be in an add-on dir, but we can still run scripts
+//ensure the default value when directory script is empty. 
+if(!lastscript){
+  lastscript = "V1000_01.dbc";
+}
 
 var schema = {
   _version: '0.0.1',
@@ -29,8 +30,13 @@ var schema = {
       required: true,
       description: 'DBC Script',
       _cli: 'script',
-      default: lastScript,
-      message: 'file does not exist'
+      default: lastscript,
+      message: 'file does not exist',
+      conform: function(v){
+        //Set default during runtime.
+        schema.properties.script.default = env.scriptDir();
+        return true;
+      }
     }
   }
 };
@@ -38,6 +44,7 @@ var schema = {
 cli.process(schema, process.argv, run_cmd);
 
 function run_cmd(result) {
+
   log.info("    Script %s", result.script);
 
   dbcscripts.runScript(result.script);

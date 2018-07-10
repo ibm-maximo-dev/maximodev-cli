@@ -1,0 +1,22 @@
+<testdataset xmlns="http://www.ibm.com/utest">
+
+	<!-- TODO Implement here your data set -->
+    <!-- Find in the example bellow the structure to create your data set -->
+	<xmldata id="basicDataSet">
+
+		<!-- Sync option do create the data set -->
+
+		<!-- SyncMXWODETAIL xmlns="http://www.ibm.com/maximo"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.ibm.com/maximo http://localhost:7001/meaweb/schema/service/MXWOService.xsd"
+			transLanguage="EN" baseLanguage="EN">
+			<WORKORDER>
+				<SITEID>BEDFORD</SITEID>
+				<REPFACSITEID>BEDFORD</REPFACSITEID>
+				<WONUM>WOMAXIMODEV-CLI-UNITTEST</WONUM>
+				<DURATION>30</DURATION>
+				<DESCRIPTION>Example of a Work Order record synchronized</DESCRIPTION>
+			</WORKORDER>
+	    <SyncMXWODETAIL -->
+    <xmldata>
+<testdataset>    

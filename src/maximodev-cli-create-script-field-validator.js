@@ -13,34 +13,17 @@ var cli = require('./lib/cli');
 var dbc = require('./lib/dbcscripts');
 var sfv = require('./lib/sfv');
 
-var path = require('path');
-
-var next_script = dbc.nextScript();
+var next_script = dbc.nextScript(env.scriptDir(),"dbc");
 
 var schema = {
   _version: '0.0.1',
   _description: 'Maximo create new automation script as a mbo field validator',
   properties: {
-    file_extension: {
-      description: "Script type. Choose between python (py) and JavaScript (js)",
-      pattern: /^.*\b(py|js)\b.*$/,
-      message: "Please, define the script type for python or javascript (i.g. py or js)",
-      required: true,
-      default: 'py',
-      _cli: 'file_extension',
-      conform: function (v) {
-        if (v === 'py') {
-          schema.properties.script_language.default = 'python';
-        } else {
-          schema.properties.script_language.default = 'javascript';
-        }
-        return true;
-      }
-    },
     script_language: {
-      _prompt: false,
+      description: "Script type. Choose between python (py) and JavaScript (js)",
       pattern: /^.*\b(python|javascript)\b.*$/,
       message: "Script language must be python | javascript",
+      default: "python",
       required: true,
       _cli: 'script_language',
     },
@@ -50,7 +33,7 @@ var schema = {
       pattern: /^[a-zA-Z_0-9]+$/, //Implement the right 
       message: 'There some types of launch points to execute scripts',
       required: true,
-      _cli: 'dir',
+      _cli: 'launch_point_type',
       default: 'ATTRIBUTE',
     },
     script_description: {
@@ -58,12 +41,14 @@ var schema = {
       pattern: /^[a-zA-Z_0-9 ]+$/,
       message: "Must provide a description about the automation scrip's purpose",
       required: true,
+      default: "Brief comment about the automation script",
       _cli: 'script_description',
     },
     object_name: {
       description: "Object's name",
       pattern: /^[A-Z]+$/,
       message: "The object name is alpha uppercase information about the MBO or Table will be target  ",
+      default: "ASSET",
       required: true,
       _cli: 'object_name',
     },
@@ -72,35 +57,28 @@ var schema = {
       pattern: /^[A-Z]+$/,
       message: "The attribute name is alpha uppercase information about the field would be a target for this script",
       required: true,
+      default: "ASSETNUM",
       _cli: 'attribute_name',
     },
     automation_script_name:{
       description: "Automation Script name",
-      pattern: /^[a-zA-Z_0-9]+$/,
-      message: 'Must only contain letters, numbers, spaces and underscores',
+      pattern: /^[A-Z_0-9]+$/,
+      message: 'Must only contain letters, numbers, underscores and should be in capital letter',
+      default: "MYAUTOMATIONSCRIPT",
       required: true,
-      _cli: 'automation_script_name',
-      conform: function (v) {
-        schema.properties.script_name_upper.default = v.toUpperCase();
-        return true;
-      }
+      _cli: 'automation_script_name'
     },
     script_name: {
       description: "DBC Script to insert",
-      pattern: /^[a-zA-Z_0-9]+$/,
-      message: 'Must only contain letters, numbers, spaces and underscores',
+      pattern: /^[A-Z_0-9]+$/,
+      message: 'Must only contain letters, numbers in capitall letter',
       required: true,
       _cli: 'script_name',
       _cli_arg_value: '<NAME>',
-      default: next_script.substring(0, next_script.length - 4)
-    },
-    script_name_upper: {
-      _prompt: false,
-      pattern: /^[A-Z_0-9]+$/,
-      message: 'Must only contain letters, numbers, spaces and underscores into UPPER case',
-      description: "Script name uppercase",
-      required: true,
-      _cli: 'script_name_upper',
+      default: next_script.substring(0, next_script.length - 4),
+      conform: function(v){
+        schema.properties.script_name.default = next_script.substring(0, next_script.length - 4);
+      }
     },
   }
 };
@@ -110,6 +88,7 @@ cli.process(schema, process.argv, create_script);
 function create_script(result) {
   env.validateAddonDir();
   var nextScript = dbc.nextScript();
+
   log.info(`Creating new dbc stub scripts ${nextScript} in ${env.scriptDir()}`);
   //populate results into the args value
   var args = Object.assign({}, env.props, result);

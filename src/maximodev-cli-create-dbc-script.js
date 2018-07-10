@@ -23,15 +23,17 @@ var schema = {
       default: env.scriptDir(),
       _cli: 'dir',
       conform: function(v) {
-        schema.properties.scriptname.default = dbcscripts.nextScript(v);
+        schema.properties.dir.default = env.scriptDir();
         return true;
       }
     },
     scriptname: {
       required: true,
       description: 'script name',
+      default: dbcscripts.nextScript(),
       _cli: 'scriptname',
       conform: function(v) {
+        schema.properties.scriptname.default = dbcscripts.nextScript();
         return dbcscripts.isValidScriptName(v);
       },
       message: 'Script must be V####_##.ext'

@@ -23,6 +23,7 @@
     "archiver": "2.1.1",
     "commander": "^2.14.1",
     "dateformat": "^3.0.3",
+    "dotenv": "^6.0.0",
     "fs-extra": "^5.0.0",
     "mustache": "^2.3.0",
     "prompt": "^1.0.0",
@@ -32,6 +33,7 @@
     "tmp": "0.0.33",
     "uuid": "3.2.1",
     "xml-escape": "^1.1.0",
+    "xml-js": "^1.6.4",
     "xml2js": "^0.4.19",
     "xmldom": "^0.1.27",
     "zip": "^1.2.0"

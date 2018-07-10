@@ -12,12 +12,7 @@ var cli = require('./lib/cli');
 var mbo = require('./lib/mbos');
 var dbcscripts = require('./lib/dbcscripts'); 
 
-var nextScript = null;
-
-try {
-  nextScript = dbcscripts.nextScript();
-} catch (e) {} // we might not be in an add-on dir, but we can still run scripts
-
+var nextScript = dbcscripts.nextScript(env.scriptDir(),".dbc"); 
 
 var schema = {
   _version: '0.0.1',
@@ -53,7 +48,12 @@ var schema = {
       description: 'DBC Script',
       _cli: 'script',
       default: nextScript.substr(0,nextScript.indexOf('.')),
-      message: 'file does not exist'
+      message: 'file does not exist',
+      conform: function(v){
+        //Ensure script default value in runtime mode. 
+        schema.properties.script.default = nextScript.substr(0,nextScript.indexOf('.'));
+        return true;
+      }
     },
     service_name: {
       description: "What would be the service name?",
@@ -83,6 +83,19 @@ cli.process(schema, process.argv, create_mbo);
 function create_mbo(result) {
   
   var args = Object.assign({}, env.props, result);
+
+  //Test again the next script in order to ensure the nextScript from command line without prompt mode.
+  try {
+    nextScript = dbcscripts.nextScript(env.scriptDir());
+    log.info("Next Script: " +nextScript);
+  } catch (e) {
+    log.info("Error on generate next Script:"+e);
+  } // we might not be in an add-on dir, but we can still run scripts
+  
+  if(!result.script){
+    result.default = nextScript.substr(0,nextScript.indexOf('.'));
+  }
+
   /**
    * Add database configuration script.
    */

@@ -1,0 +1,12 @@
+<target name="test.{{test_name_lower}}" depends="init" description="{{test_description}}">
+	<echo>{{test_description}}</echo>
+	<java classname="psdi.unittest.TestClient">
+		<arg value="-f{{test_java_package}}.{{test_name_lower}}suite.xml"/>
+		<classpath>
+			<pathelement location="${basedir}/businessobjects/classes"/>
+			<fileset dir="${basedir}/lib">
+				<include name="**/*.jar"/>
+			</fileset>
+		</classpath>
+	</java>
+</target>

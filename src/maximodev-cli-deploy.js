@@ -16,14 +16,21 @@ var fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
 
+var maximo_home = env.maximoHome();
+
 const schema = {
   _version: '0.0.1',
   _description: 'Deploy the current Maximo artifact',
   properties: {
     dir: {
       description: 'Deploy destination folder',
+      default: maximo_home,
       _prop: 'maximo_home',
       _cli: 'dir',
+      conform: function(v){
+        schema.properties.dir.deault = maximo_home;
+        return true;
+      }
     }
   }
 };
@@ -32,6 +39,14 @@ cli.process(schema, process.argv, deploy);
 
 function deploy(result) {
   const CURR_FOLDER = shell.env['PWD'];
+
+  //ensure maximo_home for command line process
+  if(!result.dir){
+    if(!maximo_home){
+      maximo_home = shell.env['MAXIMO_HOME'];
+    }
+    result.dir.deault = maximo_home;
+  }
 
   //check if dist folder exists
   if(!dist.exists(CURR_FOLDER)) {

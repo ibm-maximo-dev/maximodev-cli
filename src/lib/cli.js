@@ -9,8 +9,8 @@ var prompt = require('prompt');
 var program = require('commander');
 
 var cli = module.exports = Object.create({});
-cli.program=program;
-cli.prompt=prompt;
+cli.program = program;
+cli.prompt = prompt;
 
 /**
  * Given the schema, build the command line and then prompt the user.  The callback will be pased an object of name
@@ -20,21 +20,27 @@ cli.prompt=prompt;
  * @param argv command arguments
  * @param cb callback function
  */
-cli.process = function(schema, argv, cb) {
+cli.process = function (schema, argv, cb) {
   var prog = program
     .version(schema.version)
     .description(schema.description);
 
   // upgrade the prompt and parse args
   prog = updateCommandArgsFromSchema(schema, prog);
-  cli.program=prog;
+  cli.program = prog;
+
+  //Validate default values for smoke_test.sh
+  if (process.env['MAXIMO_CLI_NO_PROMPT']) {
+    argv = updateCommandLineArgsFromSchema(schema, argv);
+  }
   prog.parse(argv);
+
 
   // upgrade prompts from the command line args
   updateSchemaFromPromptResults(schema, prog, prompt);
 
   if (process.env['MAXIMO_CLI_NO_PROMPT']) {
-    cb(buildResultFromCli(prog,schema));
+    cb(buildResultFromCli(prog, schema));
   } else {
     // prompt the user
     prompt.message = "";
@@ -46,19 +52,51 @@ cli.process = function(schema, argv, cb) {
     });
   }
 };
+/**
+ * Adding default values to arguments from command line
+ * @param {*} schema Comannd property schema
+ * @param {*} argv arguments from command line.
+ */
+function updateCommandLineArgsFromSchema(schema, argv) {
+  Object.keys(schema.properties).forEach(function (e) {
+    var o = schema.properties[e];
+      if(getValue(argv, '--'+o._cli)){
+        console.log("Adding argument " + o._cli + " default value : " + o.default);
+        argv.push('--' + o._cli, o.default); //propertie
+      }
+    });//End For each
+  return argv;
+};
+/**
+ * Verifies if some value are not set. 
+ * @param {*} argv 
+ * @param {*} property 
+ */
+function getValue(argv, property) {
+  var add = true;
+  if (argv) {
+    Object.keys(argv).forEach(function loop(e) {
+      if (property == argv[e]) {
+        add = false;
+        loop.stop = true;
+      }
+    });
+  }
+  return add;
+};
 
 function buildResultFromCli(prog, schema) {
   var result = {};
 
-  Object.keys(schema.properties).forEach(function(e) {
+  Object.keys(schema.properties).forEach(function (e) {
     var o = schema.properties[e];
     if (o._cli) {
       // add cli option to prog
       var val = prog[o._cli];
       if (o._yesno) {
-        val = prog[e]?'y':'n';
+        val = prog[e] ? 'y' : 'n';
       }
-      result[e]=val;
+      result[e] = val;
     }
   });
 
@@ -75,7 +113,7 @@ function buildResultFromCli(prog, schema) {
  * @returns {object} prog
  */
 function updateCommandArgsFromSchema(schema, prog) {
-  Object.keys(schema.properties).forEach(function(e) {
+  Object.keys(schema.properties).forEach(function (e) {
     var o = schema.properties[e];
     if (o._cli) {
       // add cli option to prog
@@ -94,7 +132,7 @@ function updateCommandArgsFromSchema(schema, prog) {
         if (!argValue.startsWith(' ')) argValue = (' ' + argValue);
       }
       var desc = o._cli_description || o.description || o.message || "";
-      prog =prog.option(option +  argValue, desc);
+      prog = prog.option(option + argValue, desc);
     }
   });
   return prog;
@@ -104,7 +142,7 @@ function updateCommandArgsFromSchema(schema, prog) {
  * given the prompt schema update its default values from the _cli and _prop fields, if they exist
  */
 function updateSchemaFromPromptResults(schema, program, prompt) {
-  Object.keys(schema.properties).forEach(function(e) {
+  Object.keys(schema.properties).forEach(function (e) {
     var o = schema.properties[e];
     if (o._yesno) {
       o = yes_no(o, o._yesno);
@@ -116,11 +154,11 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
     if (o._cli) {
       def = program[(o._cli)];
       // adjust for boolean commandline args
-      if (def===true) def = 'y';
+      if (def === true) def = 'y';
       if (def) {
-        o.ask = function() {
+        o.ask = function () {
           // don't prompt, but conform it
-          if (o.conform) {o.conform(def)}
+          if (o.conform) { o.conform(def) }
           return false;
         }
       }
@@ -133,12 +171,12 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
 
     // if we have a default, then replace the one in the configuration
     if (def) {
-      o.default=def;
+      o.default = def;
     }
 
     if (o._depends) {
       var dep = o._depends;
-      o.ask = function() {
+      o.ask = function () {
         if (!prompt.history(dep)) {
           throw Error('Cannot do depends, since ' + dep + ' is not configured in the prompt schema.  Verify spelling.');
         }
@@ -164,11 +202,11 @@ function updateSchemaFromPromptResults(schema, program, prompt) {
 
 
 function yes_no(props, def) {
-  if (def===true) def='y';
-  if (def===false) def='n';
-  if (def===undefined || def===null) def='n';
-  def=def.toLowerCase().substring(0,1);
-  props.message=props.message||props.description;
+  if (def === true) def = 'y';
+  if (def === false) def = 'n';
+  if (def === undefined || def === null) def = 'n';
+  def = def.toLowerCase().substring(0, 1);
+  props.message = props.message || props.description;
   props.validator = /y[es]*|n[o]?/;
   props.warning = "Must be yes or no, or y or n";
   props.default = props.default || def;
@@ -181,7 +219,7 @@ function printCommandLine(schema, program, result) {
 
   var cmd = "";
 
-  Object.keys(schema.properties).forEach(function(e) {
+  Object.keys(schema.properties).forEach(function (e) {
     var o = schema.properties[e];
     if (o._cli) {
       if (!o._yesno) {

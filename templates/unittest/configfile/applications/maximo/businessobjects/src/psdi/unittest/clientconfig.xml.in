@@ -1,0 +1,21 @@
+<clientconfig>
+	<rmiurl>{{test_rmi_url}}</rmiurl>
+	<realtime>{{test_real_time}}</realtime>
+	<timeout>{{test_timeout}}</timeout>
+	<!-- <tenantcode>IBMSA</tenantcode> -->
+	<reportgenerators>
+		<reportgenerator name="psdi.unittest.ConsoleReportGenerator"/>
+		<reportgenerator name="psdi.unittest.HTMLReportGenerator">
+			<property name="filedir">c:</property>
+		</reportgenerator>	
+		<!--reportgenerator name="psdi.unittest.XMLReportGenerator">
+			<property name="filedir">c:\harrier75\xmlreports</property>
+			<property name="dayofweek">2</property>
+			<property name="weekstocover">26</property>
+			<property name="autocleanup">true</property>
+		</reportgenerator-->	
+	</reportgenerators>
+	<testcaselisteners>
+			
+	</testcaselisteners>
+</clientconfig>
