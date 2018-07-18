@@ -12,11 +12,6 @@ var env = require('./lib/env');
 var cli = require('./lib/cli');
 var dbc = require('./lib/dbcscripts');
 var cui = require('./lib/cui');
-//var templates = require('./lib/templates');
-
-//var path = require('path');
-//var fs = require('fs-extra');
-//var shell = require('shelljs');
 
 var next_script = dbc.nextScript();
 

@@ -91,6 +91,9 @@ The `run-dbc` command is a utility wrapper around the `runscriptfile` command in
 ### maximodev-cli create presentation-diff
 The `create presentation-diff` command is a utility wrapper around the `MXDiff` tool that can create a delta presentation dbc script of your changes, if you give it an original file and your modified file. This command can be used to automate your presentation updates by adding them to a dbc script that is processed during an `updatedb` cycle.
 
+### maximodev-cli create condition-ui
+The `create condition-ui` command will help you create a new conditional ui dbc script.  Conditional UI is what what the classic UI uses to conditionally show elements in the UI based on a `CONDITION` and a `SIGNOPTION`.   This command helps build both, and link them together.  You will still need to define your correct condition, but, this will help scaffold out what is needed to create a condition, and it's negated condition.
+
 
 ## Understanding template files
 `maximodev-cli` makes use of some template files during development. For example, your master product XML file might be called `properties/product/myaddon.xml.in` (note the `.in` suffix). `.in` files are template input files. These files are processed during other commands, where the real file is generated. For example, during a `maximodev-cli update product-xml` command, the `myaddon.xml.in` template file is processed and updated with the last script number, and a new file called `myaddon.xml` is generated. When template files exist, they are source files, and their generated counterparts should never be edited, but rather the `.in` version of that file should be edited. So when you see a `.in` file, be aware that some command generates its non-`.in` version.
