@@ -118,12 +118,6 @@ This tool is open source, which means that you are free to extend it.  You can e
 <!--
 These are ideas for other cli tools
 
-create script-field-validator
-- ask mbo
-- ask attribute
-- ask name
-- create dbc file
-
 create alndomain
 - ask items
 - create dbc
