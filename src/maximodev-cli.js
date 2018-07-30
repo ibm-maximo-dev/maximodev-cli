@@ -13,6 +13,8 @@ var prog = program
   .version('0.0.2')
   .description('Maximo command line tools')
   .command('create [options]', 'create a maximo artifact, such as mbo, add-on, etc').alias('cr')
+  .command('install [options]', 'install a maximo artifact, such as mbo, add-on, etc')
+    .alias('n')
   .command('build', 'build the current addon').alias('b')
   .command('init [options]', 'initialize maximo add-on environment and java').alias('i')
   .command('update [options]', 'update a maximo artifact such as product xml version').alias('u')

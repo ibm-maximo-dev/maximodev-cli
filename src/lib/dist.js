@@ -160,6 +160,18 @@ dist.transformPaths = function(fullPath) {
   return fullPath;
 };
 
+dist.copy = function(sourceDir, destDir) {
+
+  //copy dist to destination
+  if (!fs.existsSync(destDir)) {
+    log.error("Destination folder does not exist: %s", destDir);
+    return;
+  }
+  log.log(`Deploying ${sourceDir} to ${destDir}`);
+  shell.cp('-Rf', `${sourceDir}${path.sep}*`, destDir);
+  log.log(`Deployed to ${destDir}`);
+}
+
 
 function transformPath(fullPath, match, replace) {
   if (fullPath.indexOf(match)>-1) {

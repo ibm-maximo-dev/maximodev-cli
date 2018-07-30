@@ -16,7 +16,6 @@ const sfv = require('./lib/sfv');
 const ext = require('./lib/ext');
 const productxml = require('./lib/productxml');
 const presentations = require('./lib/presentations');
-const dbcscripts = require('./lib/dbcscripts');
 
 const schema = {
   _version: '0.0.1',

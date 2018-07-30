@@ -10,8 +10,8 @@
 
 const log = require('./lib/logger');
 const cli = require('./lib/cli');
-const env = require('./lib/env');
 const dist = require('./lib/dist');
+var env = require('./lib/env');
 var fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
@@ -58,12 +58,5 @@ function deploy(result) {
   const SOURCE_FOLDER = path.join(CURR_FOLDER, dist.BUILD_FOLDER_NAME)
   const DEST_FOLDER = path.resolve(result.dir);
 
-  //copy dist to destination
-  if (!fs.existsSync(DEST_FOLDER)) {
-    log.error("Destination folder does not exist: %s", DEST_FOLDER);
-    return;
-  }
-  log.log(`Deploying ${SOURCE_FOLDER} to ${DEST_FOLDER}`);
-  shell.cp('-Rf', `${SOURCE_FOLDER}${path.sep}*`, DEST_FOLDER);
-  log.log(`Deployed to ${DEST_FOLDER}`);
+  dist.copy(SOURCE_FOLDER, DEST_FOLDER);
 }
