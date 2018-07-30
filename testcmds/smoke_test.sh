@@ -55,6 +55,27 @@ maximodev-cli create addon --addon_prefix=${ADDON_PREFIX} --addon_name=${ADDON_N
 cd ${OUTPUT_DIR}/${ADDON_NAME} || fail "Failed to change to Addon Directory"
 echo "PASSED: Create Addon"
 
+echo "CREATING Maximo extension"
+maximodev-cli create ext app —-ext_id=psdi.app.asset.Asset —-ext_prefix=${ADDON_PREFIX}  -—ext_java_package=${ADDON_PACKAGE}  --maximo_home=${MAXIMO_HOME}  -—add_presetation || fail "Create Maximo's extension"
+verifyFile "applications/maximo/maximouiweb/src/bpaaa/prod1/webclient/beans/BpaaaAssetAppBean.java" "Fail creating Maximo's extension"
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/BpaaaAsset.java"
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/BpaaaAssetSet.java"
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/BpaaaAssetRemote.java"
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/BpaaaAssetSetRemote.java"
+echo "PASSED: Create Maximo extension"
+
+echo "CREATING Field class extension"
+maximodev-cli create ext fld --ext_mbo=ASSET --ext_field=ASSETNUM --ext_fqn_field=psdi.app.asset.FldAssetnum
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/FldBpaaa_prod1Assetnum.java"
+echo "PASSED: Extend fied classes"
+
+echo "CREATING Application service extension"
+maximodev-cli create ext svc --service_name=ASSET --service_fqn=psdi.app.asset.AssetService  --add_remote_service=y --remote_service_fqn=psdi.app.asset.AssetServiceRemote
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/Bpaaa_prod1AssetService.java"
+verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/Bpaaa_prod1AssetServiceRemote.java"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_02.dbc" "Create Application Service Failed"
+echo "PASSED: Extend application service"
+
 echo "CREATING Sample App"
 maximodev-cli create sample-classic-app --add_sample
 verifyFile "resources/presentations/bpaaaart.xml" "Create Sample Failed"
@@ -71,8 +92,8 @@ verifyFile "tools/maximo/en/bpaaa_prod1/V1000_06.dbc" "Create DBC Failed"
 
 echo "CREATING SCRIPT FIELD VALIDATOR"
 maximodev-cli create script-field-validator  --script_language=python --script_description="Test" --object_name="WORKORDER" --attribute_name="WONUM" --automation_script_name=TESTSCRIPT
-verifyFile "tools/maximo/en/bpaaa_prod1/V1000_07.dbc.in" "Create Script Field Validator Failed"
-verifyFile "tools/maximo/en/bpaaa_prod1/V1000_07.dbc.py" "Create Script Field Validator Failed"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_09.dbc.in" "Create Script Field Validator Failed"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_09.dbc.py" "Create Script Field Validator Failed"
 
 echo "CREATING CLASSIC MINIAPP"
 maximodev-cli create classic-miniapp --jsclass_name=TestMiniApp --id=testminiapp --java_package=bpaaa.prod1.miniapp --java_class_name=TestMiniAppImpl

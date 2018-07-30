@@ -15,6 +15,8 @@ var sfv = require('./lib/sfv');
 
 var next_script = dbc.nextScript(env.scriptDir(),"dbc");
 
+next_script = next_script.substring(0, next_script.length - 4)
+
 var schema = {
   _version: '0.0.1',
   _description: 'Maximo create new automation script as a mbo field validator',
@@ -74,11 +76,7 @@ var schema = {
       message: 'Must only contain letters, numbers in capitall letter',
       required: true,
       _cli: 'script_name',
-      _cli_arg_value: '<NAME>',
-      default: next_script.substring(0, next_script.length - 4),
-      conform: function(v){
-        schema.properties.script_name.default = next_script.substring(0, next_script.length - 4);
-      }
+      default: next_script
     },
   }
 };
@@ -86,6 +84,7 @@ var schema = {
 cli.process(schema, process.argv, create_script);
 
 function create_script(result) {
+
   env.validateAddonDir();
   var nextScript = dbc.nextScript();
 

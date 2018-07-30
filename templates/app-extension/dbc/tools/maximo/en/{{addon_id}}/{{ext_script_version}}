@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="maximodev-cli" scriptname="{{ext_script_version}}">
+	<description>{{ext_description}}</description>
+	<statements>
+
+
+
+		<!-- This is a template script for maximodev-cli extending apps command. -->
+		<!-- START app for appname: {{ext_prefix}} -->
+		<create_app app="{{ext_prefix}}" description="{{ext_prefix}} applications (maximodev-cli)" maintbname="MAIN" />
+		<!-- END app for appname: {{ext_prefix}} -->
+
+		<!-- START app menu dor appname {{ext_prefix}} -->
+		<create_module menu_position="last" module="{{ext_prefix}}" description="{{ext_prefix}}'s application">
+			<module_menu_app app="{{ext_prefix}}" />
+		</create_module>
+		<!-- END app menu dor appname {{ext_prefix}} -->
+
+		<!-- Record Main Sigoptions -->
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="READ" description="Read" grantapp="PERSON" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="INSERT" description="New Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SAVE" description="Save Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="CLEAR" description="Clear Changes" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="PREVIOUS" description="Previous Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="NEXT" description="Next Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="DELETE" description="Delete Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- Record - Search Sigoptions --> 
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHAT{{ext_prefix}}" description="Attribute Search" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHBOOK" description="Bookmarks" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHMORE" description="More Search Fields" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHSQRY" description="Save Current Query" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHTIPS" description="View Search Tips" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHVMQR" description="View/Manage Queries" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHWHER" description="Where Clause" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
+		
+		<!-- END sigoption for appname: {{ext_prefix}} -->
+		<define_table persistent="true" type="system" object="{{new_mbo}}" description="Table create from maximodev-cli commnad" service="CUSTAPP" classname="{{java_package}}.{{ext_prefix_T}}{{ext_id_T}}Set" primarykey="VALUE" mainobject="false" internal="false">
+			<!--This is a sample attributes to start the extension -->
+			<attrdef attribute="VALUE" maxtype="INTEGER" remarks="Test from maximodev-cli" title="Number" />
+			<attrdef attribute="DESCRIPTION" maxtype="ALN" remarks="Test from maximodev-cli" title="Alphnumeric (10 char) number word ie 'One'..." length="10" />
+		</define_table>
+
+
+		<create_app_menu app="{{ext_prefix}}" type="tool" >
+			<app_menu_option option="INSERT" tabdisplay="ALL" image="nav_icon_insertkey.gif" accesskey="CTRL+ALT+I" />
+			<app_menu_option option="SAVE" tabdisplay="MAIN" image="nav_icon_save.gif" accesskey="CTRL+ALT+S"/>
+			<app_menu_option option="CLEAR" tabdisplay="MAIN" image="nav_icon_clear.gif" accesskey="CTRL+ALT+C"/>
+			<menu_separator tabdisplay="MAIN" />
+			<app_menu_option option="PREVIOUS" tabdisplay="ALL" image="nav_icon_previous.gif" accesskey="CTRL+ALT+P"/>
+			<app_menu_option option="NEXT" tabdisplay="ALL" image="nav_icon_next.gif" accesskey="CTRL+ALT+N"/>
+		</create_app_menu>
+
+
+		<freeform description="Add attachments folders to {{ext_prefix}}">
+			<sql target="all">insert into appdoctype (app, doctype, appdoctypeid) (select '{{ext_prefix}}', doctype, appdoctypeseq.nextval from appdoctype where app = '{{ext_id}}');</sql>
+		</freeform>
+
+		<freeform description="Set MAXAPPs">
+			<sql target="all">
+				update maxapps set originalapp='CUSTAPP' where app='{{ext_prefix}}'
+			</sql>
+		</freeform>
+
+		<!-- END Insert attachments folders to {{ext_prefix}} -->
+
+		<!--TODO add the extended field classess to this script -->
+
+
+
+	</statements>
+</script>

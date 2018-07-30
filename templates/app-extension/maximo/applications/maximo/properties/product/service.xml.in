@@ -1,0 +1,2 @@
+<class extends='{{original_service_fqn}}Remote' >{{user_service_fqn}}SetRemote</class>
+<mbo objectname='{{original_service_name}}' extends='{{original_service_fqn}}'>{{user_service_fqn}}</mbo>

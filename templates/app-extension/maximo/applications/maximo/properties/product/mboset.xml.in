@@ -1,0 +1,2 @@
+<class extends='{{original_mbo_fqn}}SetRemote' >{{user_mbo_fqn}}SetRemote</class>
+<mbo objectname='{{original_object_name}}' extends='{{original_mbo_fqn}}Set'>{{user_mbo_fqn}}Set</mbo>

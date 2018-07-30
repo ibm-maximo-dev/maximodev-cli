@@ -13,6 +13,7 @@ const cli = require('./lib/cli');
 const dist = require('./lib/dist');
 const env = require('./lib/env');
 const sfv = require('./lib/sfv');
+const ext = require('./lib/ext');
 const productxml = require('./lib/productxml');
 const presentations = require('./lib/presentations');
 const dbcscripts = require('./lib/dbcscripts');
@@ -50,12 +51,16 @@ function build(result) {
   }
 
   //update script field validation when necessary
-  sfv.updateScrips(env.scriptDir());
+  sfv.updateScripts(env.scriptDir());
   log.info("Checking for Automation Scripting addition");
 
   // Update product.xml when necessary.
   productxml.updateVersion(env.productXmlIn(), env.scriptDir());
   log.info("product xml updated with the latest version");
+
+  //if(ext.isValidExtension(env.buildDir())){
+    //TODO Implement elements to build the Maximo's extension
+  //}
 
   // Copy binary files (jar's,class's) to their correct destination folder, configuration files (xml's) any other supporting files.
   log.log();

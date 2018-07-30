@@ -57,7 +57,7 @@ var schema = {
       pattern: /^[a-zA-Z_0-9.]+$/,
       message: 'Must only contain letters, numbers, underscores, or dots',
       required: true,
-      default:'br.ibm.com',
+      default:'ibm.com.maximo',
       _cli: 'java_package',
       _depends: 'add_java_support',
     },

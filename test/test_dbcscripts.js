@@ -31,7 +31,7 @@ describe('lastScript', function() {
   });
   it('will compare using script versions and return last V script', function() {
     var lastScript = dbcscripts.lastScript('test/resources/en/testprod3');
-    expect(lastScript).to.be.equal('V7601_03.dbc');
+    expect(lastScript).to.be.equal('V7601_03.dbc.in');
   });
   it('last script should be null when the directory does not exist', function() {
     var lastScript = dbcscripts.lastScript('test/resources/en/doesnotexist');

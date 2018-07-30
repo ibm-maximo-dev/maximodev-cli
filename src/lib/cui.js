@@ -66,7 +66,7 @@ cui.installTemplateCUIFile = function (template, outBaseDir, filePath, templateA
  * Update scripts for automation scripts (Build)
  * @param {*} fdir Script .in complete file's path
  */
-cui.updateScrips = function (fdir) {
+cui.updateScripts = function (fdir) {
   shell.ls("-R", fdir).forEach(function (f) {
     //list all files into the script directory
 

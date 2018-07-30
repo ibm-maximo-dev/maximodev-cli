@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="maximodev-cli" scriptname="V{{script_version}}">
+	<description>{{ext_description}}/description>
+		<statements>
+
+			<add_service servicename="{{new_servicename}}" description="maximodev-clie creation" classname="{{java_package}}.{{user_service_name}}" />
+
+		</statements>
+	</script>

@@ -43,7 +43,8 @@ dbcscripts.nextScriptFile = function(dir, ext) {
  */
 dbcscripts.nextScriptName = function(curName) {
   if (!curName) {
-    // TODO: We need to define a new script using product xml
+    // TODO: We need to define a new script using product xm
+
     return "V1000_01.dbc";
   } else {
     var script = dbcscripts.script(curName);
@@ -66,8 +67,9 @@ dbcscripts.lastScript = function(dir) {
   }
 
   var files = fs.readdirSync(dir).filter(e => (
+    !e.startsWith('.') && (
     e.endsWith(".dbc") || e.endsWith(".msg") || e.endsWith(".csv") || e.endsWith(".mxs") || e.endsWith(".msg")
-    || e.endsWith(".sql")
+    || e.endsWith(".sql") || e.endsWith(".dbc.in"))
   ));
   files.sort(dbcscripts.compare);
   log.trace(files);  

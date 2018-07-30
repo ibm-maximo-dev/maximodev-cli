@@ -21,10 +21,11 @@ var prog = program
 
   prog.command('script-field-validator', 'create Script field validation').alias('sfv');
   prog.command('condition-ui', 'create Condition UI structure').alias('cui');
-  prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp')
+  prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp');
+  prog.command('app-extensions', 'Create an extension for Maximo\'s applications').alias('ext');
 
 if (process.env["MAXIMODEV_CLI_BETA"]) {
-  prog.command('zip', 'create a new process solution install - PSI ');
+  prog.command('zip', 'create a new process solution install - PSI ').alias('zip');
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
 }
 
