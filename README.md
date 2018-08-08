@@ -34,7 +34,6 @@ $ maximodev-cli create addon
 $ cd bpaa_myproduct
 $ maximodev-cli create sample-classic-app
 $ maximodev-cli build
-$ maximodev-cli dist
 $ maximodev-cli deploy
 ```
 

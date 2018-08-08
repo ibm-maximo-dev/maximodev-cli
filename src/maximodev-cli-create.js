@@ -25,7 +25,7 @@ var prog = program
   prog.command('app-extensions', 'Create an extension for Maximo\'s applications').alias('ext');
 
 if (process.env["MAXIMODEV_CLI_BETA"]) {
-  prog.command('zip', 'create a new process solution install - PSI ').alias('zip');
+  prog.command('zip', 'create a new process solution install - PSI ').alias('package');
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
 }
 

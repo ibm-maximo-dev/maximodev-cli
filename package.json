@@ -1,6 +1,6 @@
 {
   "name": "maximodev-cli",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Maximo developer command line tools",
   "main": "src/maximodev-cli.js",
   "bin": {
@@ -21,23 +21,23 @@
   "dependencies": {
     "archive": "0.0.2",
     "archiver": "2.1.1",
-    "commander": "^2.14.1",
+    "commander": "^2.17.1",
     "dateformat": "^3.0.3",
     "dotenv": "^6.0.0",
     "fs-extra": "^5.0.0",
-    "mustache": "^2.3.0",
+    "mustache": "^2.3.1",
     "node-unzip-2": "^0.2.7",
     "prompt": "^1.0.0",
     "properties-parser": "^0.3.1",
     "readline-sync": "^1.4.9",
     "request": "^2.87.0",
-    "shelljs": "^0.8.1",
+    "shelljs": "^0.8.2",
     "tar-fs": "^1.16.3",
     "temporary-directory": "^1.0.2",
     "tmp": "0.0.33",
     "uuid": "3.2.1",
     "xml-escape": "^1.1.0",
-    "xml-js": "^1.6.4",
+    "xml-js": "^1.6.7",
     "xml2js": "^0.4.19",
     "xmldom": "^0.1.27",
     "zip": "^1.2.0"
@@ -45,6 +45,6 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-files": "^1.4.0",
-    "mocha": "^5.0.1"
+    "mocha": "^5.2.0"
   }
 }
