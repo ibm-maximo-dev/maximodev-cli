@@ -53,8 +53,7 @@ function untarStream(stream, archivePath) {
 }
 
 function unzipStream(stream, archivePath) {
-  console.log({archivePath});
-  return stream.pipe(unzip.extract({ path: archivePath }));
+  return stream.pipe(unzip.Extract({ path: archivePath }));
 }
 
 
