@@ -107,8 +107,10 @@ echo "Doing a BUILD"
 maximodev-cli build
 verifyFile "dist/applications/maximo/properties/product/bpaaa_prod1.xml" "Build Failed"
 
+export MAXIMODEV_CLI_BETA=1
 echo "Doing ZIP"
-maximodev-cli create zip
+maximodev-cli create zip --package_name=test-package
+verifyFile "dist/test-package.zip"
 
 #TOOD: this one needs lots of clean up
 #echo "CREATING conditional UI"
