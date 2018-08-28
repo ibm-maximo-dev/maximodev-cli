@@ -20,7 +20,9 @@ var prog = program
   .command('update [options]', 'update a maximo artifact such as product xml version').alias('u')
   .command('set [options]', 'set add-on option').alias('s')
   .command('run-dbc [options]', 'run a dbc script file').alias('r')
-  .command('deploy', 'publish a build to an artifact server').alias('d');
+  .command('deploy', 'publish a build to an artifact server').alias('d')
+  .command('merge', 'merge scripts and metadata').alias('m');
+
 
   prog.command('docker [options]', 'run a commands against Docker images/containers').alias('dk');
 

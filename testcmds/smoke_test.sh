@@ -9,10 +9,21 @@ fail() {
   exit 1
 }
 
+pass() {
+  echo "PASS: $1" 
+}
+
 verifyFile() {
   echo "VERIFY: $1"
   if [ ! -e "$1" ] ; then
     fail "$2"
+  fi
+}
+
+verifyMerge() {
+  echo "CHECK-MERGE: $1"
+  if [ ! -e "$1" ] ; then
+    pass "$2"
   fi
 }
 
@@ -99,6 +110,7 @@ echo "CREATING CLASSIC MINIAPP"
 maximodev-cli create classic-miniapp --jsclass_name=TestMiniApp --id=testminiapp --java_package=bpaaa.prod1.miniapp --java_class_name=TestMiniAppImpl
 verifyFile "applications/maximo/maximouiweb/src/bpaaa/prod1/miniapp/TestMiniAppImpl.java" "Create MiniApp Failed"
 
+
 echo "CREATING UPDATE PRODUCTXML"
 maximodev-cli update product-xml
 verifyFile "applications/maximo/properties/product/bpaaa_prod1.xml" "Update Product Xml Failed"
@@ -106,6 +118,16 @@ verifyFile "applications/maximo/properties/product/bpaaa_prod1.xml" "Update Prod
 echo "Doing a BUILD"
 maximodev-cli build
 verifyFile "dist/applications/maximo/properties/product/bpaaa_prod1.xml" "Build Failed"
+
+echo "MERGE SCRIPT FILES"
+maximodev-cli merge dbc --script_base="V1000_07.dbc"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_07.dbc" "Create Script Field Validator Failed"
+verifyMerge "tools/maximo/en/bpaaa_prod1/V1000_08.dbc" "File merged"
+verifyMerge "tools/maximo/en/bpaaa_prod1/V1000_09.dbc" "File merged"
+
+echo "CREATING UPDATE PRODUCTXML - After merge files"
+maximodev-cli update product-xml
+verifyFile "applications/maximo/properties/product/bpaaa_prod1.xml" "Update Product Xml Failed"
 
 export MAXIMODEV_CLI_BETA=1
 echo "Doing ZIP"

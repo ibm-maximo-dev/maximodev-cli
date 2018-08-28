@@ -51,8 +51,10 @@ xml.hasNode = function(doc, nodeName, cb) {
       for (var i=0;i<nodes.length;i++) {
         if (cb(nodes[i])) return true;
       }
-    }
-    return false;
+  }
+  return false;
+
+
 };
 
 /**
@@ -61,6 +63,30 @@ xml.hasNode = function(doc, nodeName, cb) {
  */
 xml.convertXMLtoJSON = function(xmlPath){
   var xml = fs.readFileSync(xmlPath, 'utf8');
-  var result = convert.xml2json(xml, {compact: false, spaces: 4, ignoreComment: false, alwaysChildren: true});
-  return result; 
+  var result = convert.xml2json(xml, {compact: false, spaces: 4, ignoreComment: false, alwaysChildren: true });
+  return result;
 };
+
+xml.convertTextXMLtoJSON = function (xml) {
+  var result = convert.xml2json(xml, { compact: false, spaces: 4, ignoreComment: false, alwaysChildren: true });
+  return result;
+};
+
+xml.getDocFromFile = function (xmlPath) {
+  //Reading this file
+  var xmlFile = fs.readFileSync(xmlPath, "utf8");
+  //Reading XML file
+  var doc = new DOMParser().parseFromString(xmlFile);
+  return doc;
+}
+
+xml.readXmlFromString = function(xmlElement){
+  var doc = new DOMParser().parseFromString(xmlElement);
+  return doc;
+}
+
+xml.updateDoc= function(doc, xmlPath){
+  var docOut = new XMLSerializer().serializeToString(doc);
+  fs.writeFileSync(xmlPath, docOut, 'utf8');
+  return true;
+}

@@ -4,7 +4,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-var fs = require('fs');
+var fs = require('fs-extra');
+
 var path = require('path');
 var shell = require('shelljs');
 var util = require('util');
@@ -12,6 +13,9 @@ var util = require('util');
 var log = require('./logger');
 var templates = require('./templates');
 var env = require('./env');
+var xml = require('./xml');
+
+const xmlescape = require("xml-escape");
 
 
 var dbcscripts = module.exports = Object.create({});
@@ -251,6 +255,97 @@ dbcscripts.compare = function(s1, s2) {
  */
 dbcscripts.format = function(script) {
   return script.prefix + script.version + "_" + _padNumber(script.number, 2) + "." + script.ext;
+};
+
+
+dbcscripts._buildScriptDir = function () {
+  var addon_in = env.get('addon_id');
+  var dir = env.ensureDir(path.join('dist/tools/maximo/en/', "" + addon_in));
+  console.log("Test %", dir);
+  return dir;
+}
+
+
+dbcscripts.listBuildScripts = function (extension) {
+  shell.ls("-R", dbcscripts._buildScriptDir()).forEach(function (f) {
+    console.log("File: %s", f);
+  });
+}
+
+
+dbcscripts.getScriptData = function (script_name) {
+  var script = script_name.split('.');
+
+  var script = {
+    prefix: script[0].substring(0, 1),
+    version: script[0].substring(1, 5),
+    update: script[0].substring(6, script[0].length)
+  };
+  return script;
+}
+
+dbcscripts.mergeScript = function (script_base) {
+  //Join script file path
+  var xmlPath = path.join(dbcscripts._buildScriptDir(), "" + script_base);
+  console.log("Reading DBC at " + xmlPath);
+
+  //Reading XML file
+  var doc = xml.getDocFromFile(xmlPath);
+
+  //Check element exists
+  if (xml.hasNode(doc, 'statements', function (node) {
+    //console.log("Node:" + node);
+
+    var b_script = dbcscripts.getScriptData(script_base);
+
+    var scripts;
+    shell.ls("-R", dbcscripts._buildScriptDir()).forEach(function (f) {
+
+      if (f.endsWith('dbc')) {
+        var n_script = dbcscripts.getScriptData(f);
+
+        if ((b_script.version == n_script.version) && (b_script.update < n_script.update)) {
+          console.log("Including: %s", f);
+
+          //This method only accept string, needs to update to read the file 
+          var xmlPathToInclude = path.join(dbcscripts._buildScriptDir(), "" + f);
+          var docToInclude = xml.getDocFromFile(xmlPathToInclude);
+          if (xml.hasNode(docToInclude, 'statements', function (nodeToCopy) {
+            for (var i = 0; i < nodeToCopy.childNodes.length; ++i) {
+
+              var n_node = nodeToCopy.childNodes[i];
+
+              /**
+               * doc - Base script where the merge will be done
+               * node - Statement element to add elements from other scripts
+               */
+              //node.appendChild(doc.createTextNode(xml.convertTextXMLtoJSON(nodeToCopy.childNodes[i])));
+              if (n_node.nodeName.toString() != "#text") {
+                console.log("copy %s to %s script.", n_node.nodeName, f);
+                //node.appendChild(n_node);
+                xml.appendChild(doc, doc.getElementsByTagName("statements")[0], n_node, "  ", "\n  ");
+                //node.appendChild(nodeToCopy.childNodes[i]);
+              }
+              //node.importNode(nodeToCopy.childNodes[i],false);
+              //Save file now to ensure the process to be save
+              xml.updateDoc(doc, xmlPath);
+
+            }
+            console.log("File %s merged.", f);
+
+            var d_xml = path.join(dbcscripts._buildScriptDir(), "" + f);
+            //Remove unecessary files. 
+            if (fs.existsSync(d_xml)) {
+              fs.removeSync(d_xml);
+            }
+          }));
+        }//End check script
+      }
+    });
+
+  }));
+  console.log("Merge all scripts into %s", script_base);
+  return false;
 };
 
 /// --- Private Functions
