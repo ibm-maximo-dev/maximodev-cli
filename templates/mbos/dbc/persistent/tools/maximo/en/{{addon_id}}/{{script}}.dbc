@@ -13,7 +13,7 @@
 		</freeform>
 
 		<!-- Mbo Table -->
-		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximodev-cli" service="{{service_name}}" classname="{{java_package}}.{{mbo_class_name}}" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
+		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximodev-cli" service="{{service_name}}" classname="{{java_package}}.{{mbo_class_name}}Set" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
 			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" autokey="{{mbo_name}}SEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
 		</define_table>
 		

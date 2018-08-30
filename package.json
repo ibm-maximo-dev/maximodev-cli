@@ -20,8 +20,8 @@
   "repository": "ibm-maximo-dev/maximodev-cli",
   "dependencies": {
     "archive": "0.0.2",
-    "archiver": "2.1.1",
-    "commander": "^2.17.1",
+    "archiver": "^2.1.1",
+    "commander": "^2.14.1",
     "dateformat": "^3.0.3",
     "dotenv": "^6.0.0",
     "fs-extra": "^5.0.0",

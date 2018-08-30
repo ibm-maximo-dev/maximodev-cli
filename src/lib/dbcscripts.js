@@ -26,18 +26,18 @@ var dbcscripts = module.exports = Object.create({});
  *
  * @param dir
  */
-dbcscripts.nextScript = function(dir, ext) {
+dbcscripts.nextScript = function (dir, ext) {
   var script = dbcscripts.nextScriptName(dbcscripts.lastScript(dir));
   if (script && ext) {
     var els = dbcscripts.script(script);
-    if (ext.startsWith('.')) ext=ext.substring(1);
+    if (ext.startsWith('.')) ext = ext.substring(1);
     els.ext = ext;
-    script=dbcscripts.format(els);
+    script = dbcscripts.format(els);
   }
   return script;
 };
 
-dbcscripts.nextScriptFile = function(dir, ext) {
+dbcscripts.nextScriptFile = function (dir, ext) {
   return path.resolve(dir, dbcscripts.nextScript(dir, ext));
 };
 
@@ -45,7 +45,7 @@ dbcscripts.nextScriptFile = function(dir, ext) {
 /**
  * Given current name, return the next script name
  */
-dbcscripts.nextScriptName = function(curName) {
+dbcscripts.nextScriptName = function (curName) {
   if (!curName) {
     // TODO: We need to define a new script using product xm
 
@@ -62,8 +62,8 @@ dbcscripts.nextScriptName = function(curName) {
  * @param dir
  * @returns {string} script filename without path
  */
-dbcscripts.lastScript = function(dir) {
-  dir=dir||env.scriptDir();
+dbcscripts.lastScript = function (dir) {
+  dir = dir || env.scriptDir();
 
   if (!fs.existsSync(dir)) {
     log.error("Dir does exist: %s", dir);
@@ -72,13 +72,13 @@ dbcscripts.lastScript = function(dir) {
 
   var files = fs.readdirSync(dir).filter(e => (
     !e.startsWith('.') && (
-    e.endsWith(".dbc") || e.endsWith(".msg") || e.endsWith(".csv") || e.endsWith(".mxs") || e.endsWith(".msg")
-    || e.endsWith(".sql") || e.endsWith(".dbc.in"))
+      e.endsWith(".dbc") || e.endsWith(".msg") || e.endsWith(".csv") || e.endsWith(".mxs") || e.endsWith(".msg")
+      || e.endsWith(".sql") || e.endsWith(".dbc.in"))
   ));
   files.sort(dbcscripts.compare);
-  log.trace(files);  
-  if (files.length===0) return null;
-  return files[files.length-1];
+  log.trace(files);
+  if (files.length === 0) return null;
+  return files[files.length - 1];
 };
 
 /**
@@ -102,29 +102,29 @@ dbcscripts.runScript = function (script) {
 
   // need to copy the script to the maximo home, to a tmp product dir, and then run the script from there
   var productDirName = 'zzztmp'; // this is a temp script dir that we will use to load the file
-  var productDir = path.resolve(path.join(env.maximoToolsHome(),'en', productDirName));
+  var productDir = path.resolve(path.join(env.maximoToolsHome(), 'en', productDirName));
   var scriptName = path.basename(dbc);
   shell.mkdir("-p", productDir);
   shell.cp(dbc, productDir);
   log.debug("Copied DBC %s to %s", scriptName, productDir);
 
-  var handler = function(cmd, proc) {
+  var handler = function (cmd, proc) {
     var stderr = proc.stderr;
     var stdout = proc.stdout;
 
-    if ((stderr && stderr.match(new RegExp("Error"))) || (stdout && stdout.match(new RegExp("COMPLETED WITH ERROR"))) ) {
+    if ((stderr && stderr.match(new RegExp("Error"))) || (stdout && stdout.match(new RegExp("COMPLETED WITH ERROR")))) {
       console.log("\n\n");
       log.error("The script failed to run!!!");
 
       var out = stdout;
       if (out) {
-        var re =  new RegExp('Log file: (.*)');
+        var re = new RegExp('Log file: (.*)');
         var r = out.match(re);
         if (r) {
-          var logFile = path.resolve(path.join(env.maximoToolsHome(),'log', r[1]));
+          var logFile = path.resolve(path.join(env.maximoToolsHome(), 'log', r[1]));
           if (fs.existsSync(logFile)) {
             log.info("DBC Log File: %s", logFile);
-            env.askYesNo('Do you want to view the log file?', 'y', function(response) {
+            env.askYesNo('Do you want to view the log file?', 'y', function (response) {
               if (response) {
                 console.log("\n\n");
                 console.log(fs.readFileSync(logFile).toString());
@@ -150,12 +150,12 @@ dbcscripts.runScript = function (script) {
  * @param outName
  * @param outDir
  */
-dbcscripts.createNewScriptInDir = function(args, outName, outDir) {
+dbcscripts.createNewScriptInDir = function (args, outName, outDir) {
   var tpl = templates.resolveName("dbc/new.dbc");
 
   // if not set, then use defaults
-  outDir=outDir||env.scriptDir();
-  outName=outName||dbcscripts.nextScript(outDir);
+  outDir = outDir || env.scriptDir();
+  outName = outName || dbcscripts.nextScript(outDir);
 
   var outFile = path.join(outDir, outName);
 
@@ -177,7 +177,7 @@ const SCRIPT_REGEX = new RegExp("(HF|V)([0-9]+)_([0-9]+)\\.([a-zA-Z]+)");
  * for a given scriptname like, 'V7601_03.dbc'
  * @param str
  */
-dbcscripts.script = function(str) {
+dbcscripts.script = function (str) {
   if (str) {
     var match = SCRIPT_REGEX.exec(str);
     if (match) {
@@ -198,14 +198,14 @@ dbcscripts.script = function(str) {
  * @param dir
  * @returns {*|string}
  */
-dbcscripts.getMxsScript = function(dir) {
-  dir=dir||env.scriptDir();
+dbcscripts.getMxsScript = function (dir) {
+  dir = dir || env.scriptDir();
 
   // figure out where we need to write to script delta
   // in most cases, script deltas are written to the 02 dbc file
-  var nextScript = dbcscripts.nextScript(dir,'mxs');
+  var nextScript = dbcscripts.nextScript(dir, 'mxs');
   var script_parts = dbcscripts.script(nextScript);
-  script_parts.number=2;
+  script_parts.number = 2;
 
   var script = dbcscripts.format(script_parts);
   return path.join(dir, script);
@@ -216,8 +216,8 @@ dbcscripts.getMxsScript = function(dir) {
  * return true if the scriptname is valid
  * @param s
  */
-dbcscripts.isValidScriptName = function(s) {
-  return dbcscripts.script(s)!=null;
+dbcscripts.isValidScriptName = function (s) {
+  return dbcscripts.script(s) != null;
 };
 
 /**
@@ -228,20 +228,20 @@ dbcscripts.isValidScriptName = function(s) {
  * @param s2
  * @returns {number}
  */
-dbcscripts.compare = function(s1, s2) {
-  var e1=_compareableScript(s1);
-  var e2=_compareableScript(s2);
-  if ( (e1.startsWith('V') && e2.startsWith("V")) || (e1.startsWith('HF') && e2.startsWith("HF"))) {
+dbcscripts.compare = function (s1, s2) {
+  var e1 = _compareableScript(s1);
+  var e2 = _compareableScript(s2);
+  if ((e1.startsWith('V') && e2.startsWith("V")) || (e1.startsWith('HF') && e2.startsWith("HF"))) {
     return e1.localeCompare(e2);
   } else if (e1.startsWith("HF")) {
-    var comp = _compareableScript(s1,true).localeCompare(_compareableScript(s2,true));
-    if (comp==0) {
+    var comp = _compareableScript(s1, true).localeCompare(_compareableScript(s2, true));
+    if (comp == 0) {
       return 1;
     }
     return comp;
   } else {
-    var comp = _compareableScript(s1,true).localeCompare(_compareableScript(s2,true));
-    if (comp==0) {
+    var comp = _compareableScript(s1, true).localeCompare(_compareableScript(s2, true));
+    if (comp == 0) {
       return -1;
     }
     return comp;
@@ -253,7 +253,7 @@ dbcscripts.compare = function(s1, s2) {
  * @param script
  * @returns {string}
  */
-dbcscripts.format = function(script) {
+dbcscripts.format = function (script) {
   return script.prefix + script.version + "_" + _padNumber(script.number, 2) + "." + script.ext;
 };
 
@@ -360,12 +360,12 @@ function _compareableScript(s, versionOnly) {
 }
 
 function _padVersion(v) {
-  if (v.length===4) {
-    return v.substring(0,3) + "0" + v.substring(3);
+  if (v.length === 4) {
+    return v.substring(0, 3) + "0" + v.substring(3);
   }
   return v;
 }
 
 function _padNumber(n, padding) {
-  return (""+n).padStart(padding,"0");
+  return ("" + n).padStart(padding, "0");
 }
