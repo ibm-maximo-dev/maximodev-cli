@@ -15,8 +15,8 @@ var xml = module.exports = Object.create({});
 /**
  * Read xml and calls callback function with dom so that it can be modified.
  */
-xml.update = function (xmlIn, cb) {
-  var xml = fs.readFileSync(xmlIn, "utf8");
+xml.update = function(xmlIn, cb) {
+  var xml = fs.readFileSync(xmlIn,"utf8");
   var doc = new DOMParser().parseFromString(xml);
 
   if (cb) {
@@ -28,18 +28,18 @@ xml.update = function (xmlIn, cb) {
   }
 };
 
-xml.createElement = function (doc, elName, attrs, text) {
+xml.createElement = function(doc, elName, attrs, text) {
   var el = doc.createElement(elName);
   if (text) el.textContent = text;
   if (attrs) {
-    Object.keys(attrs).forEach(function (n) {
-      el.setAttribute(n, attrs[n]);
+    Object.keys(attrs).forEach(function(n) {
+      el.setAttribute(n,attrs[n]);
     });
   }
   return el;
 };
 
-xml.appendChild = function (doc, nodeLocation, el, preText, postText) {
+xml.appendChild = function(doc, nodeLocation, el, preText, postText) {
   if (preText) nodeLocation.appendChild(doc.createTextNode(preText));
   nodeLocation.appendChild(el);
   if (postText) nodeLocation.appendChild(doc.createTextNode(postText));
@@ -61,7 +61,7 @@ xml.hasNode = function(doc, nodeName, cb) {
  * Convert a XML file to a Json text object
  * @param {*} xmlPath 
  */
-xml.convertXMLtoJSON = function (xmlPath) {
+xml.convertXMLtoJSON = function(xmlPath){
   var xml = fs.readFileSync(xmlPath, 'utf8');
   var result = convert.xml2json(xml, {compact: false, spaces: 4, ignoreComment: false, alwaysChildren: true });
   return result;
