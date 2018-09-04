@@ -48,7 +48,7 @@ public class {{mbo_class_name}}StateHandler extends StatusHandler {
     public void checkStatusChangeAuthorization(String desiredExternalState)
             throws MXException, RemoteException {
         String desiredMaxState = parent.getTranslator().toInternalString(
-                "CLISTATUS", desiredExternalState);
+                "{{mbo_name}}STATUS", desiredExternalState);
 
         // Check if the user is authorized to change to the desired State.
         checkUserSecurity(desiredMaxState);
@@ -125,9 +125,9 @@ public class {{mbo_class_name}}StateHandler extends StatusHandler {
 
         // Get the synonym values
         String currentMaxState = parent.getTranslator().toInternalString(
-                "CLISTATUS", currentState);
+                "{{mbo_name}}STATUS", currentState);
         String desiredMaxState = parent.getTranslator().toInternalString(
-                "CLISTATUS", desiredState);
+                "{{mbo_name}}STATUS", desiredState);
        
 		if (myLogger.isDebugEnabled())
 		{
