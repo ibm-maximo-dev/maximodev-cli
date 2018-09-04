@@ -18,7 +18,7 @@ public class {{mbo_class_name}} extends StatefulMbo implements {{mbo_class_name}
 	@Override
 	protected StatusHandler getStatusHandler() {
 		// TODO Auto-generated method stub
-		return null;
+		return new {{mbo_class_name}}StateHandler(this);
 	}
 
 	@Override

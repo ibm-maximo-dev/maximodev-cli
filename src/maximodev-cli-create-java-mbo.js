@@ -103,17 +103,17 @@ function create_mbo(result) {
   if(!result.script){
     result.default = nextScript.substr(0,nextScript.indexOf('.'));
   }
+  
+  /**
+   * Get Mbo type
+   */
+  var type = result.mbo_type; 
 
   /**
    * Add database configuration script.
    */
-
-  if(result.mbo_type!="nonpersistent" ) {
-    mbo.installTemplateMbo("mbos/dbc/persistent", env.addonDir(), args);
-  }
-  else {
-    mbo.installTemplateMbo("mbos/dbc/nonpersistent", env.addonDir(), args);
-  }
+  mbo.installTemplateMbo("mbos/dbc/"+type, env.addonDir(), args);
+  
 
   /**
    * Add service support on create 
@@ -129,8 +129,6 @@ function create_mbo(result) {
 
   
   //Will create the java files based on Mbo Type
-
-  var type = result.mbo_type; 
   mbo.installTemplateMbo("mbos/"+type+"/java", env.addonDir(), args);
 }
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="maximodev-cli" scriptname="{{script}}">
+	<description>Mbo script creation - create by maximodev-cli</description>
+	<statements>
+		<drop_domain domainid="CLISTATUS" />
+		
+		<specify_synonym_domain maxtype="ALN" length="10" domainid="CLISTATUS" description="Mbo Status" overwrite="false">
+			<synonymvalueinfo value="Draft" maxvalue="Draft" defaults="true" description="Draft" />
+			<synonymvalueinfo value="Active" maxvalue="Production" defaults="true" description="Active" />
+			<synonymvalueinfo value="Inactive" maxvalue="Done" defaults="true" description="Inactive" />
+		</specify_synonym_domain>
+		
+		<!-- Auto Keys -->
+		<freeform description="Create Autokey used by Table">
+			<sql target="all">
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{mbo_name}}SEQ', null, 'EN', autokeyseq.nextval)
+				;
+			</sql>
+		</freeform>
+
+		<!-- Mbo Table -->
+		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximodev-cli" service="{{service_name}}" classname="{{java_package}}.{{mbo_class_name}}Set" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
+			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" autokey="{{mbo_name}}SEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+			<attrdef attribute="STATUS" domain="CLISTATUS" canautonum="true" autokey="{{mbo_name}}SEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Status" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+		</define_table>
+
+		<!-- Status strcuture -->
+		<freeform description="Associate the CLISTATUS domain to an application and a field">
+			<sql target="all">
+				insert into maxdomainlink (maxdomainlinkid,objectname, attributename, domainid) values (maxdomainlinkseq.nextval,'{{addon_id}}','STATUS','CLISTATUS')
+      			;
+			</sql>
+		</freeform>
+
+		<create_relationship parent="{{mbo_class_name}}" name="STATUSDESC" child="SYNONYMDOMAIN" whereclause="domainid='CLISTATUS' and value=:status" remarks="Relationship to synonym domain table, used to find description for the state, it will contain one object." />
+
+		
+
+
+	</statements>
+</script>
