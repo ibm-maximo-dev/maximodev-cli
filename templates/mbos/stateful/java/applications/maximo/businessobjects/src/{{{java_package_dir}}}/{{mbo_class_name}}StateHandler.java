@@ -1,5 +1,5 @@
 
-package com.ibm.ism.script.{{mbo_class_name}};
+package {{java_package}};
 
 import java.rmi.RemoteException;
 import java.util.Date;

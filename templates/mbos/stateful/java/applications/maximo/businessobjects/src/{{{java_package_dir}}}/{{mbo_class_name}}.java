@@ -7,6 +7,7 @@ import psdi.mbo.MboSetRemote;
 import psdi.mbo.StatefulMbo;
 import psdi.mbo.StatusHandler;
 import psdi.util.MXException;
+import {{java_package}}.{{mbo_class_name}}StateHandler;
 
 public class {{mbo_class_name}} extends StatefulMbo implements {{mbo_class_name}}Remote{
 

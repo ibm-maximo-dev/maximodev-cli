@@ -1,4 +1,4 @@
-package {{java_package}}};
+package {{java_package}};
 
 import psdi.mbo.MboSetRemote;
 
