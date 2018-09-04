@@ -29,7 +29,7 @@ public class {{mbo_class_name}} extends StatefulMbo implements {{mbo_class_name}
 	@Override
 	protected MboSetRemote getStatusHistory() throws MXException, RemoteException {
 		// TODO Auto-generated method stub
-		return getMboSet({{mbo_class_name}}SetRemote.STATE);
+		return getMboSet({{mbo_class_name}}SetRemote.{{mbo_name}}STATE);
 	}
 	/**
 	 * This method return the Synonym domain ID associated with this Stateful Mbo.
