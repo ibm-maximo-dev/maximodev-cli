@@ -39,8 +39,8 @@ public class {{mbo_class_name}}StateHandler extends StatusHandler {
      * state. After ensuring that the user has the required privilege, this
      * methods checks if the state change is legal.
      * 
-     * @param currentExternalState The current external State of the script
-     * @param desiredExternalState The desired external State of the script
+     * @param currentExternalState The current external State of the record
+     * @param desiredExternalState The desired external State of the record
      * 
      * @see checkUserSecurity
      * @see possibleStateChange
@@ -88,7 +88,7 @@ public class {{mbo_class_name}}StateHandler extends StatusHandler {
      * Defines which State changes are legal. If a State change is not legal, an
      * MXAccessException is thrown. 
      * 
-     * @param currentState the script's current State
+     * @param currentState the record's current State
      * @param desiredState the State to change to
      * @param accessModifier If this flag is set to NOACCESSCHECK, a work flow
      *        controlled purchase requisition may change State.
@@ -103,7 +103,7 @@ public class {{mbo_class_name}}StateHandler extends StatusHandler {
     /**
      * Changes the State from the current state to a desired state.
      * 
-     * @param currentState the script's current State
+     * @param currentState the record's current State
      * @param desiredState the State to change to
      * @param date the date as of the State change is to be made
      * @param memo memo text
@@ -135,13 +135,13 @@ public class {{mbo_class_name}}StateHandler extends StatusHandler {
 	                + currentMaxState + ", desiredMaxState = " + desiredMaxState);
 		}
 
-        // Set the script's State and Statusdate
+        // Set the record's State and Statusdate
         if (!currentMaxState.equals(desiredMaxState)) {
             parent.setValue("Status", desiredState, NOACCESSCHECK);
             parent.setValue("Statusdate", date, NOACCESSCHECK);
         }
 
-        // Note the State-change record (Script State entry) is done
+        // Note the State-change record (Record State entry) is done
         // automatically in StatefulMbo.class
     }
 

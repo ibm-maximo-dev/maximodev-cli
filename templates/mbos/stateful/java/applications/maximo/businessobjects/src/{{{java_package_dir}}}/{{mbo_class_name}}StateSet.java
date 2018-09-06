@@ -16,7 +16,7 @@ public class {{mbo_class_name}}StateSet extends MboSet implements
         {{mbo_class_name}}StateSetRemote {
 
     /**
-     * Construct the set of script State.
+     * Construct the set of record State.
      * 
      * @param ms The MboServerInterface used to access internals of the
      *        MXServer.

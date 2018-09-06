@@ -46,7 +46,7 @@ public class {{mbo_class_name}}State extends Mbo implements {{mbo_class_name}}St
             throw new MXApplicationException("{{addon_id}}", "{{mbo_class_name}}StateNoAdd");
         }
 
-        // Copy these values from the script 
+        // Copy these values from the record 
         setValue("{{mbo_class_name}}", owner.getString("{{mbo_class_name}}"),NOVALIDATION_AND_NOACTION);
         setValue("status", owner.getString("status"), NOVALIDATION_AND_NOACTION);
         setValue("changedate", owner.getDate("statusdate"),NOVALIDATION_AND_NOACTION);
