@@ -46,7 +46,6 @@ After this process, a new add-on is created in the `dist` folder and deployed in
 If you run `maximodev-cli` without any parameters, a list of top-level commands is shown, such as `create`, `init`, `update`, `build`, `package`, `deploy`, etc. Each of these top-level actions have subcommands as well. For each level, you can pass `--help` to get help on a command or subcommand. While every command can take a number of `--` args, these commands also prompt and guide you. So, you can call a command without any args, and you are prompted for responses.
 
 ### maximodev-cli create addon
-
 The `create addon` command is used to start a new add-on. When you run this command, you are asked questions such as what is your add-on prefix, product name, description, etc. You are also asked if you want to enable Java support, and if so, you are asked for information about your Java package and if you want to enable `Eclipse` integration. After answering all questions, a new directory is created in your current directory using the name of your add-on. In the new directory, several files are created, including a product XML, and if Java support was enabled, then [Gradle](https://gradle.org/) scripts that enable you to compile your custom Java classes are added. This process creates an `addon.properties` file in your add-on root directory that contains all the information about your add-on. This properties file is used extensively in other `maximodev-cli` commands.
 
 ### maximodev-cli init addon
@@ -61,10 +60,16 @@ The `create product-xml` command creates a product XML in your add-on directory.
 ### maximodev-cli create dbc-script
 The `create dbc-script` command looks in your product's script directory and creates a new script with a number that is the next number in in your script sequence. For example, if your last script was named `V7601_22.dbc`, then this command creates `V7601_23.dbc`. The new script is an XML script stub where you can later edit it and add your statements.
 
-<!--
 ### maximodev-cli create java-field-validator
 The `create java-field-validator` command creates a simple Java field validation class and corresponding dbc file and updates the product XML file. The goal here is to show how to build a field validation class and how to register it. You might need to tweak the output scripts to register it to the correct object, field, etc.
 
+### maximodev-cli create mbo
+The `create mbo` command creates since a simple MBO structure to a `stateful` mbo structure. The objective is allow the user to create fast and without any structure issues, respecting the Remote objects and providing a simple implementation of more complex kind of MBOs. Today the `create mbo` command supports creates a non persistent Mbo, a stateful Mbo and standard ones as well, providing through the DBC files all that is necessary to create the associate tables,relationships, domains (when applicable), and more related elements linked with MBO's creation. To create an MBO you will be prompt about the `MBO Name` wich represents the table name; the `java package` what would complete the FQN (Full Qualified Name) of a MBO; The `MBO's class name`, like the `java package` item, should be the name of MBO's class name to compound the FQN; The `DBC's name` which is provided by default according with how many work have been done into that particular addon structure. The RMI `service name` that will be used by those MBO's, a default approach is associate it to the `ASSET` service for reliability reasons and the last but not less important the `override flag` asking you to override existent files into the workspace. 
+
+### maximodev-cli create app-extensions
+The `create app-extensions` command allows you to extends some elements of an application such as:  an `app`; a `field class`; a specific `mbo` or a `service`.  The ultimate option for a customization is this command. By opting by `create ext app`, you are able to extend an entire app containing all the structure based in best practices uses for Maximo. By using this command you are ensuring not only the structure to be completely created based on Maximo development best practices but also, ensure future upgrade procedures to work fine. The command will update the `product.xml` file in order to enable the upgrade tool to identify what apps are extended, protecting then from an override process as well. You are also able to extends only part of apps like calling the `create ext field`, it will extend `Field Classes` or, `create ext mbo` which allows you to extend only Mbos from applications you desire. You are also able to extend a `service` by calling the `create ext service` command. 
+
+<!--
 ### maximodev-cli create script-field-validator
 The `create script-field-validator` command, like the `java-field-valiator` command, creates a field validator and registers it to an object and field. The difference is that this field valiator uses the `automation scripting` framework and does not require Java.
 -->
@@ -80,6 +85,9 @@ The `maximodev-cli set` command can be used to update your `addon.properties` fi
 
 ### maximodev-cli build
 The `maximodev-cli build` command builds and copies your add-on artifacts to a `dist` directory. If you have a Java project, then the `gradle` command is executed to build all the Java parts. This build process also updates your product XML file with the last script number, creates a `.mxs` file of your presentation files, and optionally creates a delta of changes in the `BASE/resources/presentations` directory if the directory exists with base presentation files. After a build is complete, all files in the `dist` folder can be packaged or copied to a Maximo instance.
+
+### maximodev-cli create zip 
+The `create zip` command will generates a zip file adding the result of the `maximodev build` command, compressing the content of `dist` folder into a file that would be placed into this same folder. The puporse of this command is make the user life easiest to deploy the result of its work into a Maximo's instance. 
 
 ## Wrapper Commands
 Wrapper commands are `maximodev-cli` commands that wrap existing tools in Maximo Asset Management. These scripts require that the `MAXIMO_HOME` environment variable be set or that your `addon.properties` file contains the `maximo_home` property set to a valid  installation/dev directory.
@@ -124,6 +132,10 @@ create alndomain
 create syndomain
 - ask items
 - create dbc 
+
+create relationships 
+- ask items 
+- create dbc
 
 export autoscript NAME
 - call boris' script
