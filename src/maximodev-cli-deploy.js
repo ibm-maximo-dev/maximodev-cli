@@ -38,7 +38,7 @@ const schema = {
 cli.process(schema, process.argv, deploy);
 
 function deploy(result) {
-  const CURR_FOLDER = shell.env['PWD'];
+  const CURR_FOLDER = process.cwd();
 
   //ensure maximo_home for command line process
   if(!result.dir){

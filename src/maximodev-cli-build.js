@@ -26,7 +26,7 @@ const schema = {
 cli.process(schema, process.argv, build);
 
 function build(result) {
-  const buildDir = shell.env['PWD'];
+  const buildDir = process.cwd();
   // Identify that it is a valid a folder structure created by create addon or create sample-add commands.
   if(!dist.canBuild(buildDir)) {
     log.error(`${buildDir} does not appear to be a valid Maximo home directory, exiting...`);

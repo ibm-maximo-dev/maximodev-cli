@@ -30,7 +30,7 @@ const schema = {
 cli.process(schema, process.argv, eject);
 
 function eject(result) {
-  const CURR_FOLDER = shell.env['PWD'];
+  const CURR_FOLDER = process.cwd();
   const MAXIMO_FOLDER = 'maximo';
   // check if docker cli is available
   if(!docker.exists()) {

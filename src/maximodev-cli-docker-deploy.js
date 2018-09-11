@@ -29,7 +29,7 @@ const schema = {
 cli.process(schema, process.argv, deploy);
 
 function deploy(result) {
-  const CURR_FOLDER = shell.env['PWD'];
+  const CURR_FOLDER = process.cwd();
   // check if docker cli is available
   if(!docker.exists()) {
     log.error(`Could not find docker cli, is Docker installed? Aborting...`);
