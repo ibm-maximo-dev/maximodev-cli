@@ -102,6 +102,10 @@ The `create presentation-diff` command is a utility wrapper around the `MXDiff` 
 The `create condition-ui` command will help you create a new conditional ui dbc script.  Conditional UI is what what the classic UI uses to conditionally show elements in the UI based on a `CONDITION` and a `SIGNOPTION`.   This command helps build both, and link them together.  You will still need to define your correct condition, but, this will help scaffold out what is needed to create a condition, and it's negated condition.
 
 
+### maximodev-cli merge dbc
+The `merge dbc` command intend to clean up a set of working done into a only one DBC file, this helps you to merge DBC files generated automatically by your development strategy using the maximodev-cli. The `merge` command will also allow you to merge other structures in the future beyond the DBC files. To run the `merge dbc` command, you will need to provide a the base script that will be used to receive all the latest scrips elements. The `merge dbc` shows up a list of DBC files created by this particular work and then prompt you to choose the base script. Once you provide the script's name, the `merge dbc` command merge the latests scripts into the base script choose one by you. 
+
+
 ## Understanding template files
 `maximodev-cli` makes use of some template files during development. For example, your master product XML file might be called `properties/product/myaddon.xml.in` (note the `.in` suffix). `.in` files are template input files. These files are processed during other commands, where the real file is generated. For example, during a `maximodev-cli update product-xml` command, the `myaddon.xml.in` template file is processed and updated with the last script number, and a new file called `myaddon.xml` is generated. When template files exist, they are source files, and their generated counterparts should never be edited, but rather the `.in` version of that file should be edited. So when you see a `.in` file, be aware that some command generates its non-`.in` version.
 
