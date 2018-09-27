@@ -26,6 +26,7 @@ var prog = program
 
 if (process.env["MAXIMODEV_CLI_BETA"]) {
   prog.command('zip', 'create a new zip package - ZIP ').alias('z');
+  prog.command('domain', 'create a new domain ').alias('dm');
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
 }
 

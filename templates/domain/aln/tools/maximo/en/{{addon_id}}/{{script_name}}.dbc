@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+
+<script author="{{author}}" scriptname="{{script_name}}">
+  <description>{{description}}</description>
+  <statements>
+ <specify_aln_domain domainid="{{domain_id}}" maxtype="{{domain_maxtype}}" length="{{domain_length}}" description="{{domain_description}}" overwrite="{{domain_overwrite}}">
+    <!--The domain values goes here-->          
+ </specify_aln_domain>
+
+  </statements>
+</script>
