@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="maximodev-cli" scriptname="{{script}}">
+	<description>Stateful Mbo script creation - create by maximodev-cli</description>
+	<statements>
+
+		<!-- Ensure the {{mbo_name}}STATUS is not present -->
+		<drop_domain domainid="{{mbo_name}}STATUS" />
+
+		<!-- Define a Synonym domain which will be the status set for the Stateful Mbo -->
+		<specify_synonym_domain maxtype="ALN" length="10" domainid="{{mbo_name}}STATUS" description="Mbo Status" overwrite="false">
+			<synonymvalueinfo value="Draft" maxvalue="Draft" defaults="true" description="Draft" />
+			<synonymvalueinfo value="Active" maxvalue="Development" defaults="true" description="Active" />
+			<synonymvalueinfo value="Inactive" maxvalue="Delivered" defaults="true" description="Inactive" />
+		</specify_synonym_domain>
+
+		<!-- Auto Keys -->
+		<freeform description="Create Autokey used by Table">
+			<sql target="all">
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{mbo_name}}SEQ', null, 'EN', autokeyseq.nextval)
+				;
+				insert into autokey (seed, orgid, siteid, autokeyname, setid, langcode, autokeyid) values (1000, null, null, '{{mbo_name}}STATESEQ', null, 'EN', autokeyseq.nextval)
+				;
+			</sql>
+		</freeform>
+
+		<!-- Table and Satatus domain associate with the status field for the Mbo -->
+		<define_table persistent="true" type="system" object="{{mbo_name}}" description="Stateful Mbo {{mbo_name}} Create through maximodev-cli" service="{{service_name}}" classname="{{java_package}}.{{mbo_class_name}}Set" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
+			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" autokey="{{mbo_name}}SEQ" defaultvalue="&amp;AUTOKEY&amp;" title="Primary Key" remarks="Mbo Identification" maxtype="UPPER" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+			<attrdef attribute="STATUS" domain="{{mbo_name}}STATUS"  title="Status" remarks="Mbo Status" maxtype="ALN" length="10" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+		</define_table>
+
+		<!-- Table to control the status changes, it will serves to store the history of record -->
+		<define_table persistent="true" type="system" object="{{mbo_name}}STATE" description="State Handler Mbo {{mbo_name}} Create through maximodev-cli" service="{{service_name}}" classname="{{java_package}}.{{mbo_class_name}}StateSet" primarykey="{{mbo_name}}STATEID" mainobject="false" internal="false">
+			<attrdef attribute="{{mbo_name}}STATEID" canautonum="true" autokey="{{mbo_name}}STATESEQ" defaultvalue="&amp;AUTOKEY&amp;" maxtype="INTEGER" title="Record State Id" remarks="Record State Id" length="12" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" restricted="false" localizable="false" userdefined="false" />
+			<attrdef attribute="{{mbo_name}}NUM" title="Record Id" remarks="Record Identifier" sameasobject="{{mbo_name}}" sameasattribute="{{mbo_name}}NUM" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" canautonum="false" restricted="false" localizable="false" userdefined="false" />
+			<attrdef attribute="CHANGEBY" title="Changed By" remarks="Modified By" sameasobject="PERSON" sameasattribute="PERSONID" persistent="true" haslongdesc="false" required="true" mustbe="false" ispositive="false" canautonum="false" restricted="false" userdefined="false" />
+			<attrdef attribute="CHANGEDATE" maxtype="DATETIME" title="State Date" remarks="State Change Date" length="10" persistent="true" haslongdesc="false" required="true" mustbe="true" ispositive="false" canautonum="false" restricted="false" localizable="false" userdefined="false" />
+			<attrdef attribute="MEMO" title="Memo" remarks="State Memo" sameasobject="WFTRANSACTION" sameasattribute="MEMO" persistent="true" haslongdesc="false" required="false" mustbe="false" ispositive="false" canautonum="false" restricted="false" localizable="false" userdefined="false" />
+			<attrdef attribute="ORGID" title="Organization" remarks="Organization Identifier" sameasobject="ORGANIZATION" sameasattribute="ORGID" persistent="true" haslongdesc="false" required="false" mustbe="false" ispositive="false" canautonum="false" restricted="false" localizable="false" userdefined="false" />
+			<attrdef attribute="SITEID" title="Site" remarks="Site Identifier" sameasobject="SITE" sameasattribute="SITEID" persistent="true" haslongdesc="false" required="false" mustbe="false" ispositive="false" canautonum="false" restricted="false" localizable="false" userdefined="false" />
+			<attrdef attribute="STATUS" title="State" remarks="State" sameasobject="{{mbo_name}}" sameasattribute="STATUS" persistent="true" haslongdesc="false" required="true" mustbe="false" ispositive="false" canautonum="false" restricted="false" localizable="false" userdefined="false" />
+		</define_table>
+
+		<!-- Status strcuture -->
+		<freeform description="Associate the {{mbo_name}}STATUS domain to an object and a field">
+			<sql target="all">
+				insert into maxdomainlink (maxdomainlinkid,objectname, attributename, domainid) values (maxdomainlinkseq.nextval,'{{mbo_name}}','STATUS','{{mbo_name}}STATUS')
+      			;
+				insert into maxdomainlink (maxdomainlinkid,objectname, attributename, domainid) values (maxdomainlinkseq.nextval,'{{mbo_name}}STATE','STATUS','{{mbo_name}}STATUS')
+      			;
+			</sql>
+		</freeform>
+
+		<!-- Associate the status description with a relationship, an object and its domain -->
+		<create_relationship parent="{{mbo_name}}" name="STATUSDESC" child="SYNONYMDOMAIN" whereclause="domainid='{{mbo_name}}STATUS' and value=:status" remarks="Relationship to synonym domain table, used to find description for the state, it will contain one object." />
+		<create_relationship parent="{{mbo_name}}STATE" name="STATUSDESC" child="SYNONYMDOMAIN" whereclause="domainid='{{mbo_name}}STATUS' and value=:status" remarks="Relationship to synonym domain table, used to find description for the state, it will contain one object." />
+
+	</statements>
+</script>

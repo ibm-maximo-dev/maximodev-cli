@@ -87,9 +87,9 @@ verifyFile "applications/maximo/businessobjects/src/bpaaa/prod1/Bpaaa_prod1Asset
 verifyFile "tools/maximo/en/bpaaa_prod1/V1000_02.dbc" "Create Application Service Failed"
 echo "PASSED: Extend application service"
 
-echo "CREATING Sample App"
+echo "CREATING {{mbo_class_name}} App"
 maximodev-cli create sample-classic-app --add_sample
-verifyFile "resources/presentations/bpaaaart.xml" "Create Sample Failed"
+verifyFile "resources/presentations/bpaaaart.xml" "Create {{mbo_class_name}} Failed"
 
 echo "CREATING Next/Sample DBC"
 maximodev-cli create dbc-script
@@ -98,13 +98,23 @@ verifyFile "tools/maximo/en/bpaaa_prod1/V1000_05.dbc" "Create DBC Failed"
 
 echo "CREATING JAVA MBO"
 #Check for script file name 
-maximodev-cli create java-mbo --mbo_name=TEST --java_package=bpaaa.prod1.test --mbo_class_name=TestMBO --service_name=ASSET --overwrite
+maximodev-cli create java-mbo --mbo_name=TEST --mbo_type=standard --java_package=bpaaa.prod1.test --mbo_class_name=TestMBO --service_name=ASSET --overwrite
 verifyFile "tools/maximo/en/bpaaa_prod1/V1000_06.dbc" "Create DBC Failed"
+
+echo "CREATING JAVA STATEFUL MBO"
+#Check for script file name 
+maximodev-cli create java-mbo --mbo_name=TEST --mbo_type=stateful --java_package=bpaaa.prod1.test --mbo_class_name=TestStatefulMBO --service_name=ASSET --overwrite
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_07.dbc" "Create DBC Failed"
+
+echo "CREATING JAVA NONPERSISTENT MBO"
+#Check for script file name 
+maximodev-cli create java-mbo --mbo_name=TEST --mbo_type=nonpersistent --java_package=bpaaa.prod1.test --mbo_class_name=TestNonPersistentMBO --service_name=ASSET --overwrite
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_08.dbc" "Create DBC Failed"
 
 echo "CREATING SCRIPT FIELD VALIDATOR"
 maximodev-cli create script-field-validator  --script_language=python --script_description="Test" --object_name="WORKORDER" --attribute_name="WONUM" --automation_script_name=TESTSCRIPT
-verifyFile "tools/maximo/en/bpaaa_prod1/V1000_09.dbc.in" "Create Script Field Validator Failed"
-verifyFile "tools/maximo/en/bpaaa_prod1/V1000_09.dbc.py" "Create Script Field Validator Failed"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_11.dbc.in" "Create Script Field Validator Failed"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_11.dbc.py" "Create Script Field Validator Failed"
 
 echo "CREATING CLASSIC MINIAPP"
 maximodev-cli create classic-miniapp --jsclass_name=TestMiniApp --id=testminiapp --java_package=bpaaa.prod1.miniapp --java_class_name=TestMiniAppImpl

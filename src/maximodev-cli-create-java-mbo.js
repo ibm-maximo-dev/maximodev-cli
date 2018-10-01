@@ -43,6 +43,14 @@ var schema = {
       _cli_arg_value: '<ClassName>',
       default: 'MyTable'
     },
+    mbo_type:{
+      description: "Mbo type (i.g. Choose between standard, stateful and nonpersistent)",
+      message: 'Must select between standard and stateful',
+      pattern: /^.*\b(standard|stateful|nonpersistent)\b.*$/,
+      required: true,
+      _cli: 'mbo_type',
+      default: 'standard'
+    },
     script: {
       required: true,
       description: 'DBC Script',
@@ -95,11 +103,17 @@ function create_mbo(result) {
   if(!result.script){
     result.default = nextScript.substr(0,nextScript.indexOf('.'));
   }
+  
+  /**
+   * Get Mbo type
+   */
+  var type = result.mbo_type; 
 
   /**
    * Add database configuration script.
    */
-  mbo.installTemplateMbo("mbos/dbc", env.addonDir(), args);
+  mbo.installTemplateMbo("mbos/dbc/"+type, env.addonDir(), args);
+  
 
   /**
    * Add service support on create 
@@ -112,10 +126,9 @@ function create_mbo(result) {
     mbo.installTemplateMbo("mbos/service", env.addonDir(), args);
   }
   
-  //Will create the new Mbo service 
+
   
-  
-  //Will create the java files
-  mbo.installTemplateMbo("mbos/java", env.addonDir(), args);
+  //Will create the java files based on Mbo Type
+  mbo.installTemplateMbo("mbos/"+type+"/java", env.addonDir(), args);
 }
 

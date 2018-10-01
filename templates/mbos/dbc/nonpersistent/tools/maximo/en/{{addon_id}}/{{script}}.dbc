@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="maximodev-cli" scriptname="{{script}}">
+	<description>Mbo script creation - create by maximodev-cli</description>
+	<statements>
+
+		<!-- Mbo Table -->
+		<define_table persistent="false" type="system" object="{{mbo_name}}" description="Mbo {{mbo_name}} Create through maximodev-cli" service="{{service_name}}" classname="{{java_package}}.{{mbo_class_name}}Set" primarykey="{{mbo_name}}NUM" mainobject="true" internal="false">
+			<attrdef attribute="{{mbo_name}}NUM" canautonum="true" title="Primary Key" remarks="Record Identification" maxtype="UPPER" length="12" persistent="false" haslongdesc="false" required="true" mustbe="true" ispositive="false" userdefined="false" />
+		</define_table>
+		
+	</statements>
+</script>
