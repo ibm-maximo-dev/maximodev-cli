@@ -147,6 +147,13 @@ env.productXmlIn = function(id) {
 };
 
 /**
+ * Returns the script location.
+ */
+env.domainXml = function() {
+  return env.ensureParent(path.resolve(env.get('addon_script_dir', path.join(env.addonDir('./tools/maximo/en/')))));
+}
+
+/**
  * Return the unittestsuite xml file for this addon
  * @param {string} full path to the xml file
  */

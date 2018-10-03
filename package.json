@@ -25,6 +25,7 @@
     "dateformat": "^3.0.3",
     "dotenv": "^6.0.0",
     "fs-extra": "^5.0.0",
+    "inquirer": "6.2.0",
     "mustache": "^2.3.2",
     "node-unzip-2": "^0.2.7",
     "prompt": "^1.0.0",

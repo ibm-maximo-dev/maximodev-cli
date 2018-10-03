@@ -2,6 +2,9 @@
 
 # disable prompting
 export MAXIMO_CLI_NO_PROMPT=Y
+# enables RC commnands
+export MAXIMODEV_CLI_BETA=1
+
 export MAXIMO_HOME="."
 
 fail() {
@@ -121,10 +124,6 @@ maximodev-cli create classic-miniapp --jsclass_name=TestMiniApp --id=testminiapp
 verifyFile "applications/maximo/maximouiweb/src/bpaaa/prod1/miniapp/TestMiniAppImpl.java" "Create MiniApp Failed"
 
 
-echo "CREATING UPDATE PRODUCTXML"
-maximodev-cli update product-xml
-verifyFile "applications/maximo/properties/product/bpaaa_prod1.xml" "Update Product Xml Failed"
-
 echo "Doing a BUILD"
 maximodev-cli build
 verifyFile "dist/applications/maximo/properties/product/bpaaa_prod1.xml" "Build Failed"
@@ -139,7 +138,47 @@ echo "CREATING UPDATE PRODUCTXML - After merge files"
 maximodev-cli update product-xml
 verifyFile "applications/maximo/properties/product/bpaaa_prod1.xml" "Update Product Xml Failed"
 
-export MAXIMODEV_CLI_BETA=1
+echo "CREATE DOMAINS"
+maximodev-cli create dm str --domain_id=SYNTEST --domain_structure=SYNONYM  --domain_description="Create synonym domain for smoke tests" --doamin_maxtype=UPPER  --domain_overwrite=y  --domain_length=28
+maximodev-cli create dm str --domain_id=ALNTEST --domain_structure=ALN  --domain_description="Create aln domain for smoke tests" --doamin_maxtype=ALN --domain_overwrite=y  --domain_length=28
+maximodev-cli create dm str --domain_id=NUMTEST --domain_structure=NUMERIC  --domain_description="Create numeric domain for smoke tests" --doamin_maxtype=INTEGER --domain_overwrite=y  --domain_length=28
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_08.dbc" "Create Script for synonym domain failed"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_09.dbc" "Create Script for numeric and aln domains failed"
+
+
+
+echo "ADDING VALUES TO THE DOMAINS - (SYNONYM TESTS)"
+maximodev-cli create dm add-value syn --value_domainid=SYNTEST --value_default=y --value_scriptname=V1000_10.dbc --value_domainvalue=DRAFT --value_internal=DRAFT --value_description="DRAFT value for the SYNONYM somoke test"
+maximodev-cli create dm add-value syn --value_domainid=SYNTEST --value_default=n --value_scriptname=V1000_10.dbc --value_domainvalue=EDITING --value_internal=EDITING --value_description="DRAFT value for the SYNONYM somoke test"
+maximodev-cli create dm add-value syn --value_domainid=SYNTEST --value_default=n --value_scriptname=V1000_10.dbc --value_domainvalue=DONE --value_internal=DONE --value_description="DONE value for the SYNONYM somoke test"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_10.dbc" "Create Script for synonym domain failed"
+
+echo "ADDING VALUES TO THE DOMAINS - (ALN TESTS)"
+maximodev-cli create dm add-value al --value_domainid=ALNTEST --value_scriptname=V1000_11.dbc --value_domainvalue=A --value_description="DRAFT value for the ALN somoke test"
+maximodev-cli create dm add-value al --value_domainid=ALNTEST --value_scriptname=V1000_11.dbc --value_domainvalue=B  --value_description="DRAFT value for the ALN somoke test"
+maximodev-cli create dm add-value al --value_domainid=ALNTEST --value_scriptname=V1000_11.dbc --value_domainvalue=C  --value_description="DONE value for the ALN somoke test"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_11.dbc" "Create Script for synonym domain failed"
+
+echo "ADDING VALUES TO THE DOMAINS - (NUMERIC TESTS)"
+maximodev-cli create dm add-value num --value_domainid=NUMTEST --value_scriptname=V1000_12.dbc --value_domainvalue=1  --value_description="DRAFT value for the NUMERIC somoke test"
+maximodev-cli create dm add-value num --value_domainid=NUMTEST --value_scriptname=V1000_12.dbc --value_domainvalue=2  --value_description="DRAFT value for the NUMERIC somoke test"
+maximodev-cli create dm add-value num --value_domainid=NUMTEST --value_scriptname=V1000_12.dbc --value_domainvalue=3  --value_description="DONE value for the NUMERIC somoke test"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_12.dbc" "Create Script for synonym domain failed"
+
+echo "Doing a BUILD"
+maximodev-cli build
+verifyFile "dist/applications/maximo/properties/product/bpaaa_prod1.xml" "Build Failed"
+
+echo "MERGE SCRIPT FILES"
+maximodev-cli merge dbc --script_base="V1000_10.dbc"
+verifyFile "tools/maximo/en/bpaaa_prod1/V1000_10.dbc" "Create Script Field Validator Failed"
+verifyMerge "tools/maximo/en/bpaaa_prod1/V1000_11.dbc" "File merged"
+verifyMerge "tools/maximo/en/bpaaa_prod1/V1000_12.dbc" "File merged"
+
+echo "CREATING UPDATE PRODUCTXML - After merge files"
+maximodev-cli update product-xml
+verifyFile "applications/maximo/properties/product/bpaaa_prod1.xml" "Update Product Xml Failed"
+
 echo "Doing ZIP"
 maximodev-cli create zip --package_name=test-package
 verifyFile "dist/test-package.zip"
