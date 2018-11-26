@@ -1,18 +1,4 @@
-/*
- *
- * IBM Confidential
- *
- * OCO Source Materials
- *
- * 5724-U18
- *
- * (C) COPYRIGHT IBM CORP. 2015
- *
- * The source code for this program is not published or otherwise
- * divested of its trade secrets, irrespective of what has been
- * deposited with the U.S. Copyright Office.
- *
- */
+
 package {{test_java_package}};
 
 import static org.junit.Assert.assertEquals;
