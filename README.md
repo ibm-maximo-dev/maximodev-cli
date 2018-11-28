@@ -76,10 +76,8 @@ To create an MBO, you are prompted to provide the following information:
 ### maximodev-cli create app-extensions
 The `create app-extensions` command allows you to extends some elements of an application, such as an `app`, a `field class`, a specific `mbo`, or a `service`. By opting to use the `create ext app` command, you are able to extend an entire app that contains all the structure. By using this command, you are ensuring that the structures are created based on Maximo development practices. The command updates the `product.xml` file to enable the upgrade tool to identify which apps are extended and also to protect them from an override process. You are also able to extends only part of apps. For example, calling the `create ext field` extends `Field Classes` or `create ext mbo` allows you to extend only MBOs from specified applications. You are also able to extend a `service` by calling the `create ext service` command. 
 
-<!--
 ### maximodev-cli create script-field-validator
-The `create script-field-validator` command, like the `java-field-valiator` command, creates a field validator and registers it to an object and field. The difference is that this field valiator uses the `automation scripting` framework and does not require Java.
--->
+The `create script-field-validator` command, like the `java-field-valiator` command, creates a field validator and registers it to an object and field. The difference is that this field valiator uses the `automation scripting` framework and does not require Java. For a further information, run `#maximodev-cli create sfv --help`.
 
 ### maximodev-cli create sample-classic-app
 The `create sample-classic-app` command prompts you for some information and creates a new sample application in your add-on location. This sample app is mainly used to help you scaffold a new application or for you to see how to build a complete working sample application in your add-on. By using the `create sample-classic-app`command, the dbc scripts and Java files are added, and a fully working application is created. You can then build and deploy your add-on to see the application working in your Maximo environment.
