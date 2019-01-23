@@ -1,6 +1,6 @@
 //Find a way to inject it 
 var log = require("../logger");
-const xmlescape = require("xml-escape");
+var he = require('he');
 
 var scriptv = module.exports = Object.create({});
 
@@ -17,6 +17,5 @@ scriptv.validate = function (script_extention, codeScript) {
     //Implement the validation script
     codeScript = v_obj.validate(codeScript)
 
-    //Escape xml-validation
-    return xmlescape(codeScript);
+    return he.escape(codeScript);
 }
