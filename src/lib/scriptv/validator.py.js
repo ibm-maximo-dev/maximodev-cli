@@ -7,17 +7,18 @@ var scriptv_py = module.exports = Object.create({});
  * @param {*} codeScript Phyton script
  */
 scriptv_py.validate = function (codeScript) {
+  codeScript = codeScript.replace(/[\r\n]+/g, '\r\n');
 
-    var flags = 'gim';
-    var removeComments = /(#\*.*?|#[^\r\n]*$)/g;
-    var strFilterRegEx = new RegExp(removeComments, flags);
+    // var flags = 'gim';
+    // var removeComments = /(#\*.*?|#[^\r\n]*$)/g;
+    // var strFilterRegEx = new RegExp(removeComments, flags);
 
-    removeComments = '[' + removeComments + ']';
-    //Show pattern
-    //log.info('strFilterRegEx: ' + strFilterRegEx);
-    //Replace commands 
-    codeScript = codeScript.replace(strFilterRegEx,'');
-    //TODO Implement new validation ad-hoc
-    //log.info("validate Python Script:" + codeScript);
+    // removeComments = '[' + removeComments + ']';
+    // //Show pattern
+    // //log.info('strFilterRegEx: ' + strFilterRegEx);
+    // //Replace commands 
+    // codeScript = codeScript.replace(strFilterRegEx,'');
+    // //TODO Implement new validation ad-hoc
+    // //log.info("validate Python Script:" + codeScript);
     return codeScript;
 }

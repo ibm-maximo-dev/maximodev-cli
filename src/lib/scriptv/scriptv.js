@@ -18,7 +18,10 @@ scriptv.validate = function (script_extention, codeScript) {
     codeScript = v_obj.validate(codeScript)
 
     //Escape xml-validation
-    //return xmlescape(codeScript);
-    // NOTE: this gets auto-escaped in the final template
+    codeScript = xmlescape(codeScript);
+
+    // encode newlines in the script
+    codeScript = codeScript.replace(/[\r\n]+/g, '&#13;&#10;');
+
     return codeScript;
 }

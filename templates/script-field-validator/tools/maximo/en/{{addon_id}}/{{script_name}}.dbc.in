@@ -13,7 +13,7 @@
       <insertrow>
         <columnvalue column="AUTOSCRIPT" string="{{automation_script_name}}" />
         <columnvalue column="STATUS" string="Draft" />
-        <columnvalue column="SOURCE" string="{{code_script}}" />
+        <columnvalue column="SOURCE" string="{{{code_script}}}" />
         <columnvalue column="CREATEDDATE" date="sysdate" />
         <columnvalue column="STATUSDATE" date="sysdate" />
         <columnvalue column="CHANGEDATE" date="sysdate" />
