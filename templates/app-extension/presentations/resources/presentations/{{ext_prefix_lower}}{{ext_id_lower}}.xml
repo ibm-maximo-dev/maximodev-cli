@@ -12,19 +12,19 @@
         <tab id="results" default="true" label="List" type="list">
           <menubar id="actiontoolbar" event="search" sourcemethod="getAppSearchOptions" />
           <table id="results_showlist" datasrc="results_showlist" mboname="{{new_mbo}}" inputmode="readonly" selectmode="multiple" label="List of values">
-            <tablebody id="maximodev_1" filterable="true" displayrowsperpage="20" filterexpanded="true">
-              <tablecol id="maximodev_1_1" dataattribute="value" sortable="false" filterable="false" hidden="false" />
-              <tablecol id="maximodev_11_@" dataattribute="description" type="link"/>
+            <tablebody id="masmanagedev_1" filterable="true" displayrowsperpage="20" filterexpanded="true">
+              <tablecol id="masmanagedev_1_1" dataattribute="value" sortable="false" filterable="false" hidden="false" />
+              <tablecol id="masmanagedev_11_@" dataattribute="description" type="link"/>
             </tablebody>
           </table>
         </tab>
         <tab id="main" default="false" label="List" type="insert">
-          <section border="true" id="maximodev">
-            <sectionrow id="maximodev_11">
-              <sectioncol id="maximodev_11_1">
-                <section id="maximodev_11_1_1">
-                  <textbox dataattribute="value" id="maximodev_11_1_1_1"/>
-                  <textbox dataattribute="description" id="maximodev_11_1_1_2"/>
+          <section border="true" id="masmanagedev">
+            <sectionrow id="masmanagedev_11">
+              <sectioncol id="masmanagedev_11_1">
+                <section id="masmanagedev_11_1_1">
+                  <textbox dataattribute="value" id="masmanagedev_11_1_1_1"/>
+                  <textbox dataattribute="description" id="masmanagedev_11_1_1_2"/>
                 </section>
               </sectioncol>
             </sectionrow>

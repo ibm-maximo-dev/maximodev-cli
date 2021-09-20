@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script SYSTEM "script.dtd">
-<script author="maximodev-cli" scriptname="{{ext_script_version}}">
+<script author="masmanagedev-cli" scriptname="{{ext_script_version}}">
 	<description>{{ext_description}}</description>
 	<statements>
 
 
 
-		<!-- This is a template script for maximodev-cli extending apps command. -->
+		<!-- This is a template script for masmanagedev-cli extending apps command. -->
 		<!-- START app for appname: {{ext_prefix}} -->
-		<create_app app="{{ext_prefix}}" description="{{ext_prefix}} applications (maximodev-cli)" maintbname="MAIN" />
+		<create_app app="{{ext_prefix}}" description="{{ext_prefix}} applications (masmanagedev-cli)" maintbname="MAIN" />
 		<!-- END app for appname: {{ext_prefix}} -->
 
 		<!-- START app menu dor appname {{ext_prefix}} -->
@@ -25,8 +25,8 @@
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="PREVIOUS" description="Previous Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="NEXT" description="Next Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="DELETE" description="Delete Record" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
-		
-		<!-- Record - Search Sigoptions --> 
+
+		<!-- Record - Search Sigoptions -->
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHAT{{ext_prefix}}" description="Attribute Search" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHBOOK" description="Bookmarks" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHMORE" description="More Search Fields" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
@@ -34,12 +34,12 @@
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHTIPS" description="View Search Tips" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHVMQR" description="View/Manage Queries" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
 		<add_sigoption visible="true" app="{{ext_prefix}}" optionname="SEARCHWHER" description="Where Clause" grantapp="{{ext_prefix}}" grantoption="READ" esigenabled="false" langcode="EN" />
-		
+
 		<!-- END sigoption for appname: {{ext_prefix}} -->
-		<define_table persistent="true" type="system" object="{{new_mbo}}" description="Table create from maximodev-cli commnad" service="CUSTAPP" classname="{{java_package}}.{{ext_prefix_T}}{{ext_id_T}}Set" primarykey="VALUE" mainobject="false" internal="false">
+		<define_table persistent="true" type="system" object="{{new_mbo}}" description="Table create from masmanagedev-cli commnad" service="CUSTAPP" classname="{{java_package}}.{{ext_prefix_T}}{{ext_id_T}}Set" primarykey="VALUE" mainobject="false" internal="false">
 			<!--This is a sample attributes to start the extension -->
-			<attrdef attribute="VALUE" maxtype="INTEGER" remarks="Test from maximodev-cli" title="Number" />
-			<attrdef attribute="DESCRIPTION" maxtype="ALN" remarks="Test from maximodev-cli" title="Alphnumeric (10 char) number word ie 'One'..." length="10" />
+			<attrdef attribute="VALUE" maxtype="INTEGER" remarks="Test from masmanagedev-cli" title="Number" />
+			<attrdef attribute="DESCRIPTION" maxtype="ALN" remarks="Test from masmanagedev-cli" title="Alphnumeric (10 char) number word ie 'One'..." length="10" />
 		</define_table>
 
 

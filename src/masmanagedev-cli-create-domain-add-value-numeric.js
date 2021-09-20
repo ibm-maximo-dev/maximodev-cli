@@ -41,7 +41,7 @@ var schema = {
       require: true,
       message: 'Please insert a brief descriptions about the value meaning.',
       _cli: 'value_description',
-      default: 'New value from maximodev-cli'
+      default: 'New value from masmanagedev-cli'
     },
   }//Ending properties.
 };

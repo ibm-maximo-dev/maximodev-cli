@@ -27,10 +27,10 @@ import psdi.util.MXException;
 
 /**
  * The parameter belong is necessary to allow this test to run.
- * 
+ *
  * -Dcom.ibm.xtq.processor.overrideSecureProcessing=true
- * 
- * @author maximodev-cli
+ *
+ * @author masmanagedev-cli
  * @version 1.0
  *
  */
@@ -43,7 +43,7 @@ public class {{test_name}}Test {
 	}
 
 	/**
-	 * You can load your data from here as well. Depnending on your test approach. 
+	 * You can load your data from here as well. Depnending on your test approach.
 	 */
 	private static void loadData() {
 		// TODO Implement the load data
@@ -54,11 +54,11 @@ public class {{test_name}}Test {
 	@Test
 	@Depends("setupBeforeClass")
 	public void testExample() {
-        /** 
-		 * Uncomment the code bellow will load a WO from exampla data set represented through the string parameter of a FQN for a WO representation. 
-		* */ 
+        /**
+		 * Uncomment the code bellow will load a WO from exampla data set represented through the string parameter of a FQN for a WO representation.
+		* */
 		//WO wo = (WO) AssertionsUtil.assertLoadTestData("{{test_java_package}}.datasource.{{test_name}}Dataset.basicDataSet");
-		//TODO - Implement your tests. 
+		//TODO - Implement your tests.
 		Assert.assrt(true);
 	}
 }

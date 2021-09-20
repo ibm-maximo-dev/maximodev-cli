@@ -11,7 +11,7 @@ var _date = Date.now();
 var _name = env.addonId();
 
 if (!_name) {
-  _name = 'maximodev-cli-';
+  _name = 'masmanagedev-cli-';
 }
 
 _name = (_name + '-' + _date.toString());
@@ -40,19 +40,19 @@ function create_package(result) {
 
   var args = Object.assign({}, env.props, result);
   /**
-   * For future versions the installation will be able to be done by the IBM Installation Manager or solutionintaller. 
+   * For future versions the installation will be able to be done by the IBM Installation Manager or solutionintaller.
    */
   var build_dir = 'dist/.';
   if (zip.ensureDir(build_dir)) {
 
-    //Install templates 
+    //Install templates
     zip.installTemplateZIP("zip", env.addonDir(), args);
-    
+
     //Create tmp directory
     if (!env.ensureDir('tmp')) {
       shell.mkdir("-p", 'tmp');
     }
-    //Copy folders recursively 
+    //Copy folders recursively
     zip.copyFolderRecursiveSync(build_dir, 'tmp/' + result.package_name + '/');
 
     console.log('location %s', result.package_name)
@@ -65,7 +65,7 @@ function create_package(result) {
         console.log("Your package were created into the zip folder of this project. Unzip the package into MAXIMO's installation folder and then run the updatedb command to install it");
       });
   } else {
-    console.log('Package is note ready, please build the package before zip it (i.e. run maximodev build)');
+    console.log('Package is note ready, please build the package before zip it (i.e. run masmanagedev build)');
   }//End ensure dir
 
   console.log("Moving %s to dist folder",  result.package_name + '.zip ');

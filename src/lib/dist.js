@@ -13,57 +13,61 @@ const env = require('./env');
 const path = require('path');
 
 const defaultExcludes = [
-  { 
+  {
     name: 'mi-stubs files',
     patterns: [/(rmi-stubs.(xml|cmd))$/],
   },
-  { 
+  {
     name: 'Hidden files',
     patterns: [/^\./],
   },
-  { 
+  {
     name: 'Garbage files',
     patterns: [/^Thumbs.db$/],
   },
-  { 
+  {
     name: 'Template file',
     patterns: [/.\.in$/],
   },
-  { 
+  {
     name: 'Script code stub files',
     patterns: [/([a-z|A-Z|0-9].(py|js))$/],
   },
-  { 
+  {
     name: 'Others',
     patterns: [/^mxdiff$/, /^addon.properties$/],
   },
-  { 
+  {
     name: 'Instalation-related files and folders',
     patterns: [/^rmic-classes.txt$/, /^copy-resources.xml$/, /^installer(Imports)?$/, /^launchpad$/],
   },
-  { 
+  {
     name: 'Unit test folder',
     patterns: [/unittest/],
   },
-  { 
+  {
     name: 'Gradle-related files and folders',
     patterns: [/gradle/],
   },
-  { 
+  {
     name: 'Documentation folder',
     patterns: [/^documents$/],
   },
-  { 
+  {
     name: 'Presentation-related files and folder',
     patterns: [/^BASE.xml$/,/^resources$/],
   },
-  { 
+  {
     name: 'Source folder',
     patterns: [/^src$/],
   },
-  { 
+  {
     name: 'Node.js-related files',
     patterns: [/^node_modules$/],
+  },
+  {
+    name: 'dist files',
+    patterns: [/^dist$/],
   }
 ];
 
@@ -82,7 +86,7 @@ const pathTransformers = [
 ];
 
 const dist = module.exports = Object.create({
-  BUILD_FOLDER_NAME: "dist",
+  BUILD_FOLDER_NAME: "dist/",
 });
 
 dist.canCopy = function(name, excludes) {

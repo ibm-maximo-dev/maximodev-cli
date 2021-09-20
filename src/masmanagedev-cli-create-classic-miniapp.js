@@ -14,7 +14,7 @@ var cli = require('./lib/cli');
 var installer = require("./lib/template_installers");
 
 if (!env.isJavaInstalled()) {
-  log.error("This addon is not configured for Java support.  You need to install java support first using 'maximodev-cli init java'.  MiniApps use a Java DataBean for communicating with Maximo and handling events.");
+  log.error("This addon is not configured for Java support.  You need to install java support first using 'masmanagedev-cli init java'.  MiniApps use a Java DataBean for communicating with Maximo and handling events.");
   process.exit(1);
 }
 

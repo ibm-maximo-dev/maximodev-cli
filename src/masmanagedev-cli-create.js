@@ -24,11 +24,11 @@ var prog = program
   prog.command('classic-miniapp', 'Creates a MiniApp for use in the Classic UI').alias('miniapp');
   prog.command('app-extensions', 'Create an extension for Maximo\'s applications').alias('ext');
 
-if (process.env["MAXIMODEV_CLI_BETA"]) {
+//if (process.env["MAXIMODEV_CLI_BETA"]) {
   prog.command('zip', 'create a new zip package - ZIP ').alias('z');
   prog.command('domain', 'create a new domain ').alias('dm');
   //.command('sample-nextgenui-app', 'create a sample maximo nextgenui application').alias('snga')
-}
+//}
 
 prog.parse(process.argv);
 

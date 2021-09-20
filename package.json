@@ -1,10 +1,10 @@
 {
-  "name": "maximodev-cli",
-  "version": "1.0.12",
-  "description": "Maximo developer command line tools",
-  "main": "src/maximodev-cli.js",
+  "name": "masmanagedev-cli",
+  "version": "1.0.0",
+  "description": "Maximo Manage developer command line tools",
+  "main": "src/masmanagedev-cli.js",
   "bin": {
-    "maximodev-cli": "src/maximodev-cli.js"
+    "masmanagedev-cli": "src/masmanagedev-cli.js"
   },
   "scripts": {
     "clean": "rm -rf build",
@@ -17,7 +17,7 @@
   },
   "author": "sls@ca.ibm.com",
   "license": "MIT",
-  "repository": "ibm-maximo-dev/maximodev-cli",
+  "repository": "nishi2go/masmanagedev-cli",
   "dependencies": {
     "archive": "0.0.2",
     "archiver": "2.1.1",
@@ -32,7 +32,7 @@
     "properties-parser": "^0.3.1",
     "readline-sync": "^1.4.9",
     "request": "^2.88.0",
-    "shelljs": "^0.8.2",
+    "shelljs": "^0.8.4",
     "tar-fs": "^1.16.3",
     "temporary-directory": "^1.0.2",
     "tmp": "0.0.33",

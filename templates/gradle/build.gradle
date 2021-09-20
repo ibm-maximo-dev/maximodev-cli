@@ -12,7 +12,7 @@ allprojects {
     addOnVersion = props.getProperty("addon_version", '1.0.0.0')
     addOnBuildNumber = props.getProperty("addon_build", '1')
     maximoExternalDir = new File(project.ext.maximoInstallDir, (projectDir.canonicalPath - rootDir.canonicalPath))
-    println "Maximo External Dir for${project.name} is ${maximoExternalDir}"
+    println "Maximo External Dir for ${project.name} is ${maximoExternalDir}"
   }
 
   group = "${project.ext.addOnPackage}"
@@ -23,8 +23,8 @@ subprojects {
   apply plugin: 'eclipse'
 
   plugins.withType(JavaPlugin) {
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     compileJava.options.debugOptions.debugLevel = 'source,lines,vars'
     jar.enabled = false
     def classes = new File(maximoExternalDir, 'classes')
@@ -40,7 +40,6 @@ subprojects {
         main.output.classesDir 'webmodule/WEB-INF/classes/'
         main.output.resourcesDir 'webmodule/WEB-INF/classes/'
       }
-
     }
 
     dependencies {
@@ -71,6 +70,7 @@ project(':businessobjects') {
 
   dependencies {
     compile fileTree(dir: new File(maximoInstallDir, "applications/maximo/lib/").path, includes: ['*.jar'])
+    compile fileTree(dir: "applications/maximo/lib/", includes: ['*.jar'])
   }
 }
 

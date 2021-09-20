@@ -39,7 +39,7 @@ var schema = {
       require: true,
       messsage: 'Provide a brief description about the domain purpose.',
       _cli: 'domain_description',
-      default: 'maximodev-cli\'s domain'
+      default: 'masmanagedev-cli\'s domain'
     },
     domain_maxtype: {
       depends: 'domain_list_maxtype',
@@ -92,11 +92,11 @@ function create_domains(result) {
 
   var structure = result.domain_structure.toLowerCase();
 
-  //Use templates 
+  //Use templates
   if (next_script == (result.script_name + '.dbc')) {
     dm.installTemplateDomain("domain/" + structure, env.addonDir(), args)
   }
-  else {  //add to an existent 
+  else {  //add to an existent
     dm.createDomainStructure(structure,
       result.domain_id,
       result.script_name,

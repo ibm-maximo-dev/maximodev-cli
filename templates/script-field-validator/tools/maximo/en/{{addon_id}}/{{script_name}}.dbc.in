@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script SYSTEM "script.dtd">
 
-<script author="maximodev-cli" scriptname="{{script_name}}">
+<script author="masmanagedev-cli" scriptname="{{script_name}}">
   <description>{{script_description}}</description>
   <statements>
-    
+
     <freeform description="AUTOSCRIPT">
       <sql target="all">delete from autoscript where autoscript = '{{automation_script_name}}'</sql>
     </freeform>

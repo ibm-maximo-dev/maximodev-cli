@@ -10,11 +10,13 @@ const shell = require('shelljs');
 const log = require('./logger');
 const path = require('path');
 const fs = require('fs-extra');
+const unzip = require('node-unzip-2');
+
 const docker = module.exports = Object.create({});
 
 docker.exists = () => {
   let dockerProcess = shell.exec('docker version',{silent:true})
-  
+
   //the command must have exit code === 0
   return (dockerProcess?dockerProcess.code:-1) === 0;
 }
@@ -51,13 +53,31 @@ docker.listContainers = () => {
 }
 
 docker.copyTo = (name, source) => {
-  const PARSED_FOLDER = path.normalize(source); 
+  const PARSED_FOLDER = path.normalize(source);
   const CMD = `docker cp ${PARSED_FOLDER}/. ${name}:/maximo`;
   return shell.exec(CMD, {silent:true});
 }
 
 docker.ejectMaximo = (name, destFolder) => {
-  const PARSED_FOLDER = path.normalize(destFolder); 
+  const PARSED_FOLDER = path.normalize(destFolder);
   const CMD = `docker cp ${name}:/maximo ${PARSED_FOLDER}`;
   return shell.exec(CMD, {silent:true});
+}
+
+docker.pull = (name, namespace, hostname) => {
+  return shell.exec(`docker pull ${hostname}/${namespace}/${name}`);
+}
+
+docker.run = (name, namespace, hostname) => {
+  return shell.exec(`docker run --rm -d ${hostname}/${namespace}/${name}`, { silent: true });
+}
+
+docker.rm = (name) => {
+  return shell.exec(`docker rm -f ${name}`, { silent: true });
+}
+
+docker.getLatestCodes = (name, destFolder) => {
+  const PARSED_FOLDER = path.normalize(destFolder);
+  const CMD = `docker cp ${name}:/opt/IBM/SMP/maximo/. ${PARSED_FOLDER}`;
+  return shell.exec(CMD, { silent: true });
 }

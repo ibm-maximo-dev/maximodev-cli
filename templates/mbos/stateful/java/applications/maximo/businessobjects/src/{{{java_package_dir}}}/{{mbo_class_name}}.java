@@ -18,7 +18,7 @@ public class {{mbo_class_name}} extends StatefulMbo implements {{mbo_class_name}
 		super(ms);
 	}
 	/**
-	 * Returns the Status Handler object instantiate through the {{mbo_class_name}}StateHandler object. 
+	 * Returns the Status Handler object instantiate through the {{mbo_class_name}}StateHandler object.
 	 */
 	@Override
 	protected StatusHandler getStatusHandler() {
@@ -33,8 +33,8 @@ public class {{mbo_class_name}} extends StatefulMbo implements {{mbo_class_name}
 	}
 	/**
 	 * This method return the Synonym domain ID associated with this Stateful Mbo.
-	 * please refers to the record generated thourgh the <code>maximodev-cli create mbo --mbo_type=stateful</code>,
-	 * to check MaxValues and domain construction for futher details. 
+	 * please refers to the record generated thourgh the <code>masmanagedev-cli create mbo --mbo_type=stateful</code>,
+	 * to check MaxValues and domain construction for futher details.
 	 */
 	@Override
 	public String getStatusListName() {
