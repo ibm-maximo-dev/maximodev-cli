@@ -14,10 +14,10 @@ The vision for `masmanagedev-cli` is to provide a set of lifecycle tools for dev
 
 ## Installation
 
-For normal users, you can install `masmanagedev-cli` from the public `npm` repository.
+For normal users, you can install `masmanagedev-cli` from the public GitHub repository.
 
 ```bash
-npm install masmanagedev-cli -g
+npm install git+https://github.com/nishi2go/masmanagedev-cli.git -g
 ```
 
 If you are enhancing `masmanagedev-cli`, you can check out the sources and then install it globally for testing. This method will install it globally, but link back to your development sources, assuming that your development sources for `masmanagedev-cli` are in `~/git/masmanagedev-cli`)
