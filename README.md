@@ -33,7 +33,7 @@ The following commands illustrate how to create a new add-on with Java support a
 When prompted, enter `BPAAA` for the prefix, and `bpaaa_myproduct` for the product. Be sure to also select `y` for `Java Support` and `y` for `Initialize eclipse projects`. When prompted for `maximo home`, you also need to enter the full location to where your local Maximo installation folder exists.
 
 ```bash
-$ npm install masmanagedev-cli -g
+$ npm install git+https://github.com/nishi2go/masmanagedev-cli.git -g
 $ masmanagedev-cli create addon
 $ cd bpaa_myproduct
 $ masmanagedev-cli create sample-classic-app
@@ -55,7 +55,7 @@ The `init home` command downloads Maximo code from [admin docker image](https://
 
 ### masmanagedev-cli oc deploy
 
-The `oc deploy` command deploys your [customization archive](https://www.ibm.com/docs/en/maximo-manage/8.1.0?topic=application-customization-archive-guidelines) to MAS workspace. This process will create an HTTP server to host your zip in OpenShift Cluster to share it to the Manage reconciliation process. It requires at least one zip file in the `dist` directory so you need to run `create zip` command before starting it.
+The `oc deploy` command deploys your [customization archive](https://www.ibm.com/docs/en/maximo-manage/8.1.0?topic=application-customization-archive-guidelines) to MAS workspace. This process will create an HTTP server to host your zip in OpenShift Cluster to share with the Manage reconciliation process. It requires at least one zip file in the `dist` directory so you need to run `create zip` command before starting it.
 
 ### masmanagedev-cli create addon
 
