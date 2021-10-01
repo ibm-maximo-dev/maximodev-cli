@@ -28,16 +28,21 @@ var schema = {
         return !env.isValidMaximoHome(v);
       },
     },
-    namespace: {
+    instance: {
       required: true,
-      description: "maximo manage namespace (e.g. mas-xyz-manage)",
-      _cli: "namespace",
+      description: "maximo application suite instance name",
+      _cli: "instance",
     },
-    ws: {
+    workspace: {
       required: true,
-      description:
-        "maximo manage workspace name",
-      _cli: "ws",
+      description: "maximo manage workspace name",
+      _cli: "workspace",
+    },
+    tag: {
+      required: false,
+      default: "latest",
+      message: "build tag",
+      _cli: "tag",
     },
   },
 };
@@ -67,34 +72,35 @@ function initialize_home(result) {
     return;
   }
 
-  if (!oc.setNamespace(result.namespace)) {
-    log.error(`The namespece does not exist. Aborting...`);
+  const namespace = `mas-${result.instance}-manage`;
+  if (!oc.setNamespace(namespace)) {
+    log.error(`Manage namespece ${namespace} does not exist. Aborting...`);
     return;
   }
 
   const hostname = oc.registryLogin();
+  const tag = result.tag ? result.tag : "latest";
+  const image = `${result.instance}-${result.workspace}-admin:${tag}`;
 
-  const masNamespace = oc.extractMasNamespace(result.namespace);
-
-  let proc = docker.pull(result.image, result.namespace, hostname);
+  let proc = docker.pull(image, namespace, hostname);
   if (proc && proc.code !== 0) {
     log.error(
-      `Could not pull the image from ${hostname}/${result.namespace}/${masNamespace}-${result.ws}-admin:latest`
+      `Could not pull the image from ${hostname}/${namespace}/${image}`
     );
     return;
   }
 
-  proc = docker.run(result.image, result.namespace, hostname);
+  proc = docker.run(image, namespace, hostname);
   if (proc && proc.code !== 0) {
     log.error(
-      `Could not run the admin image ${hostname}/${result.namespace}/${masNamespace}-${result.image}-admin:latest`
+      `Could not run the admin image ${hostname}/${namespace}/${image}`
     );
     return;
   }
 
   const containerId = proc.stdout.trim();
 
-  log.info(`container: ${containerId}`)
+  log.info(`container: ${containerId}`);
   docker.getLatestCodes(containerId, result.dir);
   docker.rm(containerId);
 
