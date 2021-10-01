@@ -15,7 +15,6 @@ var prog = program
   .command('dbc-script', 'create an empty dbc in the product\'s script directory').alias('dbc')
   .command('product-xml', 'create product xml file in products directory').alias('prod')
   .command('presentation-diff', 'compare two presentation xml files and create a diff dbc script').alias('pd')
-  // .command('java-field-validator', 'create Java field validation class').alias('jfv')
   .command('sample-classic-app', 'create a sample maximo classic application').alias('sca')
   .command('java-mbo', 'create a java MBO (Maximo Business Object) structure for Maximo development ').alias('mbo');
 
