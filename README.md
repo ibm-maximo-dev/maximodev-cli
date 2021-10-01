@@ -13,7 +13,7 @@ The vision for `masmanagedev-cli` is to provide a set of lifecycle tools for dev
 For installation, you need to check out the sources and then install it globally. This method will install it globally, but link back to your development sources, assuming that your development sources for `masmanagedev-cli` are in `~/masmanagedev-cli`.
 
 ```bash
-git glone https://github.com/nishi2go/masmanagedev-cli.git
+git clone https://github.com/nishi2go/masmanagedev-cli.git
 cd masmanagedev-cli
 npm ci
 npm install file:./ -g
