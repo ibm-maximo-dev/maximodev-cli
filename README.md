@@ -140,7 +140,7 @@ The `masmanagedev-cli build` command builds and copies your add-on artifacts to 
 
 ### masmanagedev-cli create zip
 
-The `create zip` command generates a ZIP file that contains the result of the `masmanagedev build` command and also compresses the content of the `dist` folder into a file that is put into this folder. The puporse of this command is make a customization archive to deploy the result of development work into a Maximo instance.
+The `create zip` command generates a ZIP file that contains the result of the `masmanagedev-cli build` command and also compresses the content of the `dist` folder into a file that is put into this folder. The puporse of this command is make a customization archive to deploy the result of development work into a Maximo instance.
 
 ## Wrapper Commands
 
