@@ -11,6 +11,7 @@ const log = require('./logger');
 const path = require('path');
 const fs = require('fs-extra');
 const unzip = require('node-unzip-2');
+const { triggerAsyncId } = require('async_hooks');
 
 const docker = module.exports = Object.create({});
 
@@ -65,7 +66,7 @@ docker.ejectMaximo = (name, destFolder) => {
 }
 
 docker.pull = (name, namespace, hostname) => {
-  return shell.exec(`docker pull ${hostname}/${namespace}/${name}`);
+  return shell.exec(`docker pull ${hostname}/${namespace}/${name}`, { silent: true });
 }
 
 docker.run = (name, namespace, hostname) => {

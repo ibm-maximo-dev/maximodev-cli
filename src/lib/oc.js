@@ -7,10 +7,11 @@
 "use strict";
 
 const shell = require("shelljs");
-const log = require("./logger");
 const env = require("./env");
 const fs = require("fs");
-const path = require("path");
+const log = require("./logger");
+const json2yaml = require("json2yaml");
+
 const oc = (module.exports = Object.create({}));
 
 oc.exists = () => {
@@ -125,9 +126,62 @@ oc.extractMasNamespace = (namespace) => {
   return namespace.slice(4, -7);
 };
 
-oc.updateManageWorkspace = (workSpace, url) => {
+oc.updateCustomizationArchiveConfig = (workSpace, url) => {
   const res = shell.exec(
     `oc patch manageworkspace.apps.mas.ibm.com/${workSpace} --type merge -p '{"spec":{"settings":{"customization":{"customizationArchive":"${url}"}}}}'`
   );
   return res && res.code === 0;
+};
+
+oc.updateBuildTag = (workSpace, value) => {
+  const res = shell.exec(
+    `oc patch manageworkspace.apps.mas.ibm.com/${workSpace} --type merge -p '{"spec":{"settings":{"deployment":{"buildTag":"${value}"}}}}'`
+  );
+  return res && res.code === 0;
+};
+
+oc.updateServerTimeZone = (workSpace, value) => {
+  const res = shell.exec(
+    `oc patch manageworkspace.apps.mas.ibm.com/${workSpace} --type merge -p '{"spec":{"settings":{"deployment":{"serverTimezone":"${value}"}}}}'`
+  );
+  return res && res.code === 0;
+};
+
+oc.updateServerMode = (workSpace, value) => {
+  const res = shell.exec(
+    `oc patch manageworkspace.apps.mas.ibm.com/${workSpace} --type merge -p '{"spec":{"settings":{"deployment":{"mode":"${value}"}}}}'`
+  );
+  return res && res.code === 0;
+};
+
+oc.updateBaseLang = (workSpace, value) => {
+  const res = shell.exec(
+    `oc patch manageworkspace.apps.mas.ibm.com/${workSpace} --type merge -p '{"spec":{"settings":{"languages":{"baselang":"${value}"}}}}'`
+  );
+  return res && res.code === 0;
+};
+
+oc.updateSecondaryLangs = (workSpace, values) => {
+  const payload = { spec: { settings: { languages: { secondaryLangs: {} } } } };
+  payload.spec.settings.languages.secondaryLangs = values;
+
+  const res = shell.exec(
+    `oc patch manageworkspace.apps.mas.ibm.com/${workSpace} --type merge -p '${JSON.stringify(
+      payload
+    )}'`
+  );
+  return res && res.code === 0;
+};
+
+oc.getCurrentConfig = (workSpace) => {
+  const res = shell.exec(
+    `oc get manageworkspace.apps.mas.ibm.com/${workSpace} -o jsonpath='{ .status.settings }'`,
+    { silent: true }
+  );
+  if (res && res.code === 0) {
+    const settings = JSON.parse(res.stdout);
+    delete settings.bdi;
+    delete settings.bdiConfigurations;
+    return json2yaml.stringify(settings);
+  }
 };

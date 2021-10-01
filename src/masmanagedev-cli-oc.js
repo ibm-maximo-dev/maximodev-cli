@@ -13,6 +13,8 @@ program
   .version('0.0.1')
   .description('Run an operator related command')
   .command('deploy', 'deploy a customization archive into an OpenShift service').alias('d')
+  .command('get-config', 'get the current Maximo Manage configurations').alias('c')
+  .command('set', 'set Maximo Manage configurations').alias('s')
   .parse(process.argv);
 
 // check if the user passed a command

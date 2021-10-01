@@ -1,12 +1,8 @@
-# Command Line Tools for Development with IBM Maximo Asset Mangement
-
-<!--
-[![Build Status](https://travis.ibm.com/maximo-ohio/maximodev-cli.svg?token=yJyC5zQ7wEuSAyYtDC53&branch=master)](https://travis.ibm.com/maximo-ohio/maximodev-cli)
--->
+# Command Line Tools for Development with IBM Maximo Manage
 
 The `masmanagedev-cli` is a set of command line tools for developing with Maximo Asset Management that accelerates tasks, such as creating add-ons, MBOs, field validations, etc.
 
-`masmanagedev-cli` requires that [NodeJS](https://nodejs.org/en/) **version 8+** be installed. If you do not have NodeJS **version 8** installed, then install or upgrade it first.
+`masmanagedev-cli` requires that [NodeJS](https://nodejs.org/en/) **version 14+** be installed. If you do not have NodeJS **version 14** installed, then install or upgrade it first.
 
 The vision for `masmanagedev-cli` is to provide a set of lifecycle tools for developers, allowing them to create, build, test, deploy, and package an add-on, while offering additional tools that are useful in the development lifecycle of Maximo Manage.
 
@@ -20,7 +16,7 @@ For installation, you need to check out the sources and then install it globally
 git glone https://github.com/nishi2go/masmanagedev-cli.git
 cd masmanagedev-cli
 npm ci
-npm install file:~/ -g
+npm install file:./ -g
 ```
 
 ## Quick start
@@ -35,7 +31,6 @@ $ masmanagedev-cli create addon
 $ cd bpaa_myproduct
 $ masmanagedev-cli create sample-classic-app
 $ masmanagedev-cli build
-$ masmanagedev-cli deploy
 ```
 
 This process will take about five minutes. The `create addon` phase will need to install `gradle` and initialize it, which can take a couple minutes. The `build` phase might also take a couple minutes, because it must compile your `java` files against the Maximo classes. Compile times after that should be faster.
@@ -48,11 +43,44 @@ If you run `masmanagedev-cli` without any parameters, a list of top-level comman
 
 ### masmanagedev-cli init home
 
-The `init home` command downloads Maximo code from [admin docker image](https://ibm-mas-manage.github.io/playbook/upgrade/manageadmin) in your MAXIMO_HOME directory. This command is a helper tool to automate to pull and extract the Maximo code from Maximo admin docker image. It requires oc command and login to your OpenShift cluster before running it.
+The `init home` command downloads Maximo code from [admin docker image](https://ibm-mas-manage.github.io/playbook/upgrade/manageadmin) in your `MAXIMO_HOME` directory. This command is a helper tool to automate to pull and extract the Maximo code from Maximo admin docker image.
+
+```bash
+$ oc login
+$ export MAXIMO_HOME=`pwd`
+$ masmanagedev-cli init home --instance crc --workspace dev --tag latest
+```
 
 ### masmanagedev-cli oc deploy
 
-The `oc deploy` command deploys your [customization archive](https://www.ibm.com/docs/en/maximo-manage/8.1.0?topic=application-customization-archive-guidelines) to MAS workspace. This process will create an HTTP server to host your zip in OpenShift Cluster to share with the Manage reconciliation process. It requires at least one zip file in the `dist` directory so you need to run `create zip` command before starting it.
+The `oc deploy` command deploys your [customization archive](https://www.ibm.com/docs/en/maximo-manage/8.1.0?topic=application-customization-archive-guidelines) to reflect your customization into your MAS workspace. This process will create an HTTP server to host your zip in the OpenShift cluster to share it with the Manage reconciliation process to recompile the Manage application and its container images. This command updates the customization section in Manage configuration to start reconciliation process automatically. It requires at least one zip file in the `dist` directory so you need to run the `create zip` command before starting it.
+
+```bash
+$ oc login
+$ masmanagedev-cli oc deploy --instance crc --workspace dev --build-name customization-archive
+```
+
+### masmanagedev-cli update classpath
+
+The `update classpath` command updates deployment XML files to add your third-party jar files to `businessobjectclasspath`. This process will get the XML files from `MAXIMO_HOME` and add the files under `applications/maximko/lib` in your workspace. This command is intended to automate the process of the [guide](https://ibm-mas-manage.github.io/playbook/upgrade/addjar).
+
+### masmanagedev-cli oc get-config
+
+The `oc get-config` command shows the current Maximo Manage configurations. This command is used to get the configurations that you input settings like server bundle, base and secondary languages, persistent storage and etc in the activation process. This is a utility command to enable checking the configurations without login to Web GUI or a complex command-line options with `oc`.
+
+```bash
+$ oc login
+$ masmanagedev-cli oc get-config --instance crc --workspace dev
+```
+
+### masmanagedev-cli oc set
+
+The `oc set` command updates the Maximo Manage configurations without login to Web GUI. The command supports `set base-lang`, `set secondary-langs`, `set build-tag`, `set server-mode`, `set time-zone`. When you update the value of the configurations, the Manage reconciliation process automatically starts rebuilding and redeploying the container images in a certain period of time.
+
+```bash
+$ oc login
+$ masmanagedev-cli oc set base-lang --lang de --instance crc --workspace dev
+```
 
 ### masmanagedev-cli create addon
 
@@ -74,10 +102,6 @@ The `create product-xml` command creates a product XML in your add-on directory.
 
 The `create dbc-script` command looks in your product's script directory and creates a new script with a number that is the next number in in your script sequence. For example, if your last script was named `V7601_22.dbc`, then this command creates `V7601_23.dbc`. The new script is an XML script stub where you can later edit it and add your statements.
 
-### masmanagedev-cli create java-field-validator
-
-The `create java-field-validator` command creates a simple Java field validation class and corresponding dbc file and updates the product XML file. The goal here is to show how to build a field validation class and how to register it. You might need to tweak the output scripts to register it to the correct object, field, etc.
-
 ### masmanagedev-cli create mbo
 
 The `create mbo` command creates since a simple MBO structure to a `stateful` MBO structure. The objective is allow the user to create fast and without any structure issues, to respect the Remote objects and to provide a simple implementation of more complex kind of MBO. The `create mbo` command supports the creation of a nonpersistent MBO, a stateful MBO, and also standard MBOs by using DBC files that provide the information that is required to create the associated tables, relationships, any applicable domains, and more related elements that are linked with MBO creation.
@@ -96,7 +120,7 @@ The `create app-extensions` command allows you to extends some elements of an ap
 
 ### masmanagedev-cli create script-field-validator
 
-The `create script-field-validator` command, like the `java-field-valiator` command, creates a field validator and registers it to an object and field. The difference is that this field valiator uses the `automation scripting` framework and does not require Java. For a further information, run `#masmanagedev-cli create sfv --help`.
+The `create script-field-validator` command, like the `java-field-valiator` command, creates a field validator and registers it to an object and field. The difference is that this field valiator uses the `automation scripting` framework and does not require Java. For a further information, run `$ masmanagedev-cli create sfv --help`.
 
 ### masmanagedev-cli create sample-classic-app
 
@@ -116,7 +140,7 @@ The `masmanagedev-cli build` command builds and copies your add-on artifacts to 
 
 ### masmanagedev-cli create zip
 
-The `create zip` command generates a ZIP file that contains the result of the `masmanagedev build` command and also compresses the content of the `dist` folder into a file that is put into this folder. The puporse of this command is make it easier to deploy the result of development work into a Maximo instance.
+The `create zip` command generates a ZIP file that contains the result of the `masmanagedev build` command and also compresses the content of the `dist` folder into a file that is put into this folder. The puporse of this command is make a customization archive to deploy the result of development work into a Maximo instance.
 
 ## Wrapper Commands
 
@@ -156,7 +180,7 @@ To import the projects, create an Eclipse workspace, select the **File->Import->
 
 ## Links to references
 
-For more information on developing add-ons and using dbc scripts, see the [Database Configuration Scripts](https://developer.ibm.com/static/site-id/155/maximodev/dbcguide/) document.
+For more information on developing add-ons and using dbc scripts, see the [Database Configuration Scripts](https://bportaluri.com/2021/08/dbc-xml-format-reference.html) document.
 
 ## Issues and Suggestions
 
