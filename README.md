@@ -1,3 +1,11 @@
+
+# NOTE: 
+# *** As of Jan 2020 project no longer under development ***
+
+
+
+
+
 # Command Line Tools for Development with IBM Maximo Asset Mangement
 <!--
 [![Build Status](https://travis.ibm.com/maximo-ohio/maximodev-cli.svg?token=yJyC5zQ7wEuSAyYtDC53&branch=master)](https://travis.ibm.com/maximo-ohio/maximodev-cli)
